@@ -13,7 +13,10 @@ export const loginUser = async (req, res) => {
     try {
         const user = await User.login(email, password);
 
-        res.status(200).json({ email, user });
+        //create a token
+        const token = createTokens(user._id);
+
+        res.status(200).json({ email, token });
     } catch (error) {
         res.status(400).json({ message: error.message });
     }
