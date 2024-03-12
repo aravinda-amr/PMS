@@ -20,7 +20,13 @@ app.use((req, res, next) => {
 app.use('/api/user', userRoutes)
 
 
-app.listen(process.env.PORT,() => {
-    console.log('listening on port 4000')
+//connect to the database
+mongoose.connect(process.env.MONGO_URI)
+.then(() => {
+    //listen for requests
+    app.listen(process.env.PORT, ()=> {
+    console.log(`Connected to db & Listening on ${process.env.PORT}`);
 })
+})
+.catch((err) => console.log(err))
 
