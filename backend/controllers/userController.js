@@ -7,5 +7,13 @@ export const loginUser = async (req, res) => {
 
 // signup user
 export const signupUser = async (req, res) => {
-    res.json({ message: 'Signup route' });
+    const { email, password, name, contact } = req.body;
+
+    try {
+        const user = await User.signup(email, password, name, contact);
+
+        res.status(200).json({ email, user });
+    } catch (error) {
+        res.status(400).json({ message: error.message });
+    }
 }
