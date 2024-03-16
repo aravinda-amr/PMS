@@ -16,6 +16,8 @@ export const authReducer = (state, action) => {
 export const AuthContextProvider = ({ children }) => {
     const [state, dispatch] = useReducer(authReducer, { user: null });
 
+    //when app loads, check the user in localstorage. so the user is protected if the page reloads
+
     useEffect(() => {
         const user = JSON.parse(localStorage.getItem('user'));
         if (user) {
