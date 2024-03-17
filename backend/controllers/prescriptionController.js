@@ -3,7 +3,10 @@ import mongoose from 'mongoose';
 
 //get all prescriptions
 const getPrescriptions = async (req, res) => {
-    const prescriptions = await Prescriptions.find({}).sort({createdAt: -1});
+    const user_id = req.user._id;
+
+
+    const prescriptions = await Prescriptions.find({ user_id }).sort({createdAt: -1});
 
     res.status(200).json(prescriptions);
 }
@@ -31,7 +34,8 @@ const createPrescription = async (req, res) => {
 
     //add document to DB
     try {
-        const prescription = await Prescriptions.create({note, substitutes, userId});
+        const user_id = req.user._id;
+        const prescription = await Prescriptions.create({note, substitutes, user_id});
         res.status(200).json(prescription);
     } catch (error) {
         res.status(400).json({error: error.message});
