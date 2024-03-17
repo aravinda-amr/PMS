@@ -1,7 +1,10 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
+
+//import routes
 import userRoutes from './routes/user.js';
+import prescriptionRoutes from './routes/prescription.js';
 
 dotenv.config()
 
@@ -18,6 +21,10 @@ app.use((req, res, next) => {
 
 //routes
 app.use('/api/user', userRoutes)
+
+app.use('/api/prescription', prescriptionRoutes)
+
+
 
 
 //connect to the database
