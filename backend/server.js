@@ -6,6 +6,10 @@ import mongoose from 'mongoose';
 import userRoutes from './routes/user.js';
 import prescriptionRoutes from './routes/prescription.js';
 import reorderRoutes from './routes/reorder.js';
+import expiredRoutes from './routes/expired.js';
+import abtexpiredRoutes from './routes/expired.js';
+import outofstockRoutes from './routes/outofstocks.js';
+import abtoutofstocksRoutes from './routes/abtoutofstocks.js';
 
 dotenv.config()
 
@@ -28,6 +32,14 @@ app.use('/api/prescription', prescriptionRoutes)
 
 
 app.use('/api/reorder', reorderRoutes)
+
+app.use('/api/expired', expiredRoutes)
+
+app.use('/api/abtexpired', abtexpiredRoutes)
+
+app.use('/api/outofstock', outofstockRoutes)
+
+app.use('/api/abtoutofstock', abtoutofstocksRoutes)
 
 //connect to the database
 mongoose.connect(process.env.MONGO_URI)
