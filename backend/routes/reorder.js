@@ -1,25 +1,23 @@
 import express from 'express';
-// const {createReorder, getReorder, getReorders, deleteReorder, updateReorder} = import 
+import { createReorder, getReorders, getReorder, deleteReorder, updateReorder} from '../controllers/reorderController.js';
+
 
 const router = express.Router();
 
-//Get all workouts
-router.get('/', getWorkouts)
+// //Get all workouts
+router.get('/', getReorders)
 
 
-//Get a single workout
-router.get('/:id', getWorkout)
-
+// //Get a single workout
+ router.get('/:id', getReorder)
 
 //Create a workout
-router.post('/', createWorkout)
+router.post('/', createReorder)
 
+// //Delete a workout
+ router.delete('/:id', deleteReorder)
 
-//Delete a workout
-router.delete('/:id', deleteWorkout)
-
-
-//Update a workout
-router.patch('/:id', updateWorkout)
+// //Update a workout
+router.patch('/:id', updateReorder)
 
 export default router;

@@ -2,20 +2,12 @@
 
 const Schema = mongoose.Schema
 
-const reorderSchema = new Scehma({
+const reorderSchema = new Schema({
     supplierEmail:{
         type: String,
         required:true
     },
     drugID:{
-        type: Number,
-        required: true
-    },
-    drugName:{
-        type: String,
-        required: true
-    },
-    quantity:{
         type: Number,
         required: true
     },
