@@ -2,6 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import userRoutes from './routes/user.js';
+import reorderRoutes from './routes/reorder.js';
 
 dotenv.config()
 
@@ -18,7 +19,7 @@ app.use((req, res, next) => {
 
 //routes
 app.use('/api/user', userRoutes)
-
+app.use('/api/reorder', reorderRoutes)
 
 //connect to the database
 mongoose.connect(process.env.MONGO_URI)
