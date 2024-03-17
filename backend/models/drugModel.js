@@ -1,22 +1,22 @@
-const mongoose = require('mongoose')// import mongoose
+import mongoose from "mongoose"; // import mongoose
 
 const Schema = mongoose.Schema// create schema
 
 const drugSchema = new Schema({
 
-    DrugName :{
+    drugName :{
         type:String,
         required:true
     },
-    Batchnumber:{   
+    batchNumber:{   
         type:String,
         required:true
     },   
-    ManufactureDate:{
+    manufactureDate:{
         type:Date,
         required:true
     },
-    ExpireDate:{
+    expireDate:{
         type:Date,
         required:true
     },
@@ -32,5 +32,4 @@ const drugSchema = new Schema({
 
 },{timestamps:true})// add timestamps
 
-
-module.exports = mongoose.model('Drug',drugSchema)// export model
+export default mongoose.model('Drug', drugSchema)//export model
