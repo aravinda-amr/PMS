@@ -6,6 +6,8 @@ import mongoose from 'mongoose';
 import userRoutes from './routes/user.js';
 import prescriptionRoutes from './routes/prescription.js';
 import reorderRoutes from './routes/reorder.js';
+import drugoutsRoutes from './routes/drugouts.js';
+
 
 dotenv.config()
 
@@ -25,9 +27,9 @@ app.use('/api/user', userRoutes)
 
 app.use('/api/prescription', prescriptionRoutes)
 
-
-
 app.use('/api/reorder', reorderRoutes)
+
+app.use('/api/drugouts',drugoutsRoutes)
 
 //connect to the database
 mongoose.connect(process.env.MONGO_URI)
