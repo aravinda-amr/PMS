@@ -33,6 +33,10 @@ function App() {
               path="/signup"
               element={!user ? <Signup /> : <Navigate to="/" />}
             />
+            <Route 
+              path="/loyalty"
+              element={<Loyalty />}
+            />
           </Routes>
         </div>
       </BrowserRouter>
