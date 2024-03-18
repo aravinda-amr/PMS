@@ -36,14 +36,7 @@ function App() {
             <Route 
               path="/loyalty"
               element={<Loyalty />}
-
-
-
-
-
-
-
-            
+            />
             <Route
               path='/prescriptions'
               element={<PrescriptionUpload />}
