@@ -6,6 +6,7 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Navbar from './components/Navbar';
+import PrescriptionUpload from './components/PrescriptionUpload';
 import Loyalty from './pages/Loyalty';
 
 
@@ -31,10 +32,6 @@ function App() {
             <Route 
               path="/signup"
               element={!user ? <Signup /> : <Navigate to="/" />}
-            />
-            <Route 
-              path="/user" 
-              element={<Loyalty />} 
             />
           </Routes>
         </div>
