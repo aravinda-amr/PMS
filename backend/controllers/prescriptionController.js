@@ -27,11 +27,12 @@ const getPrescription = async (req, res) => {
 
 //create a prescription
 const createPrescription = async (req, res) => {
-    const {note, substitutes, userId} = req.body;
+    const {note, substitutes, img} = req.body;
 
     //add document to DB
     try {
-        const prescription = await Prescriptions.create({note, substitutes, userId});
+        const user_Id = req.user._id;
+        const prescription = await Prescriptions.create({note, substitutes, user_Id, img});
         res.status(200).json(prescription);
     } catch (error) {
         res.status(400).json({error: error.message});

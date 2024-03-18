@@ -25,8 +25,6 @@ app.use('/api/user', userRoutes)
 
 app.use('/api/prescription', prescriptionRoutes)
 
-
-
 app.use('/api/reorder', reorderRoutes)
 
 //connect to the database

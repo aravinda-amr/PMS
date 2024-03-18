@@ -1,4 +1,5 @@
 import express from 'express';
+import requireAuth from '../middleware/requireAuth.js';
 import { 
     getPrescriptions,
     getPrescription,
@@ -6,6 +7,8 @@ import {
     deletePrescription } from '../controllers/prescriptionController.js';
 
 const router = express.Router();
+
+router.use(requireAuth);
 
 //get all prescriptions
 router.get('/', getPrescriptions)
