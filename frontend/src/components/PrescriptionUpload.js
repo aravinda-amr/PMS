@@ -40,4 +40,5 @@ const PrescriptionUpload = () => {
     )
 }
 
+
 export default PrescriptionUpload;
