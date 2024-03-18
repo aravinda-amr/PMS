@@ -1,10 +1,12 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useAuthContext } from './hooks/useAuthContext';
+import { UserContextProvider } from './context/UserContext';
 //Pages & Components
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Navbar from './components/Navbar';
+import Loyalty from './pages/Loyalty';
 
 
 function App() {
@@ -12,6 +14,7 @@ function App() {
 
 
   return (
+    <UserContextProvider>
     <div className="App">
       <BrowserRouter>
         <Navbar />
@@ -29,11 +32,15 @@ function App() {
               path="/signup"
               element={!user ? <Signup /> : <Navigate to="/" />}
             />
+            <Route 
+              path="/user" 
+              element={<Loyalty />} 
+            />
           </Routes>
         </div>
       </BrowserRouter>
     </div>
-    
+    </UserContextProvider>
   );
 }
 

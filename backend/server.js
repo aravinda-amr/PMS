@@ -6,6 +6,7 @@ import mongoose from 'mongoose';
 import userRoutes from './routes/user.js';
 import prescriptionRoutes from './routes/prescription.js';
 
+
 dotenv.config()
 
 const app = express()
@@ -23,6 +24,7 @@ app.use((req, res, next) => {
 app.use('/api/user', userRoutes)
 
 app.use('/api/prescription', prescriptionRoutes)
+
 
 
 
