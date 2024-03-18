@@ -14,7 +14,11 @@ const PrescriptionUpload = () => {
         const imageRef = ref(storage, `PMS/${imageUpload.name + v4()}`);
 
         //upload the file to the firebase storage
-        uploadBytes()
+        uploadBytes(imageRef, imageUpload).then((snapshot) => {
+            getDownloadURL(snapshot.ref).then((url) => {
+                console.log(url);
+            }
+            )}
 
     }
 
