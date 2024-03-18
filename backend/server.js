@@ -9,6 +9,7 @@ import reorderRoutes from './routes/reorder.js';
 import drugoutsRoutes from './routes/drugouts.js';
 
 
+
 dotenv.config()
 
 const app = express()
@@ -30,6 +31,7 @@ app.use('/api/prescription', prescriptionRoutes)
 app.use('/api/reorder', reorderRoutes)
 
 app.use('/api/drugouts',drugoutsRoutes)
+
 
 //connect to the database
 mongoose.connect(process.env.MONGO_URI)
