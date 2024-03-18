@@ -17,14 +17,9 @@ const PrescriptionUpload = () => {
         uploadBytes(imageRef, imageUpload).then((snapshot) => {
             getDownloadURL(snapshot.ref).then((url) => {
                 console.log(url);
-            }
-            )}
-
+            })
+        })
     }
-
-    
-
-    
 
     return (
         <form>
