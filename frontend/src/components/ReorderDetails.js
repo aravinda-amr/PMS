@@ -11,11 +11,20 @@ const ReorderDetials = ({reorder})=>{
          })
          const json = await response.json() //converting the response to json so now all the information is in json
         
-          dispatch({type: 'DELETE_WORKOUT', payload: json }) //dispatching the action to delete the workout
-         
+          dispatch({type: 'DELETE_REORDER', payload: json }) //dispatching the action to delete the workout  
      }
+
+      const handleUpdate = async()=>{
+          const response = await fetch('/api/reorder/'+ reorder._id, { 
+              method:'PUT'
+          })
+          const json = await response.json() //converting the response to json so now all the information is in json
+          
+            dispatch({type: 'UPDATE_REORDER', payload: json }) //dispatching the action to delete the workout  
+      }
+
     return (
-        <div className="reorder-details">
+   <div className="reorder-details">
             
 <table>
   <tr>
@@ -23,14 +32,19 @@ const ReorderDetials = ({reorder})=>{
     <td>{reorder.supplierEmail}</td>
   </tr>
   <tr>
-    <th><strong>Drug ID</strong></th>
-    <td>{reorder.drugID}</td>
+    <th><strong>Batch Number</strong></th>
+    <td>{reorder.batchNumber}</td>
   </tr>
   <tr>
     <th><strong>Reorder Level</strong></th>
     <td>{reorder.reorderLevel}
     <button onClick ={handleClick}> Delete</button>
+    <button onClick={handleUpdate}>Update</button>
     </td>
+  </tr>
+  <tr>
+  <th><strong>Quantity</strong></th>
+    <td>{reorder.quantity}</td>
   </tr>
   <tr>
     <th><strong>Created At</strong></th>
@@ -38,9 +52,7 @@ const ReorderDetials = ({reorder})=>{
     <p>{formatDistanceToNow(new Date(reorder.createdAt), {addSuffix : true})}</p> </td>
   </tr>
 </table>
-
-
-        </div>
+   </div>
     )
 }
 

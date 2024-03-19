@@ -5,15 +5,17 @@ import {useReordersContext} from '../hooks/useReorderContext'
 const ReorderForm = () => {
     const {dispatch} = useReordersContext()
     const [supplierEmail, setsupplierEmail] = useState('')      
-    const [drugID, setdrugID] = useState('')
+    const [batchNumber, setbatchNumber] = useState('')
     const [reorderLevel, setreorderLevel] = useState('')
     const [error, seterror] = useState(null)
    // const [emptyFields, setemptyFields] = useState([])
 
+
+
      const handleSubmit = async(e) =>{
         e.preventDefault() //prevent the default behaviour of the form which means the page will not refresh when the form is submitted
 
-         const reorder = {supplierEmail, drugID, reorderLevel}  //create a workout object with the state variables
+         const reorder = {supplierEmail, batchNumber, reorderLevel }  //create a workout object with the state variables
          const response = await fetch ('/api/reorder',{ //send a post request to the server with the workout object   
             method: 'POST',
             body : JSON.stringify(reorder), //convert the workout object to a JSON string
@@ -28,12 +30,12 @@ const ReorderForm = () => {
         }
         else{
             setsupplierEmail('') //reset the state variables to empty strings
-            setdrugID('')//reset the state variables to empty 
+            setbatchNumber('')//reset the state variables to empty 
             setreorderLevel('')//reset the state variables to empty strings
            // setemptyFields([])//reset the emptyFields state variable to an empty array
             seterror(null) //reset the error state variable to null
             console.log('new workout added', json)
-           dispatch({type: 'CREATE_WORKOUT', payload: json}) //dispatch the action to the reducer (add the new workout to the workouts array in the state variable
+           dispatch({type: 'CREATE_REORDER', payload: json}) //dispatch the action to the reducer (add the new workout to the workouts array in the state variable
         }
     }
 
@@ -43,11 +45,12 @@ const ReorderForm = () => {
             <label>Supplier's Email</label>
             <input type="email" onChange={(e) => setsupplierEmail(e.target.value)} value={supplierEmail} /> 
             
-            <label>Drug ID:</label>
-            <input type="number" onChange={(e) => setdrugID(e.target.value)} value={drugID} /> 
+            <label>Batch Number:</label>
+            <input type="text" onChange={(e) => setbatchNumber(e.target.value)} value={batchNumber} /> 
 
             <label>Reorder Level</label>
             <input type="number" onChange={(e) => setreorderLevel(e.target.value)} value={reorderLevel} />  
+
 
             <button>Add Reorder Level</button>
             {error && <div className="error">{error}</div>}

@@ -4,18 +4,22 @@ import { createContext, useReducer } from "react";
 
   export const ReorderReducer = (state, action) => {//reducer function state is the current state and action is the action that we want to perform
     switch(action.type){
-      case 'SET_WORKOUTS':
+      case 'SET_REORDER':
         return{
           reorders : action.payload 
         }
-      case 'CREATE_WORKOUT':
+      case 'CREATE_REORDER':
         return{
           reorders:[action.payload, ...state.reorders]
         }  
-      case 'DELETE_WORKOUT':
+      case 'DELETE_REORDER':
         return{
           reorders: state.reorders.filter((r)=> r._id !== action.payload._id)
         }  
+      case 'UPDATE_REORDER':  
+      return{
+        reorders: state.reorders.map((r) => r._id === action.payload._id ? action.payload : r)
+      }
       default:
         return state  
     }
