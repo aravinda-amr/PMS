@@ -1,31 +1,31 @@
-import {useEffect, useState} from 'react'
+// import {useEffect, useState} from 'react'
 
-const Staffrewards = () => {
+// const Staffrewards = () => {
 
-    const [staffReward, setStaffRewards] = useState(null)
+//     const [staffReward, setStaffRewards] = useState(null)
 
-    useEffect(() => {
-        const fetchStaffRewards =  async () => {
-            const response = await fetch('/api/staffReward')
-            const json = await response.json()
+//     useEffect(() => {
+//         const fetchStaffRewards =  async () => {
+//             const response = await fetch('/api/staffReward')
+//             const json = await response.json()
 
-            if (response.ok) {
-                setStaffRewards(json)
-            }
-        } 
+//             if (response.ok) {
+//                 setStaffRewards(json)
+//             }
+//         } 
 
-        fetchStaffRewards()
-    },[])
+//         fetchStaffRewards()
+//     },[])
 
-    return (
-        <div className="Staffrewards">
-            <div className="staffRewards">
-                {staffReward && staffReward.map((staffReward) => (
-                    <StaffRewardDetails key={staffReward._id} staffReward = {staffReward} />
-                ))}
-            </div>
-        </div>
-    );
-}
+//     return (
+//         <div className="Staffrewards">
+//             <div className="staffRewards">
+//                 {staffReward && staffReward.map((staffReward) => (
+//                     <StaffRewardDetails key={staffReward._id} staffReward = {staffReward} />
+//                 ))}
+//             </div>
+//         </div>
+//     );
+// }
 
-export default Staffrewards;
+// export default Staffrewards;
