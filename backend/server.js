@@ -10,6 +10,15 @@ import drugoutsRoutes from './routes/drugouts.js';
 
 
 
+
+import staffRewardRoutes from './routes/staffReward.js';
+/*import handledRoutes from './routes/handled.js';*/
+import expiredRoutes from './routes/expired.js';
+import abtexpiredRoutes from './routes/expired.js';
+import outofstockRoutes from './routes/outofstocks.js';
+import abtoutofstocksRoutes from './routes/abtoutofstocks.js';
+import billing from './routes/billing.js';
+
 dotenv.config()
 
 const app = express()
@@ -30,7 +39,22 @@ app.use('/api/prescription', prescriptionRoutes)
 
 app.use('/api/reorder', reorderRoutes)
 
+app.use('/api/expired', expiredRoutes)
+
+app.use('/api/abtexpired', abtexpiredRoutes)
+
+app.use('/api/outofstock', outofstockRoutes)
+
+app.use('/api/abtoutofstock', abtoutofstocksRoutes)
+
+app.use('/api/staffReward',staffRewardRoutes)
+
+/*app.use('/api/handled', handledRoutes)*/
+
 app.use('/api/drugouts',drugoutsRoutes)
+
+app.use('/api/billing',billing)
+
 
 
 //connect to the database

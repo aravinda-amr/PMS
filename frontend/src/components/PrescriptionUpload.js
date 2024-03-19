@@ -1,9 +1,26 @@
 import { useState } from 'react';
+import { storage } from '../firebase';
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import { v4 } from 'uuid'
 
 const PrescriptionUpload = () => {
     const [note, setNote] = useState('');
     const [substitutes, setSubstitutes] = useState(null);
-    // const [prescriptionImg, setPrescriptionImg] = useState('');
+    const [imageUpload, setImageUpload] = useState(null);
+
+    const uploadImage = () => {
+        if ( imageUpload === null ) return;
+
+        const imageRef = ref(storage, `PMS/${imageUpload.name + v4()}`);
+
+        //upload the file to the firebase storage
+        uploadBytes(imageRef, imageUpload).then((snapshot) => {
+            getDownloadURL(snapshot.ref).then((url) => {
+                //getting the url of the uloaded image
+                setImageUpload(url);
+            })
+        })
+    }
 
     return (
         <form>
