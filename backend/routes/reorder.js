@@ -4,20 +4,20 @@ import { createReorder, getReorders, getReorder, deleteReorder, updateReorder} f
 
 const router = express.Router();
 
-// //Get all workouts
+// //Get all reorder
 router.get('/', getReorders)
 
 
-// //Get a single workout
+// //Get a single reorder
  router.get('/:id', getReorder)
 
-//Create a workout
+//Create a reorder
 router.post('/', createReorder)
 
-// //Delete a workout
+// //Delete a reorder
  router.delete('/:id', deleteReorder)
 
-// //Update a workout
+// //Update a reorder
 router.patch('/:id', updateReorder)
 
 export default router;

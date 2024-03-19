@@ -1,4 +1,5 @@
 import Reorder from  '../models/reorderModel.js'
+import Drug from  '../models/drugModel.js'
 
 import mongoose from "mongoose"
 
@@ -7,6 +8,7 @@ import mongoose from "mongoose"
 export const getReorders = async (req, res)=>{
     const reorders = await Reorder.find({}).sort({createdAt: -1})//find all the documents in the collection and sort them by the createdAt field in descending order
     res.status(200).json(reorders);
+
 }
 
 //get a single reorder
@@ -35,7 +37,7 @@ export const createReorder = async (req, res)=>{
     }catch(error){
         res.status(400).json({error: error.message})
     }
-    res.json({mssg: 'reorder created'})
+  //  res.json({mssg: 'reorder created'})
 }
 
 //delete a reorder
