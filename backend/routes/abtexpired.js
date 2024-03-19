@@ -5,7 +5,7 @@ import {getabtExpired } from '../controllers/expiredController.js';
 const router = express.Router();
 
 // //Get all reorder
-router.get('/abtexpired', getabtExpired )
+router.get('/', getabtExpired )
 
 
 export default router;
