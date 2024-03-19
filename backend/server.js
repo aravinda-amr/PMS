@@ -9,6 +9,8 @@ import reorderRoutes from './routes/reorder.js';
 import drugoutsRoutes from './routes/drugouts.js';
 
 
+import staffRewardRoutes from './routes/staffReward.js';
+import handledRoutes from './routes/handled.js';
 
 dotenv.config()
 
@@ -29,6 +31,10 @@ app.use('/api/user', userRoutes)
 app.use('/api/prescription', prescriptionRoutes)
 
 app.use('/api/reorder', reorderRoutes)
+
+app.use('/api/staffReward',staffRewardRoutes)
+
+app.use('/api/handled', handledRoutes)
 
 app.use('/api/drugouts',drugoutsRoutes)
 
