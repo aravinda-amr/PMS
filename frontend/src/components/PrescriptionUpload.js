@@ -16,7 +16,8 @@ const PrescriptionUpload = () => {
         //upload the file to the firebase storage
         uploadBytes(imageRef, imageUpload).then((snapshot) => {
             getDownloadURL(snapshot.ref).then((url) => {
-                console.log(url);
+                //getting the url of the uloaded image
+                setImageUpload(url);
             })
         })
     }

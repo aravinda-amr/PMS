@@ -47,13 +47,6 @@ function App() {
               path="/loyalty"
               element={<Loyalty />}
             />
-
-
-
-
-
-
-            
             <Route
               path='/prescriptions'
               element={<PrescriptionUpload />}
