@@ -5,6 +5,7 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Navbar from './components/Navbar';
+import Reorder from './pages/Reorder';
 
 
 function App() {
@@ -28,6 +29,10 @@ function App() {
             <Route 
               path="/signup"
               element={!user ? <Signup /> : <Navigate to="/" />}
+            />
+            <Route 
+              path="/reorder"
+              element={<Reorder/>}
             />
           </Routes>
         </div>

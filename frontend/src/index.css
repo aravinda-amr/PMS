@@ -11,3 +11,62 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+table {
+  width: 100%; /* Makes the table responsive and fill available space */
+  border-collapse: collapse; /* Removes borders between cells */
+}
+th, td {
+  padding: 10px; /* Adds padding for better spacing */
+  border: 1px solid #ddd; /* Adds a thin border to each cell */
+  text-align: left; /* Aligns text to the left */
+}
+th {
+  background-color: #f2f2f2; /* Sets a light gray background for headers */
+  font-weight: bold; /* Makes column names bold */
+}
+.reorder-details {
+  background: #fff;
+  border-radius: 4px;
+  margin: 20px auto;
+  padding: 20px;
+  position: relative;
+  box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
+}
+.reorder {
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  gap: 100px;
+}
+/* form button {
+  background: var(--primary);
+  border: 0;
+  color: #fff;
+  padding: 10px;
+  font-family: "Poppins";
+  border-radius: 4px;
+  cursor: pointer;
+} */
+label, input {
+  display: block;
+}
+input {
+  padding: 10px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+div.error {
+  padding: 10px;
+  background: #ffefef;
+  border: 1px solid var(--error);
+  color: var(--error);
+  border-radius: 4px;
+  margin: 20px 0;
+}
+input.error {
+  border: 1px solid var(--error);
+}
