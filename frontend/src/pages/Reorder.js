@@ -12,7 +12,7 @@ const Reorder = () =>{
             const response = await fetch('/api/reorder') //fetching data from the backend and storing it in response
             const json = await response.json(); //converting the response to json
             if(response.ok){ //if the response is okay
-                dispatch({type: 'SET_WORKOUTS', payload: json}) //dispatching the action to the reducer
+                dispatch({type: 'SET_REORDER', payload: json}) //dispatching the action to the reducer
             }
         }
         fetchReorder();

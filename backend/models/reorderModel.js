@@ -7,12 +7,17 @@ const reorderSchema = new Schema({
         type: String,
         required:true
     },
-    drugID:{
-        type: Number,
+    batchNumber:{
+        type: String,
         required: true
     },
     reorderLevel:{
         type: Number,
+        required: true
+    },
+    quantity:{
+        type: Number,
+        // type: mongoose.Schema.Types.ObjectId, ref:'Drug',
         required: true
     }
 }, {timestamps: true})

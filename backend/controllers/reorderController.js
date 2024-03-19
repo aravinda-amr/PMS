@@ -6,10 +6,11 @@ import mongoose from "mongoose"
 
 //get all reorders
 export const getReorders = async (req, res)=>{
-    const reorders = await Reorder.find({}).sort({createdAt: -1})//find all the documents in the collection and sort them by the createdAt field in descending order
+    const reorders = await Reorder.find()//find all the documents in the collection and sort them by the createdAt field in descending order
     res.status(200).json(reorders);
-
 }
+
+
 
 //get a single reorder
 export const getReorder = async (req, res)=>{
@@ -28,17 +29,39 @@ export const getReorder = async (req, res)=>{
 }
 
 //create a new Reorder
-export const createReorder = async (req, res)=>{
-    const { supplierEmail,  drugID, reorderLevel} = req.body;
-    //add doc to the collection
-    try{
-        const reorder = await Reorder.create({ supplierEmail,  drugID, reorderLevel})//create a document in the collection and save it to the database
+export const createReorder = async (req, res) => {
+    const { supplierEmail, batchNumber, reorderLevel } = req.body;
+
+    try {
+        const drug = await Drug.findOne({batchNumber}); 
+        if (!drug) {
+            return res.status(404).json({ error: 'Drug not found' });
+        }
+
+        // Create the reorder document with the fetched quantity
+        const reorder = await Reorder.create({
+            supplierEmail,
+            batchNumber,
+            reorderLevel,
+             quantity : drug.quantity// Use the quantity from the found drug document
+        });
         res.status(200).json(reorder);
-    }catch(error){
-        res.status(400).json({error: error.message})
+    } catch (error) {
+        res.status(400).json({ error: error.message });
     }
-  //  res.json({mssg: 'reorder created'})
-}
+};
+
+// export const createReorder = async (req, res)=>{
+//     const { supplierEmail,  drugID, reorderLevel} = req.body;
+//     //add doc to the collection
+//     try{
+//         const reorder = await Reorder.create({ supplierEmail,  drugID, reorderLevel, quantity})//create a document in the collection and save it to the database
+//         res.status(200).json(reorder);
+//     }catch(error){
+//         res.status(400).json({error: error.message})
+//     }
+//   //  res.json({mssg: 'reorder created'})
+// }
 
 //delete a reorder
 export const deleteReorder = async (req, res)=>{
@@ -48,14 +71,14 @@ export const deleteReorder = async (req, res)=>{
         return res.status(404).json({msg: `No Reorder with id: ${id}`})//if the id is not a valid mongoose id, return a 404 status code and a message
     }
 
-    const reorder = await Reorder.findOneAndDelete({_id: id})
-
+    const reorder = await Reorder.findByIdAndUpdate(
+        {_id: id}, req.body, {new: true}
+        )
     if (!reorder){
       return res.status(404).json({msg: `No Reorder with id: ${id}`});//if no workout is found, return a 404 status code and a message
     }
 
     res.status(200).json({msg: 'Reorder deleted'});
-
 }
 
 //update a reorder
