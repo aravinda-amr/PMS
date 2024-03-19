@@ -56,6 +56,10 @@ header a {
   font-size: 0.9em;
   color: #555;
 }
+
+
+
+
 .workout-details span {
   position: absolute;
   top: 20px;
@@ -101,47 +105,27 @@ div.error {
 
 /*loyalty css*/
 /* Button Styles */
+.btn-container{
+  position: absolute;
+  top: 2dvb;
+  right: 10dvb;
+  display: flex;
+  gap: 2dvb; /* Adjust the gap between buttons as needed */
+ }
 .btn {
   background: var(--primary);
   border: 0;
   color: #fff;
   padding: 10px;
-  margin-left: 10px;
+  margin-bottom: 10px;
   font-family: "Poppins";
   border-radius: 4px;
   cursor: pointer;
+  float: right;
  }
  
  .btn:hover {
   background-color: #45a049;
   color: white;
- }
- 
- /* Table Styles */
- .table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 20px 0;
- }
- 
- .table th, .table td {
-  border: 1px solid #ddd;
-  padding: 8px;
- }
- 
- .table th {
-  padding-top: 12px;
-  padding-bottom: 12px;
-  text-align: left;
-  background-color: #4CAF50;
-  color: white;
- }
- 
- .table tr:nth-child(even) {
-  background-color: #f2f2f2;
- }
- 
- .table tr:hover {
-  background-color: #ddd;
  }
  
