@@ -193,25 +193,47 @@ const updateBill = async(req, res) => {
 
     //Extract feilds to update from the request body
     const { customerID, invoiceDate, medicines } = req.body;
-  
-    // Update the bill in the database with the new fields
-    const bill = await Bill.findByIdAndUpdate(
-        id,
-        {
-            $set: {
-                customerID: customerID,
-                invoiceDate: invoiceDate,
-                medicines: medicines
-            }
-        },
-        { new: true }
-    );
-    //Check if the bill exists
-    if(!bill){
+
+    //Find the exisiting bill in the database
+    let exisitingBill = await Bill.findById(id);
+
+     //Check if the bill exists
+     if(!exisitingBill){
         return res.status(404).json({error: 'No such bill'});
     }
+  
+    // Update the specified fields if provided
+    if(customerID){
+        exisitingBill.customerID = customerID;
+    }   
+    if(invoiceDate){
+        exisitingBill.invoiceDate = invoiceDate;
+    }
+    
+    //Update purchase quantity and recalculate for the specified medicine
+    if(medicines){
+    for(const { drugName, purchaseQuantity } of medicines){
+        const medicine = exisitingBill.medicines.find(medicine => medicine.drugName === drugName);
+        if(medicine){
+            medicine.purchaseQuantity = purchaseQuantity;
+            medicine.calculateItemTotal = calculateItemTotal(medicine);
+        }else {
+            return res.status(404).json({error: 'No such medicine (${drugName})in the bill'});
+        }
+    }
+
+    //Recalculate subtotal for the bill
+    exisitingBill.calculateSubTotal = calculateSubTotal(exisitingBill.medicines);
+}
+
+    //Save the updated bill
+    const updatedBill = await exisitingBill.save();
+
+     
+
     //Send the response
-    res.status(200).json(bill);
+    res.status(200).json(updatedBill);
+
 } catch (error) {
     //Handle errors
     console.error('Error updating bill:', error);
