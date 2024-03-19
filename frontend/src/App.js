@@ -1,11 +1,14 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useAuthContext } from './hooks/useAuthContext';
+import { UserContextProvider } from './context/UserContext';
 //Pages & Components
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Navbar from './components/Navbar';
 import Staffrewards from './pages/Staffrewards';
+import PrescriptionUpload from './components/PrescriptionUpload';
+import Loyalty from './pages/Loyalty';
 
 
 function App() {
@@ -13,6 +16,7 @@ function App() {
 
 
   return (
+    <UserContextProvider>
     <div className="App">
       <BrowserRouter>
         <Navbar />
@@ -34,11 +38,26 @@ function App() {
               path="/Staffrewards"
               element={<Staffrewards />}
             />
+            <Route 
+              path="/loyalty"
+              element={<Loyalty />}
+            />
+
+
+
+
+
+
+            
+            <Route
+              path='/prescriptions'
+              element={<PrescriptionUpload />}
+            />
           </Routes>
         </div>
       </BrowserRouter>
     </div>
-    
+    </UserContextProvider>
   );
 }
 

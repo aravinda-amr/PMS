@@ -6,6 +6,9 @@ import mongoose from 'mongoose';
 import userRoutes from './routes/user.js';
 import prescriptionRoutes from './routes/prescription.js';
 import reorderRoutes from './routes/reorder.js';
+import drugoutsRoutes from './routes/drugouts.js';
+
+
 import staffRewardRoutes from './routes/staffReward.js';
 import handledRoutes from './routes/handled.js';
 
@@ -32,6 +35,9 @@ app.use('/api/reorder', reorderRoutes)
 app.use('/api/staffReward',staffRewardRoutes)
 
 app.use('/api/handled', handledRoutes)
+
+app.use('/api/drugouts',drugoutsRoutes)
+
 
 //connect to the database
 mongoose.connect(process.env.MONGO_URI)
