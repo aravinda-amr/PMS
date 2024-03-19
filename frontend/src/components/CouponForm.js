@@ -4,9 +4,22 @@ const AddCouponForm = ({id}) => {
  const [expire, setExpire] = useState('');
  const [discount, setDiscount] = useState('');
 
+  // Function to generate a unique 10-character coupon code
+  const generateCouponCode = () => {
+    let result = '';
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const charactersLength = characters.length;
+    for (let i = 0; i < 10; i++) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+ };
+
  const handleSubmit = async (e) => {
     e.preventDefault();
-    const couponData = { expire, discount };
+    const couponCode = generateCouponCode(); // Generate a unique coupon code
+    const couponData = { expire, discount, couponCode }; // Include the coupon code in the data
+    
 
     try {
       const response = await fetch(`/api/user/${id}/coupons`, {
@@ -34,7 +47,7 @@ const AddCouponForm = ({id}) => {
       <label>
         Expiry:
         <input
-          type="text"
+          type="date"
           value={expire}
           onChange={(e) => setExpire(e.target.value)}
         />

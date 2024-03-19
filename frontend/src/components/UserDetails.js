@@ -39,12 +39,12 @@ const UserDetails = ({ user }) => {
   return (
     <div className="workout-details">
       <h4>{user.name}</h4>
-      <div>
+      <div className="btn-container">
         <button className="btn" onClick={handleViewButtonClick}>View Coupons</button>
         <button className="btn" onClick={handleAddCouponClick}>Add Coupon</button>
-        {showCouponTable && <CouponTable coupons={coupons} onDeleteCoupon={handleDeleteCoupon} />}
-        {showCouponForm && <CouponForm id={user._id} />}
       </div>
+      {showCouponTable && <CouponTable coupons={coupons} onDeleteCoupon={handleDeleteCoupon} />}
+        {showCouponForm && <CouponForm id={user._id} />}
     </div>
   );
 };

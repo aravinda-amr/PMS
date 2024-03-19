@@ -38,7 +38,7 @@ header a {
   grid-template-columns: 3fr 1fr;
   gap: 100px;
 }
-
+.workout-details {
 table {
   width: 100%; /* Makes the table responsive and fill available space */
   border-collapse: collapse; /* Removes borders between cells */
@@ -82,20 +82,6 @@ th {
 }
 
 /* new workout form */
-.reorder {
-  display: grid;
-  grid-template-columns: 3fr 1fr;
-  gap: 100px;
-}
-/* form button {
-  background: var(--primary);
-  border: 0;
-  color: #fff;
-  padding: 10px;
-  font-family: "Poppins";
-  border-radius: 4px;
-  cursor: pointer;
-} */
 label, input {
   display: block;
 }
@@ -117,7 +103,6 @@ form button {
   border-radius: 4px;
   cursor: pointer;
 }
-
 div.error {
   padding: 10px;
   background: #ffefef;
@@ -173,3 +158,4 @@ div.error {
  .table tr:hover {
   background-color: #ddd;
  }
+ 

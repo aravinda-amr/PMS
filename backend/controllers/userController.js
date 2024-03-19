@@ -72,7 +72,7 @@ export const getCoupons = async (req, res) => {
   //Add a coupon to a user
   export const createCoupon = async (req, res) => {
     const { id } = req.params;
-    const { expire, discount } = req.body;
+    const { expire, discount, couponCode } = req.body;
   
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).json({ error: 'No such user' });
@@ -84,7 +84,7 @@ export const getCoupons = async (req, res) => {
       return res.status(400).json({ error: 'No such user' });
     }
   
-    user.coupons.push({ expire, discount });
+    user.coupons.push({ expire, discount, couponCode});
   
     await user.save();
   

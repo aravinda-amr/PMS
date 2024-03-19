@@ -7,18 +7,41 @@ const PrescriptionUpload = () => {
     const [note, setNote] = useState('');
     const [substitutes, setSubstitutes] = useState(null);
     const [imageUpload, setImageUpload] = useState(null);
+    const [image, setImage] = useState(null);
 
-    const uploadImage = () => {
+    const uploadImage = async () => {
         if ( imageUpload === null ) return;
 
         const imageRef = ref(storage, `PMS/${imageUpload.name + v4()}`);
 
         //upload the file to the firebase storage
-        uploadBytes(imageRef, imageUpload).then((snapshot) => {
+        await uploadBytes(imageRef, imageUpload).then((snapshot) => {
             getDownloadURL(snapshot.ref).then((url) => {
-                console.log(url);
+                //getting the url of the uloaded image
+                setImage(url);
             })
         })
+    }
+
+    const handleSubmit = async () => {
+
+        const prescription = {note, substitutes, image};
+
+        const response = await fetch('/api/prescriptions', {
+            method: 'POST',
+            body: JSON.stringify(prescription),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+
+        const json = await response.json();
+
+        if (!response.ok) {
+            console.log(json.error);
+        } else {
+            console.log(json);
+        }
     }
 
     return (
@@ -50,8 +73,11 @@ const PrescriptionUpload = () => {
             <br/>
 
             <label>Upload Prescription</label><br/>
-            <input type='file'/><br/>
-            <button>Submit</button>
+            <input type='file' onChange={(e) => { 
+                setImageUpload(e.target.files[0])
+            }}/><br/>
+            <button onClick={uploadImage}>Upload</button><br/>
+            <button onClick={handleSubmit}>Submit</button>
         </form>
     )
 }
