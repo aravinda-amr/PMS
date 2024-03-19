@@ -6,6 +6,7 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Navbar from './components/Navbar';
+import Reorder from './pages/Reorder';
 import Staffrewards from './pages/Staffrewards';
 import PrescriptionUpload from './components/PrescriptionUpload';
 import Loyalty from './pages/Loyalty';
@@ -33,6 +34,10 @@ function App() {
             <Route 
               path="/signup"
               element={!user ? <Signup /> : <Navigate to="/" />}
+            />
+            <Route 
+              path="/reorder"
+              element={<Reorder/>}
             />
              <Route 
               path="/Staffrewards"
