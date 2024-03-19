@@ -10,7 +10,7 @@ import drugoutsRoutes from './routes/drugouts.js';
 
 
 import staffRewardRoutes from './routes/staffReward.js';
-import handledRoutes from './routes/handled.js';
+// import handledRoutes from './routes/handled.js';
 import expiredRoutes from './routes/expired.js';
 import abtexpiredRoutes from './routes/expired.js';
 import outofstockRoutes from './routes/outofstocks.js';
@@ -46,7 +46,7 @@ app.use('/api/abtoutofstock', abtoutofstocksRoutes)
 
 app.use('/api/staffReward',staffRewardRoutes)
 
-app.use('/api/handled', handledRoutes)
+// app.use('/api/handled', handledRoutes)
 
 app.use('/api/drugouts',drugoutsRoutes)
 

@@ -6,7 +6,7 @@ import formatDistanceToNow from 'date-fns/formatDistanceToNow'
 const ReorderDetials = ({reorder})=>{
      const {dispatch} = useReordersContext()
      const handleClick = async()=>{
-        const response = await fetch('/api/reorder'+ reorder._id, { 
+        const response = await fetch('/api/reorder/'+ reorder._id, { 
              method:'DELETE'
          })
          const json = await response.json() //converting the response to json so now all the information is in json
