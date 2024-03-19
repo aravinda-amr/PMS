@@ -4,6 +4,13 @@ import validator from "validator";
 
 const Schema = mongoose.Schema;
 
+
+//coupon schema
+const couponSchema = new Schema({
+    expire: String,
+    discount: Number,
+   });
+
 const userSchema = new Schema({
     email: {
         type: String,
@@ -21,7 +28,8 @@ const userSchema = new Schema({
     contact: {
         type: String,
         required: true
-    }
+    },
+    coupons: [couponSchema]
 })
 
 //static signUp method
