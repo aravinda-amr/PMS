@@ -1,22 +1,29 @@
+import { parse } from 'dotenv';
 import Bill from '../models/billingModel.js';
 import mongoose from 'mongoose';
 const{Types} = mongoose;
 
 
 
-//function to calculate item total for each medicine
+// Function to calculate item total for each medicine
 const calculateItemTotal = (medicine) => {
-    return medicine.purchaseQuantity * medicine.unitPrice;
+    const itemTotal = parseFloat((medicine.purchaseQuantity * medicine.unitPrice).toFixed(2));
+    return itemTotal.toFixed(2); // Ensure two decimal places are always displayed
+};
+
+// Function to calculate subtotal for the bill
+const calculateSubTotal = (medicines) => {
+    const subTotal = parseFloat(medicines.reduce((total, medicine) => {
+        return total + parseFloat(calculateItemTotal(medicine));
+    }, 0).toFixed(2));
+    return subTotal.toFixed(2); // Ensure two decimal places are always displayed
 };
 
 
-//function to calculate subtotal for the bill
-const calculateSubTotal = (medicines) => {
-    return medicines.reduce((total, medicine) => {
-        return total + calculateItemTotal(medicine);
-     }, 0);
-    };
-
+//Validate phone number (10 digits)
+const isValidPhoneNumber = (phoneNumber) => {
+    return /^\d{10}$/.test(phoneNumber);
+};
 
 //get all bills
 const getBills = async (req, res)=> {
@@ -105,6 +112,11 @@ const createBill=async(req, res) => {
 
     //generate a new objectID for the invoiceID
     const invoiceID = new Types.ObjectId();
+
+    //Validate customerID
+    if(!isValidPhoneNumber(customerID)){
+        return res.status(400).json({error: 'Invalid customerID.It should be a 10-digit phone number'});
+    }
 //Create a new bill documemt in the database
     try {
         const bill = await Bill.create({
@@ -193,25 +205,61 @@ const updateBill = async(req, res) => {
 
     //Extract feilds to update from the request body
     const { customerID, invoiceDate, medicines } = req.body;
-  
-    // Update the bill in the database with the new fields
-    const bill = await Bill.findByIdAndUpdate(
-        id,
-        {
-            $set: {
-                customerID: customerID,
-                invoiceDate: invoiceDate,
-                medicines: medicines
-            }
-        },
-        { new: true }
-    );
-    //Check if the bill exists
-    if(!bill){
+
+    //Validate customerID
+    if(customerID && !isValidPhoneNumber(customerID)){
+        return res.status(400).json({error: 'Invalid customerID. It should be a 10-digit phone number'});
+    }
+
+    //Find the exisiting bill in the database
+    let exisitingBill = await Bill.findById(id);
+
+     //Check if the bill exists
+     if(!exisitingBill){
         return res.status(404).json({error: 'No such bill'});
     }
+  
+    // Update the specified fields if provided
+    if(customerID){
+        exisitingBill.customerID = customerID;
+    }   
+    if(invoiceDate){
+        exisitingBill.invoiceDate = invoiceDate;
+    }
+    
+   
+    // Add new medicine to the bill
+    if (medicines && Array.isArray(medicines) && medicines.length > 0) {
+    for (const { drugName, purchaseQuantity, unitPrice } of medicines) {
+        const existingMedicineIndex = exisitingBill.medicines.findIndex(medicine => medicine.drugName === drugName);
+        if (existingMedicineIndex !== -1) {
+            // If medicine already exists, update the purchase quantity
+            exisitingBill.medicines[existingMedicineIndex].purchaseQuantity = purchaseQuantity;
+            exisitingBill.medicines[existingMedicineIndex].calculateItemTotal = calculateItemTotal(exisitingBill.medicines[existingMedicineIndex]);
+        } else {
+            // If medicine does not exist, add it to the bill along with unit price
+            exisitingBill.medicines.push({
+                drugName,
+                purchaseQuantity,
+                unitPrice,
+                calculateItemTotal: calculateItemTotal({ drugName, purchaseQuantity, unitPrice })
+            });
+        }
+    }
+
+
+    //Recalculate subtotal for the bill
+    exisitingBill.calculateSubTotal = calculateSubTotal(exisitingBill.medicines);
+    }
+
+    //Save the updated bill
+    const updatedBill = await exisitingBill.save();
+
+     
+
     //Send the response
-    res.status(200).json(bill);
+    res.status(200).json(updatedBill);
+
 } catch (error) {
     //Handle errors
     console.error('Error updating bill:', error);

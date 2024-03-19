@@ -18,8 +18,10 @@ const billingSchema = new Schema({
         purchaseQuantity: Number,
         unitPrice: Number,
         calculateItemTotal: Number,
+    
+    }],
 
-    }]
+    calculateSubTotal: Number
    
    
 }, {timestamps: true});
