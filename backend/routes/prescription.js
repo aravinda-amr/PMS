@@ -22,4 +22,7 @@ router.post('/', createPrescription)
 //delete a prescription
 router.delete('/:id', deletePrescription)
 
+//update a prescription
+// router.patch('/:id', updatePrescription)
+
 export default router;
