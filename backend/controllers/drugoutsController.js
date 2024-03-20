@@ -1,5 +1,5 @@
 import Drug from '../models/drugModel.js';
-import MedicineName from '../models/medicineNameModel.js';
+import MedicineName from '../models/medicineModel.js';
 
 import mongoose from 'mongoose';
 
