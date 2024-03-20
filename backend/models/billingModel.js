@@ -21,7 +21,13 @@ const billingSchema = new Schema({
     
     }],
 
-    calculateSubTotal: Number
+    calculateSubTotal: Number,
+
+   discount: {
+         type: Number,
+         default: 0
+    },
+    grandTotal: Number
    
    
 }, {timestamps: true});

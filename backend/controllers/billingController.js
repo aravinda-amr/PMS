@@ -1,4 +1,4 @@
-import { parse } from 'dotenv';
+
 import Bill from '../models/billingModel.js';
 import mongoose from 'mongoose';
 const{Types} = mongoose;
@@ -19,7 +19,19 @@ const calculateSubTotal = (medicines) => {
     return subTotal.toFixed(2); // Ensure two decimal places are always displayed
 };
 
+//Function to calculate grand total for the bill
+const calculateGrandTotal = (subTotal, discount) => {
+    // Parse the discount as a number, or default to 0 if it's null
+    const parsedDiscount = discount !== null ? parseFloat(discount) : 0;
 
+    //Check if discount is a valid number
+    if(isNaN(parsedDiscount)){
+        throw new Error('Invalid discount');
+    }
+    //Subtract discount from the subtotal to get the grand total
+    const grandTotal = subTotal - discount;
+    return grandTotal.toFixed(2); // Ensure two decimal places are always displayed 
+};
 //Validate phone number (10 digits)
 const isValidPhoneNumber = (phoneNumber) => {
     return /^\d{10}$/.test(phoneNumber);
@@ -37,21 +49,29 @@ const getBills = async (req, res)=> {
         
             //constructing the response object with _id renamed to invoiceID and excluding _id from medicines
             const response = bills.map(bill => {
-                const { _id, ...billWithoutId } = bill
-                const transformedMedicines = billWithoutId.medicines.map((medicine, index) => ({
+                const {_id, customerID, invoiceDate, medicines, discount } = bill;
+
+                const transformedMedicines = medicines.map((medicine, index) => ({
                     index: index + 1, // Add auto-generated index for each medicine
                     ...medicine,
-                    calculateItemTotal: calculateItemTotal(medicine) // Calculate total cost for each medicine
+                    calculateItemTotal: calculateItemTotal(medicine)
+                }));// Calculate total cost for each medicine
                     
-                }));
-                //Calculate subtotal for the bill
-                const subTotal = calculateSubTotal(transformedMedicines);
-                    return {
-                        invoiceID: bill._id, // Rename _id to invoiceID
-                        ...billWithoutId,
+                        //Calculate subtotal for the bill
+                        const subTotal = calculateSubTotal(transformedMedicines);
+
+                        //Calculate grand total for the bill
+                        const grandTotal = calculateGrandTotal(subTotal, discount || 0);
+
+                return {
+                        invoiceID: _id, // Rename _id to invoiceID
+                        customerID,
+                        invoiceDate,
                         medicines: transformedMedicines,
-                        calculateItemTotal: calculateItemTotal,
-                        subTotal: subTotal
+                        subTotal: subTotal, // Ensure two decimal places are always displayed
+                        discount: discount || 0, //Include discount if it exists
+                        grandTotal: grandTotal 
+
                     };
                 });
                 //Remove _id from each bill in the response
@@ -63,7 +83,7 @@ const getBills = async (req, res)=> {
             console.error('Error fetching bills:', error);
             res.status(500).json({ error: 'Internal server error' });
         }
-    }
+    };
     
 //get a single bill
 const getBill = async(req, res) => {
@@ -85,13 +105,19 @@ const getBill = async(req, res) => {
         calculateItemTotal: calculateItemTotal(medicine)
      }));
     const subTotal = calculateSubTotal(medicines);
+
+    //Calculate grand total for the bill
+    const grandTotal = calculateGrandTotal(subTotal, bill.discount || 0);
+
     // Construct the response object with _id renamed to invoiceID and excluding _id from medicines
     const response ={
         invoiceID: bill._id,
         customerID: bill.customerID,
         invoiceDate: bill.invoiceDate,
         medicines: medicines,
-        subTotal: subTotal
+        subTotal: subTotal,
+        discount: bill.discount || 0, // Include discount if it exists
+        grandTotal: grandTotal
 
     };
 
@@ -108,7 +134,7 @@ const getBill = async(req, res) => {
 
 //create a new bill
 const createBill=async(req, res) => {
-    const {customerID, invoiceDate, medicines} = req.body;
+    const {customerID, invoiceDate, medicines, discount} = req.body;
 
     //generate a new objectID for the invoiceID
     const invoiceID = new Types.ObjectId();
@@ -132,6 +158,18 @@ const createBill=async(req, res) => {
 
         const subTotal = calculateSubTotal(bill.medicines);
 
+
+        //Calculate grand total for the bill
+        const grandTotal = calculateGrandTotal(subTotal, discount || 0);
+
+        //update the bill with calculated subtotal and grandtotal
+        bill.calculateSubTotal = subTotal;
+        bill.discount = discount;
+        bill.grandTotal = grandTotal;
+
+         //Save the updated bill
+         await bill.save();
+
         const response = {
             invoiceID: bill._id,
             customerID,
@@ -142,14 +180,18 @@ const createBill=async(req, res) => {
                 unitPrice: medicine.unitPrice,
                 calculateItemTotal: medicine.calculateItemTotal
             })),
-            subTotal:subTotal
+            subTotal:subTotal,
+            discount: bill.discount || 0,
+            grandTotal: grandTotal
         };
   
         //Remove _id from the response
         delete response._id;
 
+    
         //Send the response
         res.status(200).json(response);
+
     } catch (error) {
         //Handle errors
         console.error('Error creating bill:', error);
@@ -212,33 +254,33 @@ const updateBill = async(req, res) => {
     }
 
     //Find the exisiting bill in the database
-    let exisitingBill = await Bill.findById(id);
+    let existingBill = await Bill.findById(id);
 
      //Check if the bill exists
-     if(!exisitingBill){
+     if(!existingBill){
         return res.status(404).json({error: 'No such bill'});
     }
   
     // Update the specified fields if provided
     if(customerID){
-        exisitingBill.customerID = customerID;
+        existingBill.customerID = customerID;
     }   
     if(invoiceDate){
-        exisitingBill.invoiceDate = invoiceDate;
+        existingBill.invoiceDate = invoiceDate;
     }
     
    
     // Add new medicine to the bill
     if (medicines && Array.isArray(medicines) && medicines.length > 0) {
     for (const { drugName, purchaseQuantity, unitPrice } of medicines) {
-        const existingMedicineIndex = exisitingBill.medicines.findIndex(medicine => medicine.drugName === drugName);
+        const existingMedicineIndex = existingBill.medicines.findIndex(medicine => medicine.drugName === drugName);
         if (existingMedicineIndex !== -1) {
             // If medicine already exists, update the purchase quantity
-            exisitingBill.medicines[existingMedicineIndex].purchaseQuantity = purchaseQuantity;
-            exisitingBill.medicines[existingMedicineIndex].calculateItemTotal = calculateItemTotal(exisitingBill.medicines[existingMedicineIndex]);
+            existingBill.medicines[existingMedicineIndex].purchaseQuantity = purchaseQuantity;
+            existingBill.medicines[existingMedicineIndex].calculateItemTotal = calculateItemTotal(existingBill.medicines[existingMedicineIndex]);
         } else {
             // If medicine does not exist, add it to the bill along with unit price
-            exisitingBill.medicines.push({
+            existingBill.medicines.push({
                 drugName,
                 purchaseQuantity,
                 unitPrice,
@@ -246,19 +288,22 @@ const updateBill = async(req, res) => {
             });
         }
     }
+}
 
+    //update the bill with the calculated subtotal 
+    existingBill.calculateSubTotal = calculateSubTotal(existingBill.medicines);
 
-    //Recalculate subtotal for the bill
-    exisitingBill.calculateSubTotal = calculateSubTotal(exisitingBill.medicines);
-    }
+    //Retrive the discount from the existing bill
+    const discount = existingBill.discount || 0;
+
+    //Update grand total for the bill
+    existingBill.grandTotal = calculateGrandTotal(existingBill.calculateSubTotal, discount);
 
     //Save the updated bill
-    const updatedBill = await exisitingBill.save();
-
-     
+    await existingBill.save();
 
     //Send the response
-    res.status(200).json(updatedBill);
+    res.status(200).json(existingBill);
 
 } catch (error) {
     //Handle errors
