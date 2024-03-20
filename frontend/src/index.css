@@ -52,6 +52,7 @@ th {
   background-color: #f2f2f2; /* Sets a light gray background for headers */
   font-weight: bold; /* Makes column names bold */
 }
+
 .reorder-details {
   background: #fff;
   border-radius: 4px;
@@ -158,4 +159,4 @@ div.error {
  .table tr:hover {
   background-color: #ddd;
  }
- 
+}
