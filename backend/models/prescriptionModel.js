@@ -13,10 +13,12 @@ const prescriptionSchema = new Schema({
     userId: {
         type: String,
         required: true
+     
     },
     prescriptionImg: {
         type: String,
         required: true
+    
     }
 }, { timestamps: true });
 
