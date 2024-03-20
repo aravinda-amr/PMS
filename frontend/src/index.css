@@ -38,7 +38,7 @@ header a {
   grid-template-columns: 3fr 1fr;
   gap: 100px;
 }
-.workout-details {
+
 table {
   width: 100%; /* Makes the table responsive and fill available space */
   border-collapse: collapse; /* Removes borders between cells */
