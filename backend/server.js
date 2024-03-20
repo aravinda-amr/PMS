@@ -7,6 +7,7 @@ import userRoutes from './routes/user.js';
 import prescriptionRoutes from './routes/prescription.js';
 import reorderRoutes from './routes/reorder.js';
 import drugoutsRoutes from './routes/drugouts.js';
+import medicineNameRoutes from './routes/medicinenames.js';
 
 
 
@@ -52,6 +53,8 @@ app.use('/api/staffReward',staffRewardRoutes)
 /*app.use('/api/handled', handledRoutes)*/
 
 app.use('/api/drugouts',drugoutsRoutes)
+
+app.use('/api/medicinenames',medicineNameRoutes)
 
 app.use('/api/billing',billing)
 
