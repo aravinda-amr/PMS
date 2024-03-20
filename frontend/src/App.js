@@ -14,6 +14,8 @@ import Expired from './pages/Expired';
 import AboutExpire from './pages/AboutExpire';
 import OutOfStock from './pages/OutOfStock';
 
+import 'index.css';
+
 function App() {
   const { user } = useAuthContext();
 

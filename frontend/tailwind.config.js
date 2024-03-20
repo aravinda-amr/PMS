@@ -16,12 +16,22 @@ module.exports = {
 
       'login1':'#9AD59F',
       'login2':'#1E4822',
+      'login3':'#52B75B',
+
+      'background':'#E0E0E0',
+      'box':'#C2C2C2',
     },
     fontFamily: {
       jakarta: ["Plus Jakarta Sans", 'sans-serif'],
     },
-    extend: {},
+    extend: {
+      spacing: {
+        '128': '420px',
+      }
+    },
   },
-  plugins: [],
+  plugins: [
+    
+  ],
 }
 
