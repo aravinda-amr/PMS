@@ -1,27 +1,28 @@
 import express from 'express';
 
-import { 
-    createDrugout,getDrugout,getDrugouts,deleteDrugout,updateDrugout} from '../controllers/drugoutsController.js';
+import { createBatch, getAllBatches, getBatchById,
+    updateBatch,
+    deleteBatch,
+           } from '../controllers/drugoutsController.js';
 
 
 const router = express.Router();
 
 
+// Get all batches
+router.get('/batches', getAllBatches);
 
-// Import the drugout model
-router.get('/', getDrugouts)
+// Get single batch
+router.get('/batches/:id', getBatchById);
 
-// Get a single drugout
-router.get('/:id', getDrugout)
+// Post a new batch
+router.post('/batches',createBatch);
 
-// Add a new drugout
-router.post('/',createDrugout)
+// Update a batch
+router.patch('/batches/:id', updateBatch);
 
-// Update a drugout
-router.patch('/:id', updateDrugout)
-
-// Delete a drugout
-router.delete('/:id', deleteDrugout)
+// Delete a batch
+router.delete('/batches/:id', deleteBatch);
 
 export default router;
 

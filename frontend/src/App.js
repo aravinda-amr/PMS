@@ -13,10 +13,10 @@ import Expired from './pages/Expired';
 import AboutExpire from './pages/AboutExpire';
 import OutOfStock from './pages/OutOfStock';
 import Prescription from './pages/Prescription';
+import Leave from './pages/Leave'
 
 function App() {
   const { user } = useAuthContext();
-
 
   return (
     <UserContextProvider>
@@ -60,6 +60,10 @@ function App() {
             <Route
               path= "/outofstock"
               element = {<OutOfStock/>}
+            />
+             <Route
+              path='/leaves'
+              element={<Leave/>}
             />
             <Route
               path="/prescription"
