@@ -32,6 +32,7 @@ const calculateGrandTotal = (subTotal, discount) => {
     const grandTotal = subTotal - discount;
     return grandTotal.toFixed(2); // Ensure two decimal places are always displayed 
 };
+
 //Validate phone number (10 digits)
 const isValidPhoneNumber = (phoneNumber) => {
     return /^\d{10}$/.test(phoneNumber);
@@ -49,7 +50,7 @@ const getBills = async (req, res)=> {
         
             //constructing the response object with _id renamed to invoiceID and excluding _id from medicines
             const response = bills.map(bill => {
-                const {_id, customerID, invoiceDate, medicines, discount } = bill;
+                const {_id, pharmacistID,customerID, invoiceDate, medicines, discount } = bill;
 
                 const transformedMedicines = medicines.map((medicine, index) => ({
                     index: index + 1, // Add auto-generated index for each medicine
@@ -65,6 +66,7 @@ const getBills = async (req, res)=> {
 
                 return {
                         invoiceID: _id, // Rename _id to invoiceID
+                        pharmacistID,
                         customerID,
                         invoiceDate,
                         medicines: transformedMedicines,
@@ -112,6 +114,7 @@ const getBill = async(req, res) => {
     // Construct the response object with _id renamed to invoiceID and excluding _id from medicines
     const response ={
         invoiceID: bill._id,
+        pharmacistID: bill.pharmacistID,
         customerID: bill.customerID,
         invoiceDate: bill.invoiceDate,
         medicines: medicines,
@@ -134,7 +137,7 @@ const getBill = async(req, res) => {
 
 //create a new bill
 const createBill=async(req, res) => {
-    const {customerID, invoiceDate, medicines, discount} = req.body;
+    const {pharmacistID,customerID, invoiceDate, medicines, discount} = req.body;
 
     //generate a new objectID for the invoiceID
     const invoiceID = new Types.ObjectId();
@@ -147,6 +150,7 @@ const createBill=async(req, res) => {
     try {
         const bill = await Bill.create({
             _id: invoiceID,
+            pharmacistID,
             customerID, 
             invoiceDate, 
             medicines: Array.isArray(medicines) ? medicines.map((medicine, index) => ({ 
@@ -172,6 +176,7 @@ const createBill=async(req, res) => {
 
         const response = {
             invoiceID: bill._id,
+            pharmacistID,
             customerID,
             invoiceDate,
             medicines: bill.medicines.map(medicine => ({

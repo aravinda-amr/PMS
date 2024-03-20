@@ -19,6 +19,18 @@ const Navbar = () => {
                 <Link to="/loyalty">
                     <h1>Loyalty</h1>
                 </Link>
+                <Link to="/reorder">
+                    <h1>Reorder</h1>
+                </Link>
+                <Link to="/expired">
+                    <h1>Expired Drugs</h1>
+                </Link>
+                <Link to="/abtexpired">
+                    <h1>About To Expire Drugs</h1>
+                </Link>
+                <Link to="/leaves">
+                    <h1>Leaves</h1>
+                </Link>
                 <nav>
                     {user &&(
                     <div>
@@ -30,8 +42,7 @@ const Navbar = () => {
                     {!user && (
                     <div>
                         <Link to="/login">Login</Link>
-                        <Link to="/signup">Signup</Link>
-                        <Link to="/reorder">Reorder</Link>
+                        <Link to="/signup">Signup</Link>     
                     </div>
                     )}
                 </nav>
