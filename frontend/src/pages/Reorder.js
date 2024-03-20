@@ -1,7 +1,6 @@
 import React, {useEffect} from 'react'
 import {useReordersContext} from '../hooks/useReorderContext'
 
-
 //components
 import ReorderDetails from '../components/ReorderDetails'
 import ReorderForm from '../components/ReorderForm'
@@ -28,5 +27,4 @@ const Reorder = () =>{
         </div>    
     )
 }
-
 export default Reorder

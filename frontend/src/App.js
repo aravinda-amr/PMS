@@ -10,7 +10,9 @@ import Reorder from './pages/Reorder';
 import Staffrewards from './pages/Staffrewards';
 import PrescriptionUpload from './components/PrescriptionUpload';
 import Loyalty from './pages/Loyalty';
-
+import Expired from './pages/Expired';
+import AboutExpire from './pages/AboutExpire';
+import OutOfStock from './pages/OutOfStock';
 
 function App() {
   const { user } = useAuthContext();
@@ -50,6 +52,18 @@ function App() {
             <Route
               path='/prescriptions'
               element={<PrescriptionUpload />}
+            />
+            <Route
+              path= "/expired"
+              element = {<Expired/>}
+            />
+            <Route
+              path= "/abtexpired"
+              element = {<AboutExpire/>}
+            />
+              <Route
+              path= "/outofstock"
+              element = {<OutOfStock/>}
             />
           </Routes>
         </div>
