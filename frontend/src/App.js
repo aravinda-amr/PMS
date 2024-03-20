@@ -15,7 +15,6 @@ import OutOfStock from './pages/OutOfStock';
 import Prescription from './pages/Prescription';
 import Leave from './pages/Leave'
 
-import 'index.css';
 
 function App() {
   const { user } = useAuthContext();
