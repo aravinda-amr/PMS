@@ -13,6 +13,7 @@ import Loyalty from './pages/Loyalty';
 import Expired from './pages/Expired';
 import AboutExpire from './pages/AboutExpire';
 import OutOfStock from './pages/OutOfStock';
+import AboutToOutOfStock from './pages/AboutToOutOfStocks.js';
 
 function App() {
   const { user } = useAuthContext();
@@ -61,9 +62,13 @@ function App() {
               path= "/abtexpired"
               element = {<AboutExpire/>}
             />
-              <Route
+            <Route
               path= "/outofstock"
               element = {<OutOfStock/>}
+            />
+            <Route
+              path= "/abtoutofstock"
+              element = {<AboutToOutOfStock/>}
             />
           </Routes>
         </div>

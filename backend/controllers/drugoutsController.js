@@ -9,8 +9,6 @@ const getDrugouts = async (req, res) => {
         res.status(200).json(drugouts);
 }
 
-
-
 //get a single drugout
 const getDrugout = async (req, res) => {
     const {id} = req.params;
@@ -27,8 +25,6 @@ const getDrugout = async (req, res) => {
 
     res.status(200).json(drugout);
 }
-
-
 
 //create a drugout
 const createDrugout = async (req, res) => {
