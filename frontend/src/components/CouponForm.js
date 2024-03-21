@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const AddCouponForm = ({id, onCouponAdded}) => {
+const AddCouponForm = ({id}) => {
  const [expire, setExpire] = useState('');
  const [discount, setDiscount] = useState('');
 
@@ -16,57 +16,51 @@ const AddCouponForm = ({id, onCouponAdded}) => {
  };
 
  const handleSubmit = async (e) => {
-  e.preventDefault();
-  const couponCode = generateCouponCode(); // Generate a unique coupon code
-  const couponData = { expire, discount, couponCode }; // Include the coupon code in the data
+    e.preventDefault();
+    const couponCode = generateCouponCode(); // Generate a unique coupon code
+    const couponData = { expire, discount, couponCode }; // Include the coupon code in the data
+    
 
-  try {
+    try {
       const response = await fetch(`/api/user/${id}/coupons`, {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(couponData),
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(couponData),
       });
 
       if (!response.ok) {
-          throw new Error('Failed to add coupon');
+        throw new Error('Failed to add coupon');
       }
 
       // Optionally, clear the form or show a success message
       setExpire('');
       setDiscount('');
-
-      // Call the onCouponAdded callback to fetch the updated list of coupons
-      if (onCouponAdded) {
-          onCouponAdded();
-      }
-  } catch (error) {
+    } catch (error) {
       console.error('Error adding coupon:', error);
-  }
-};
+    }
+ };
 
  return (
-    <form className="coupon-form" onSubmit={handleSubmit}>
-      <label className="label-form">
+    <form onSubmit={handleSubmit}>
+      <label>
         Expiry:
         <input
           type="date"
           value={expire}
-          required
           onChange={(e) => setExpire(e.target.value)}
         />
       </label>
-      <label className="label-form">
+      <label>
         Discount:
         <input
           type="number"
           value={discount}
-          required
           onChange={(e) => setDiscount(Number(e.target.value))}
         />
       </label>
-      <button className="delete-form" type="submit">Add Coupon</button>
+      <button type="submit">Add Coupon</button>
     </form>
  );
 };
