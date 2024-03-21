@@ -29,7 +29,7 @@ const calculateInvoiceHandledData = async () => {
             }
         ]);
 
-        console.log("Monthly total invoice amount handled by each pharmacist:", result);
+     
         return result;
     } catch (error) {
         console.error("Error calculating monthly total invoice amount:", error);
@@ -73,7 +73,7 @@ export const createStaffReward = async (data) => {
                 existingReward.invoiceCount = item.invoiceCount.toString();
                 existingReward.totalCashAmount = item.totalCashAmount.toString();
                 await existingReward.save();
-                console.log(`Data updated for pharmacist ${item.pharmacistID} for month ${item.month}, year ${item.year}`);
+               // console.log(`Data updated for pharmacist ${item.pharmacistID} for month ${item.month}, year ${item.year}`);
             } else {
                 // Insert new document
                 const staffReward = new StaffReward({
@@ -84,10 +84,10 @@ export const createStaffReward = async (data) => {
                     totalCashAmount: item.totalCashAmount.toString() // Convert to string as per schema
                 });
                 await staffReward.save();
-                console.log(`New data added for pharmacist ${item.pharmacistID} for month ${item.month}, year ${item.year}`);
+              //  console.log(`New data added for pharmacist ${item.pharmacistID} for month ${item.month}, year ${item.year}`);
             }
         }
-        console.log("Data updated/inserted into staffReward collection.");
+       // console.log("Data updated/inserted into staffReward collection.");
     } catch (error) {
         console.error("Error updating/inserting data into staffReward collection:", error);
     }
