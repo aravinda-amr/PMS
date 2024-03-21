@@ -7,7 +7,7 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Navbar from './components/Navbar';
 import Reorder from './pages/Reorder';
-import PrescriptionUpload from './components/PrescriptionUpload';
+
 import Loyalty from './pages/Loyalty';
 import Expired from './pages/Expired';
 import AboutExpire from './pages/AboutExpire';
