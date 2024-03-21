@@ -55,7 +55,7 @@ return (
         value={expire}
         required
         onChange={(e) => setExpire(e.target.value)}
-        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-button focus:ring focus:ring-blue-button focus:ring-opacity-50"
+        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-button focus:ring focus:ring-blue-button focus:ring-opacity-50 text-blue"
       />
     </label>
     <label className="label-form block text-sm font-medium text-white">
@@ -65,7 +65,7 @@ return (
         value={discount}
         required
         onChange={(e) => setDiscount(Number(e.target.value))}
-        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-button focus:ring focus:ring-blue-button focus:ring-opacity-50 text-black"
+        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-button focus:ring focus:ring-blue-button focus:ring-opacity-50 text-blue"
       />
     </label>
     <button className="delete-form bg-login1 hover:bg-login2 text-white font-semibold py-2 px-4 rounded mt-4" type="submit">Add Coupon</button>
