@@ -36,7 +36,7 @@ const Navbar = () => {
         <Link to="/inventory">
             <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
                 <RemoveCircleIcon/>
-                <h1 className='ps-1 my-auto'>Inventory Bitchesss!!!!</h1>
+                <h1 className='ps-1 my-auto'>Inventory</h1>
             </div>
         </Link>
         <Link to="/loyalty">
