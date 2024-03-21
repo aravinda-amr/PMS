@@ -3,7 +3,8 @@ import mongoose from 'mongoose';
 
 //get all prescriptions
 const getPrescriptions = async (req, res) => {
-    const prescriptions = await Prescriptions.find({}).sort({createdAt: -1});
+    const user_id = req.user._id;
+    const prescriptions = await Prescriptions.find({ user_id }).sort({createdAt: -1});
 
     res.status(200).json(prescriptions);
 }

@@ -33,11 +33,11 @@ const PrescriptionDetails = ({ prescription }) => {
             <p>{prescription.substitutes}</p>
 
             <h3>Prescription Image</h3>
-            <img src={prescription.prescriptionImg} alt="prescription" />
+            {/* <img src={prescription.prescriptionImg} alt="prescription" /> */}
 
-            <h3>Created At</h3>
+            {/* <h3>Created At</h3>
             <p>{prescription.createdAt}</p>
-            <p>{formatDistanceToNow(new Date(prescription.createdAt), {addSuffix : true})}</p>
+            <p>{formatDistanceToNow(new Date(prescription.createdAt), {addSuffix : true})}</p> */}
 
             <button onClick={handleClick}>Delete</button>
             <button onClick={handleUpdate}>Update</button>
