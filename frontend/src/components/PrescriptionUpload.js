@@ -56,8 +56,8 @@ const PrescriptionUpload = () => {
     }
 
     return (
-        <form>
-            <h3>Add a New Prescription</h3>
+        <form className="flex flex-col h-screen items-center">
+            <h3 className='text-center pb-4 pt-8 font-semibold text-xl'>Add a New Prescription</h3>
 
             <label>Add a Note</label><br/>
             <textarea
