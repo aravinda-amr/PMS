@@ -158,4 +158,103 @@ div.error {
  .table tr:hover {
   background-color: #ddd;
  }
+}
+
+/* Styling for workout-details-1 div */
+.workout-details-1 {
+  background-color: #fff; /* Sets a white background for the div */
+  border-radius: 4px; /* Rounds the corners of the div */
+  margin: 20px auto; /* Centers the div and adds margin around it */
+  padding: 20px; /* Adds padding inside the div */
+  box-shadow: 2px 2px 5px rgba(0,0,0,0.05); /* Adds a subtle shadow for depth */
+  max-width: 1400px; /* Sets a maximum width for the div */
+  font-family: "Poppins"; /* Uses the Poppins font for text inside the div */
+ }
  
+ /* Ensuring the buttons inside the div are styled consistently */
+ .workout-details-1 .btn {
+  background: var(--primary);
+  border: 0;
+  color: #fff;
+  padding: 10px;
+  margin-left: 10px;
+  font-family: "Poppins";
+  border-radius: 4px;
+  cursor: pointer;
+ }
+ 
+ .workout-details-1 .btn:hover {
+  background-color: #45a049;
+  color: white;
+ }
+ 
+
+ /* AddCouponForm.module.css */
+
+.coupon-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 400px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #f5f5f5;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+ }
+ 
+ .label-form {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+ }
+ 
+ .label-form label {
+  margin-bottom: 5px;
+ }
+ 
+ .label-form input {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  width: 100%;
+ }
+ 
+ .delete-form {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: #dc3545;
+  color: white;
+  transition: background-color 0.3s ease;
+ }
+ 
+ .delete-form:hover {
+  background-color: #c82333;
+ }
+ 
+
+ .coupon-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  font-family: Arial, sans-serif;
+ }
+ 
+ .coupon-table-thead {
+  background-color: #1aac83;
+  color: white;
+ }
+ 
+ .coupon-table-th {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+ }
+ 
+.coupon-table-tr:nth-child(even) {
+  background-color: #f2f2f2;
+ }
