@@ -20,6 +20,8 @@ module.exports = {
 
       'background':'#E0E0E0',
       'box':'#C2C2C2',
+
+       
     },
     fontFamily: {
       jakarta: ["Plus Jakarta Sans", 'sans-serif'],
@@ -27,7 +29,10 @@ module.exports = {
     extend: {
       spacing: {
         '128': '420px',
-      }
+      },
+      width: {
+        'custom': '32rem',
+      },
     },
   },
   plugins: [

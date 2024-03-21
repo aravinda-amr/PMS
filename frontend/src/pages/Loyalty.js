@@ -29,29 +29,32 @@ const Loyalty = () => {
       }, [searchTerm, user]);
       
 
-    return (
-        <div className="home">
-            <div>
-                <h1>Loyalty</h1>
+      return (
+        <div className="flex flex-col h-screen items-center">
+            <div className="bg-blue-500 text-blue p-4">
+                <h1 className="bg-blue-500 text-blue p-2">Loyalty Program</h1>
                 <div>
-                    <h4>Total amount of purchases users within last 6 months</h4>
-                    <div className="search-bar">
+                    <h4 className="bg-blue-500 text-blue p-2">Total amount of purchases users within last 6 months</h4>
+                    <div className="search-bar text-blue p-2">
                         <input 
                             type="text"
                             placeholder="Search users..."
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
+                            className="text-blue" // Change text color inside search bar
                         />
                     </div>
-                    <div className="workouts">
-                        {filteredUsers && filteredUsers.map((user) => ( // Add conditional check
+                    <div className="workouts flex flex-col gap-4"> {/* Add gap between UserDetails items */}
+                        {filteredUsers && filteredUsers.map((user) => (
                             <UserDetails key={user._id} user={user} />
                         ))}
                     </div>
+                    
                 </div>
             </div>
         </div>
     );
+    
 }
 
 export default Loyalty;

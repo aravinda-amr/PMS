@@ -101,16 +101,29 @@ const UserDetails = ({ user }) => {
 
 
     return (
-        <div className="workout-details-1">
-            <h4>{user.name}</h4>
-            <p>Total Amount: Rs.{totalAmount}</p> {/* Display total amount */}
-            <div className="btn-container">
-                <button className="btn" onClick={handleViewButtonClick}>View Coupons</button>
-                <button className="btn" onClick={handleAddCouponClick}>Add Coupon</button>
-            </div>
-            {showCouponTable && <CouponTable coupons={coupons} onDeleteCoupon={handleDeleteCoupon} onEditCoupon={handleEditCoupon}/>}
-            {showCouponForm && <CouponForm id={user._id} onCouponAdded={fetchCoupons}/>}
+        <div className="flex">
+    <div className="bg-dark-blue text-white p-6">
+        <h4 className="text-lg font-semibold">{user.name}</h4>
+        <p className="mt-2">Total Amount: Rs.{totalAmount}</p>
+        <p className="mt-2">Contact: {user.contact}</p>
+        <div className="mt-4 flex justify-between">
+            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={handleViewButtonClick}>View Coupons</button>
+            <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" onClick={handleAddCouponClick}>Add Coupon</button>
         </div>
+        
+        
+    </div>
+    <div className="ml-4">
+            {showCouponTable && <CouponTable coupons={coupons} onDeleteCoupon={handleDeleteCoupon} onEditCoupon={handleEditCoupon}/>}
+        </div>
+    {showCouponForm && (
+        <div className="ml-4"> {/* Adjust the margin as needed */}
+            <CouponForm id={user._id} onCouponAdded={fetchCoupons}/>
+        </div>
+    )}
+</div>
+
+
     );
 };
 
