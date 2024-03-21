@@ -1,6 +1,7 @@
 
 import mongoose from 'mongoose';
 
+
 const Schema = mongoose.Schema;
 
 const billingSchema = new Schema({
@@ -36,6 +37,7 @@ const billingSchema = new Schema({
    
    
 }, {timestamps: true});
+
 
 
 export default mongoose.model('Bill', billingSchema)

@@ -28,6 +28,9 @@ const Navbar = () => {
                 <Link to="/abtexpired">
                     <h1>About To Expire Drugs</h1>
                 </Link>
+                <Link to="/staffReward">
+                    <h1>Handled order Details</h1>
+                </Link>
                 <nav>
                     {user &&(
                     <div>
