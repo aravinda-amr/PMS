@@ -13,7 +13,8 @@ import Expired from './pages/Expired';
 import AboutExpire from './pages/AboutExpire';
 import OutOfStock from './pages/OutOfStock';
 import Prescription from './pages/Prescription';
-import Leave from './pages/Leave'
+import Leave from './pages/Leave';
+import Inventory from './pages/Inventory';
 
 
 function App() {
@@ -42,10 +43,10 @@ function App() {
               path="/reorder"
               element={<Reorder/>}
             />
-             <Route 
-              path="/Staffrewards"
+             {/* <Route 
+             path="/Staffrewards"
               element={<Staffrewards />}
-            />
+            /> */}
             <Route 
               path="/loyalty"
               element={<Loyalty />}
@@ -69,6 +70,11 @@ function App() {
             <Route
               path="/prescription"
               element={<Prescription/>}
+            />
+            
+            <Route
+                path="/inventory"
+                element={<Inventory/>}
             />
           </Routes>
         </div>
