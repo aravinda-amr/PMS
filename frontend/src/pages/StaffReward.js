@@ -18,7 +18,7 @@ export const StaffReward =() => {
         fetchReward();
     }, [])
     return(
-        <div className="reward">
+        <div className="ml-64 reward">
            <div className="reward_form">
              {staff && staff.map ((staffreward) => (
                 <StaffRewardDetails key={staffreward._id} staffreward = {staffreward}/>))}
