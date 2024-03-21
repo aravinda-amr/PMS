@@ -75,6 +75,18 @@ const Navbar = () => {
                 <h1 className='ps-1 my-auto'>Handled order Details</h1>
             </div>
         </Link>
+        <Link to="/outofstock">
+            <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
+                <MedicationOutlinedIcon/>
+                <h1 className='ps-1 my-auto'>OutOfStock</h1>
+            </div>
+        </Link>
+        <Link to="/abtoutofstock">
+            <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
+                <MedicationOutlinedIcon/>
+                <h1 className='ps-1 my-auto'>AboutToOutOfStock</h1>
+            </div>
+        </Link>
     </div>
     
 </div>

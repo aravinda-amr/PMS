@@ -15,7 +15,7 @@ export const Expired =() => {
         fetchExpired();
     }, [])
     return(
-        <div className="expired">
+        <div className="ml-64">
            <div className="expired_form">
              {expired && expired.map ((expire) => (
                 <ExpiredDetials key={expire._id} expire={expire}/> 
