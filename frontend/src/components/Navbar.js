@@ -1,3 +1,4 @@
+import React, {useState} from 'react';
 import { Link } from 'react-router-dom';
 import { useLogout } from '../hooks/useLogout';
 import { useAuthContext } from '../hooks/useAuthContext';
@@ -8,14 +9,21 @@ import LoyaltyIcon from '@mui/icons-material/Loyalty';
 import ReorderIcon from '@mui/icons-material/Reorder';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
-
+import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
+import SalesHistoryIcon from '@mui/icons-material/History';
+import NewSaleIcon from '@mui/icons-material/AddShoppingCart';
 
 const Navbar = () => {
     const { logout } = useLogout();
     const { user } = useAuthContext();
+    const [showPosMenu, setShowPosMenu] = useState(false);
 
     const handleClick = () => {
         logout();
+    }
+
+    const togglePosMenu = () => {
+        setShowPosMenu(!showPosMenu);
     }
 
     return (
@@ -57,10 +65,27 @@ const Navbar = () => {
                 <h1 className='ps-1 my-auto'>About To Expire Drugs</h1>
             </div>
         </Link>
-    </div>
-    
-</div>
-
+        
+        <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
+                        <PointOfSaleIcon onClick={togglePosMenu}  />
+                        <div className='ml-2 flex flex-col' style={{ marginTop: '2px'}}>
+                            <h1 className='my-auto'>POS</h1>
+                            {showPosMenu && (
+                                <React.Fragment>
+                                    <Link to="/new-sale" className='my-auto'>
+                                        <NewSaleIcon style={{ marginRight: '10px'}}/>
+                                        New Sale
+                                    </Link>
+                                    <Link to="/billing" className='my-auto'>
+                                        <SalesHistoryIcon style={{ marginRight: '10px'}} />
+                                        Sales History
+                                    </Link>
+                                </React.Fragment>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            </div>
 
 <nav className="flex justify-end bg-dark-blue-2 h-10 items-end text-sm">
     {user &&(
