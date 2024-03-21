@@ -14,7 +14,8 @@ import AboutExpire from './pages/AboutExpire';
 import OutOfStock from './pages/OutOfStock';
 import AboutToOutOfStock from './pages/AboutToOutOfStocks.js';
 import Prescription from './pages/Prescription';
-import Leave from './pages/Leave'
+import Leave from './pages/Leave';
+import Inventory from './pages/Inventory';
 
 import StaffReward from './pages/StaffReward';
 
@@ -76,6 +77,11 @@ function App() {
             <Route
               path="/prescription"
               element={<Prescription/>}
+            />
+            
+            <Route
+                path="/inventory"
+                element={<Inventory/>}
             />
           </Routes>
         </div>

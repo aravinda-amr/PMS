@@ -17,7 +17,7 @@ const Reorder = () =>{
         fetchReorder();
     }, [dispatch])
     return(
-        <div className="reorder">
+        <div className="ml-64">
            <div className="reorders_form">
              {reorders && reorders.map ((reorder) => ( //if workouts is not null, map through the workouts
                 <ReorderDetails key={reorder._id} reorder={reorder}/> //passing the workout as a prop to the WorkoutDetails component
