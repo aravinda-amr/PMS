@@ -7,17 +7,19 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Navbar from './components/Navbar';
 import Reorder from './pages/Reorder';
-import Staffrewards from './pages/Staffrewards';
-import PrescriptionUpload from './components/PrescriptionUpload';
+
 import Loyalty from './pages/Loyalty';
 import Expired from './pages/Expired';
 import AboutExpire from './pages/AboutExpire';
 import OutOfStock from './pages/OutOfStock';
 import AboutToOutOfStock from './pages/AboutToOutOfStocks.js';
+import Prescription from './pages/Prescription';
+import Leave from './pages/Leave'
+
+import StaffReward from './pages/StaffReward';
 
 function App() {
   const { user } = useAuthContext();
-
 
   return (
     <UserContextProvider>
@@ -42,17 +44,9 @@ function App() {
               path="/reorder"
               element={<Reorder/>}
             />
-             <Route 
-              path="/Staffrewards"
-              element={<Staffrewards />}
-            />
             <Route 
               path="/loyalty"
               element={<Loyalty />}
-            />
-            <Route
-              path='/prescriptions'
-              element={<PrescriptionUpload />}
             />
             <Route
               path= "/expired"
@@ -69,6 +63,19 @@ function App() {
             <Route
               path= "/abtoutofstock"
               element = {<AboutToOutOfStock/>}
+            />
+             <Route
+              path= "/staffReward"
+              element = {<StaffReward/>}
+            />
+
+             <Route
+              path='/leaves'
+              element={<Leave/>}
+            />
+            <Route
+              path="/prescription"
+              element={<Prescription/>}
             />
           </Routes>
         </div>

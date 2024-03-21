@@ -9,7 +9,11 @@ const Schema = mongoose.Schema;
 const couponSchema = new Schema({
     expire: String,
     discount: Number,
-    couponCode: String
+    couponCode: String,
+    used: {
+        type: Boolean,
+        default: false
+    }
    });
 
 const userSchema = new Schema({

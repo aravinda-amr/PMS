@@ -1,9 +1,15 @@
 
 import mongoose from 'mongoose';
 
+
 const Schema = mongoose.Schema;
 
 const billingSchema = new Schema({
+
+    pharmacistID: {
+        type: String,
+        required: true
+    },
     
     customerID: {
         type: String,
@@ -21,10 +27,17 @@ const billingSchema = new Schema({
     
     }],
 
-    calculateSubTotal: Number
+    calculateSubTotal: Number,
+
+   discount: {
+         type: Number,
+         default: 0
+    },
+    grandTotal: Number
    
    
 }, {timestamps: true});
+
 
 
 export default mongoose.model('Bill', billingSchema)

@@ -14,8 +14,10 @@ const Signup = () => {
         await signup(email, password, name, contact);
     }
 
+    document.body.style.backgroundColor = "#E0E0E0";
+
     return (
-        <form className="signup" onSubmit={handleSubmit}>
+        <form className="signup ml-64" onSubmit={handleSubmit}>
             <h3>Signup</h3>
 
             <label>Name</label>

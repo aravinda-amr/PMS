@@ -6,8 +6,9 @@ const Schema = mongoose.Schema// create schema
 const drugSchema = new Schema({
 
     drugName :{
-        type:String,
-        required:true
+        type: Schema.Types.ObjectId,
+        ref: 'MedicineName', // Reference to the Workout model
+        required: true
     },
     batchNumber:{   
         type:String,
@@ -29,7 +30,7 @@ const drugSchema = new Schema({
         type:Number,
         required:true
 
-    },
+    }
 
 },{timestamps:true})// add timestamps
 
