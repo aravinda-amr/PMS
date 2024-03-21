@@ -23,28 +23,29 @@ const Loyalty = () => {
     useEffect(() => {
         // Filter users based on search term whenever searchTerm changes
         const filtered = user?.filter(user =>
-          user.name.toLowerCase().includes(searchTerm.toLowerCase())
+          user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          user.contact.includes(searchTerm)
         );
         setFilteredUsers(filtered);
       }, [searchTerm, user]);
       
 
       return (
-        <div className="flex flex-col h-screen items-center">
-            <div className="bg-blue-500 text-blue p-4">
-                <h1 className="bg-blue-500 text-blue p-2">Loyalty Program</h1>
+        <div className="ml-64">
+            <div className="bg-blue-500 text-blue p-6">
+                <h1 className="text-blue p-2">Loyalty Program</h1>
                 <div>
-                    <h4 className="bg-blue-500 text-blue p-2">Total amount of purchases users within last 6 months</h4>
+                    <h4 className="bg-blue-500 text-blue p-2">Total amount of users' purchases within last 6 months</h4>
                     <div className="search-bar text-blue p-2">
                         <input 
                             type="text"
                             placeholder="Search users..."
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
-                            className="text-blue" // Change text color inside search bar
+                            className="text-blue border border-gray-300 p-2 w-full md:w-auto" // Change text color inside search bar
                         />
                     </div>
-                    <div className="workouts flex flex-col gap-4"> {/* Add gap between UserDetails items */}
+                    <div className="workouts flex flex-col gap-4 p-2"> {/* Add gap between UserDetails items */}
                         {filteredUsers && filteredUsers.map((user) => (
                             <UserDetails key={user._id} user={user} />
                         ))}

@@ -1,12 +1,15 @@
-const StaffRewardDetails = ({staffReward}) => {
-    return (
-        <div className="staffReward-Details">
-            <h4>{staffReward.pharmacistID}</h4>
-            <p><strong>Invoice ID :</strong>{staffReward.pharmacistID}</p>
-            <p><strong>Grand Total :</strong>{staffReward.grandTotal}</p>
-            <p>{staffReward.createdAt}</p>
+const StaffRewardDetails = ({staffreward}) => {
+    return(
+        <div className="staffReward-details">
+            <p><strong>Pharmacist ID :</strong>{staffreward.pharmacistID}</p>
+            <p><strong>Month :</strong>{staffreward.month}</p>
+            <p><strong>Year :</strong>{staffreward.year}</p>
+            <p><strong>Invoice Count :</strong>{staffreward.invoiceCount}</p>
+            <p><strong>Total Cash Amount :</strong>{staffreward.totalCashAmount}</p>
+
         </div>
     )
+
 }
 
-export default StaffRewardDetails;
+export default StaffRewardDetails

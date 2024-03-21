@@ -9,56 +9,56 @@ const UserDetails = ({ user }) => {
     const [totalAmount, setTotalAmount] = useState(0); // State to store total amount
 
     useEffect(() => {
-      const fetchTotalAmount = async () => {
-          try {
-              const response = await fetch(`/api/user/totalAmount/${user.contact}`);
-              const data = await response.json();
-              // Assuming the API returns an array of objects, extract the totalAmount from the first object
-              if (data.length > 0) {
-                  setTotalAmount(data[0].totalAmount);
-                  
-              } else {
-                  console.log('No data found');
-              }
-          } catch (error) {
-              console.error('Error fetching total amount:', error);
-          }
-      };
-  
-      fetchTotalAmount();
-  }, [user.contact]); // Depend on user.contact to refetch if it changes
-  
+        const fetchTotalAmount = async () => {
+            try {
+                const response = await fetch(`/api/user/totalAmount/${user.contact}`);
+                const data = await response.json();
+                // Assuming the API returns an array of objects, extract the totalAmount from the first object
+                if (data.length > 0) {
+                    setTotalAmount(data[0].totalAmount);
 
-   /* const handleViewButtonClick = async () => {
-        setShowCouponTable(!showCouponTable);
-        if (!showCouponTable) return;
+                } else {
+                    console.log('No data found');
+                }
+            } catch (error) {
+                console.error('Error fetching total amount:', error);
+            }
+        };
 
-        const response = await fetch(`/api/user/${user._id}/coupons`);
-        const coupons = await response.json();
-        setCoupons(coupons);
-    };
-*/
+        fetchTotalAmount();
+    }, [user.contact]); // Depend on user.contact to refetch if it changes
+
+
+    /* const handleViewButtonClick = async () => {
+         setShowCouponTable(!showCouponTable);
+         if (!showCouponTable) return;
+ 
+         const response = await fetch(`/api/user/${user._id}/coupons`);
+         const coupons = await response.json();
+         setCoupons(coupons);
+     };
+ */
     const handleAddCouponClick = () => {
         setShowCouponForm(!showCouponForm);
-        
+
     };
 
     const fetchCoupons = async () => {
-      try {
-          const response = await fetch(`/api/user/${user._id}/coupons`);
-          const coupons = await response.json();
-          setCoupons(coupons);
-      } catch (error) {
-          console.error('Error fetching coupons:', error);
-      }
-  };
+        try {
+            const response = await fetch(`/api/user/${user._id}/coupons`);
+            const coupons = await response.json();
+            setCoupons(coupons);
+        } catch (error) {
+            console.error('Error fetching coupons:', error);
+        }
+    };
 
-  const handleViewButtonClick = async () => {
-      setShowCouponTable(!showCouponTable);
-      if (!showCouponTable) {
-          await fetchCoupons(); // Fetch coupons when view button is clicked
-      }
-  };
+    const handleViewButtonClick = async () => {
+        setShowCouponTable(!showCouponTable);
+        if (!showCouponTable) {
+            await fetchCoupons(); // Fetch coupons when view button is clicked
+        }
+    };
 
     const handleDeleteCoupon = async (couponId) => {
         try {
@@ -102,26 +102,26 @@ const UserDetails = ({ user }) => {
 
     return (
         <div className="flex">
-    <div className="bg-dark-blue text-white p-6">
-        <h4 className="text-lg font-semibold">{user.name}</h4>
-        <p className="mt-2">Total Amount: Rs.{totalAmount}</p>
-        <p className="mt-2">Contact: {user.contact}</p>
-        <div className="mt-4 flex justify-between">
-            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={handleViewButtonClick}>View Coupons</button>
-            <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" onClick={handleAddCouponClick}>Add Coupon</button>
+            <div className="bg-dark-blue text-white p-6">
+                <h4 className="text-lg font-semibold">{user.name}</h4>
+                <p className="mt-2">Total Amount: Rs.{totalAmount}</p>
+                <p className="mt-2">Contact: {user.contact}</p>
+                <div className="mt-4 flex justify-between">
+                    <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={handleViewButtonClick}>View Coupons</button>
+                    <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" onClick={handleAddCouponClick}>Add Coupon</button>
+                </div>
+
+
+            </div>
+            <div className="ml-4">
+                {showCouponTable && <CouponTable coupons={coupons} onDeleteCoupon={handleDeleteCoupon} onEditCoupon={handleEditCoupon} />}
+            </div>
+            {showCouponForm && (
+                <div className="ml-4"> {/* Adjust the margin as needed */}
+                    <CouponForm id={user._id} onCouponAdded={fetchCoupons} />
+                </div>
+            )}
         </div>
-        
-        
-    </div>
-    <div className="ml-4">
-            {showCouponTable && <CouponTable coupons={coupons} onDeleteCoupon={handleDeleteCoupon} onEditCoupon={handleEditCoupon}/>}
-        </div>
-    {showCouponForm && (
-        <div className="ml-4"> {/* Adjust the margin as needed */}
-            <CouponForm id={user._id} onCouponAdded={fetchCoupons}/>
-        </div>
-    )}
-</div>
 
 
     );
