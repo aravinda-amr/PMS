@@ -8,13 +8,16 @@ import Signup from './pages/Signup';
 import Navbar from './components/Navbar';
 import Reorder from './pages/Reorder';
 import Staffrewards from './pages/Staffrewards';
-import PrescriptionUpload from './components/PrescriptionUpload';
 import Loyalty from './pages/Loyalty';
+import Expired from './pages/Expired';
+import AboutExpire from './pages/AboutExpire';
+import OutOfStock from './pages/OutOfStock';
+import Prescription from './pages/Prescription';
+import Leave from './pages/Leave'
 
 
 function App() {
   const { user } = useAuthContext();
-
 
   return (
     <UserContextProvider>
@@ -48,8 +51,24 @@ function App() {
               element={<Loyalty />}
             />
             <Route
-              path='/prescriptions'
-              element={<PrescriptionUpload />}
+              path= "/expired"
+              element = {<Expired/>}
+            />
+            <Route
+              path= "/abtexpired"
+              element = {<AboutExpire/>}
+            />
+            <Route
+              path= "/outofstock"
+              element = {<OutOfStock/>}
+            />
+             <Route
+              path='/leaves'
+              element={<Leave/>}
+            />
+            <Route
+              path="/prescription"
+              element={<Prescription/>}
             />
           </Routes>
         </div>

@@ -10,8 +10,6 @@ export const getReorders = async (req, res)=>{
     res.status(200).json(reorders);
 }
 
-
-
 //get a single reorder
 export const getReorder = async (req, res)=>{
     const {id} = req.params //get the id from the request parameters we use this if we need to get a single information from the database
@@ -27,17 +25,17 @@ export const getReorder = async (req, res)=>{
     }
     res.status(200).json(reorder);
 }
-
+ 
 //create a new Reorder
 export const createReorder = async (req, res) => {
     const { supplierEmail, batchNumber, reorderLevel } = req.body;
 
     try {
-        const drug = await Drug.findOne({batchNumber}); 
+        const drug = await Drug.findOne({batchNumber}); //
         if (!drug) {
             return res.status(404).json({ error: 'Drug not found' });
         }
-
+  
         // Create the reorder document with the fetched quantity
         const reorder = await Reorder.create({
             supplierEmail,
@@ -51,17 +49,6 @@ export const createReorder = async (req, res) => {
     }
 };
 
-// export const createReorder = async (req, res)=>{
-//     const { supplierEmail,  drugID, reorderLevel} = req.body;
-//     //add doc to the collection
-//     try{
-//         const reorder = await Reorder.create({ supplierEmail,  drugID, reorderLevel, quantity})//create a document in the collection and save it to the database
-//         res.status(200).json(reorder);
-//     }catch(error){
-//         res.status(400).json({error: error.message})
-//     }
-//   //  res.json({mssg: 'reorder created'})
-// }
 
 //delete a reorder
 export const deleteReorder = async (req, res)=>{
@@ -71,7 +58,7 @@ export const deleteReorder = async (req, res)=>{
         return res.status(404).json({msg: `No Reorder with id: ${id}`})//if the id is not a valid mongoose id, return a 404 status code and a message
     }
 
-    const reorder = await Reorder.findByIdAndUpdate(
+    const reorder = await Reorder.findByIdAndDelete(
         {_id: id}, req.body, {new: true}
         )
     if (!reorder){

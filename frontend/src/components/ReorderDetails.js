@@ -24,7 +24,7 @@ const ReorderDetials = ({reorder})=>{
       }
 
     return (
-   <div className="reorder-details">
+   <div className="workout-details">
             
 <table>
   <tr>
