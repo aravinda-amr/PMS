@@ -10,7 +10,6 @@ import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import MedicationOutlinedIcon from '@mui/icons-material/MedicationOutlined';
 
-
 const Navbar = () => {
     const { logout } = useLogout();
     const { user } = useAuthContext();
@@ -92,6 +91,41 @@ const Navbar = () => {
 
 
 
+            <div className="container">
+                <Link to="/">
+                    <h1>Home</h1>
+                </Link>
+                <Link to="/loyalty">
+                    <h1>Loyalty</h1>
+                </Link>
+                <Link to="/reorder">
+                    <h1>Reorder</h1>
+                </Link>
+                <Link to="/expired">
+                    <h1>Expired Drugs</h1>
+                </Link>
+                <Link to="/abtexpired">
+                    <h1>About To Expire Drugs</h1>
+                </Link>
+                <Link to="/staffReward">
+                    <h1>Handled order Details</h1>
+                </Link>
+                <nav>
+                    {user &&(
+                    <div>
+                        <span>{user.email}</span>
+                        <button onClick={handleClick}>Logout</button>
+                    </div>
+                    )}
+                    
+                    {!user && (
+                    <div>
+                        <Link to="/login">Login</Link>
+                        <Link to="/signup">Signup</Link>     
+                    </div>
+                    )}
+                </nav>
+            </div>
         </header>
     )
 }

@@ -7,6 +7,7 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Navbar from './components/Navbar';
 import Reorder from './pages/Reorder';
+import PrescriptionUpload from './components/PrescriptionUpload';
 import Loyalty from './pages/Loyalty';
 import Expired from './pages/Expired';
 import AboutExpire from './pages/AboutExpire';
@@ -14,6 +15,7 @@ import OutOfStock from './pages/OutOfStock';
 import Prescription from './pages/Prescription';
 import Leave from './pages/Leave'
 
+import StaffReward from './pages/StaffReward';
 
 function App() {
   const { user } = useAuthContext();
@@ -57,6 +59,11 @@ function App() {
               path= "/outofstock"
               element = {<OutOfStock/>}
             />
+             <Route
+              path= "/staffReward"
+              element = {<StaffReward/>}
+            />
+
              <Route
               path='/leaves'
               element={<Leave/>}
