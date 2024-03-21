@@ -15,7 +15,7 @@ export const Expired =() => {
         fetchAbtExpire();
     }, [])
     return(
-        <div className="expired">
+        <div className="ml-64">
            <div className="expired_form">
              {abtexpire && abtexpire.map ((abexpire) => (
                 <AboutExpireDetials key={abexpire._id} expire={abexpire}/> 
