@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 
-import staffRewardDetail from '../components/Srewards.js'
+//components
+import StaffRewardDetails from '../components/StaffRewardDetails';
 
 export const StaffReward =() => {
     const [staff, setStaff] = useState(null) 
@@ -20,9 +21,7 @@ export const StaffReward =() => {
         <div className="reward">
            <div className="reward_form">
              {staff && staff.map ((staffreward) => (
-             < staffRewardDetail key={staffreward._id} staffreward={staffreward}/> 
-           
-             ))}
+                <StaffRewardDetails key={staffreward._id} staffreward = {staffreward}/>))}
             </div>
          
         </div>    
