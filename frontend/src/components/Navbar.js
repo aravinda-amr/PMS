@@ -113,6 +113,12 @@ const Navbar = () => {
                 <Link to="/abtexpired">
                     <h1>About To Expire Drugs</h1>
                 </Link>
+                <Link to="/outofstock">
+                    <h1>Out Of Stock Drugs</h1>
+                </Link>
+                <Link to="/abtoutofstock">
+                    <h1>About To Out Of Stock Drugs</h1>
+                </Link>
                 <Link to="/staffReward">
                     <h1>Handled order Details</h1>
                 </Link>
