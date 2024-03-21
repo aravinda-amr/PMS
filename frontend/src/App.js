@@ -14,6 +14,8 @@ import AboutExpire from './pages/AboutExpire';
 import OutOfStock from './pages/OutOfStock';
 import Prescription from './pages/Prescription';
 import Leave from './pages/Leave'
+import Billing from './pages/Billing';
+import NewSale from './pages/NewSale';
 
 
 function App() {
@@ -69,6 +71,14 @@ function App() {
             <Route
               path="/prescription"
               element={<Prescription/>}
+            />
+            <Route
+              path="/billing"
+              element={<Billing/>}
+            />
+            <Route
+              path="/new-sale"
+              element={<NewSale/>}
             />
           </Routes>
         </div>
