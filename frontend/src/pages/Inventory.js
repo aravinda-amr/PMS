@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
+import MedicineForm from '../components/MedicineForm';
+import Batchmedicine from '../components/Batchmedicine';
+
 const Inventory = () => {
     const [medicinenames, setMedicinenames] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -31,7 +34,10 @@ const Inventory = () => {
     if (error) {
         return <p>Error: {error.message}</p>;
     }
-
+   
+    const calculateQuantitySum = (batches) => {
+        return batches.reduce((total, batch) => total + batch.quantity, 0);
+      };
    
     return (
         <div className="ml-64">
@@ -42,7 +48,7 @@ const Inventory = () => {
             {medicinenames.map((medicine) => (
                 <div key={medicine.drugName._id} className="medicine">
 
-        <h1 style={{ fontWeight: 'bold' }}>Drug Name: {medicine.drugName.drugName}</h1>
+     <h1 style={{ fontWeight: 'bold' }}>Drug Name: {medicine.drugName.drugName}</h1>
                     <br></br>
                     <table>
                         <thead>
@@ -66,9 +72,14 @@ const Inventory = () => {
                             ))}
                         </tbody>
                     </table>
+                    <p>Total Quantity:{calculateQuantitySum(medicine.batches)}</p>
                     <br></br>
                 </div>
             ))}
+
+            <MedicineForm />
+            <br></br>
+            <Batchmedicine/> 
         </div>
     );
 };
