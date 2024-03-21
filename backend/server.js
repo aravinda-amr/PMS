@@ -7,6 +7,14 @@ import userRoutes from './routes/user.js';
 import prescriptionRoutes from './routes/prescription.js';
 import reorderRoutes from './routes/reorder.js';
 import drugoutsRoutes from './routes/drugouts.js';
+import LeaveoutRoutes from './routes/leaveout.js'
+import medicineNameRoutes from './routes/medicinenames.js';
+
+
+
+
+import staffRewardRoutes from './routes/staffReward.js';
+/*import handledRoutes from './routes/handled.js';*/
 import expiredRoutes from './routes/expired.js';
 import abtexpiredRoutes from './routes/expired.js';
 import outofstockRoutes from './routes/outofstocks.js';
@@ -45,9 +53,13 @@ app.use('/api/abtoutofstock', abtoutofstocksRoutes)
 
 app.use('/api/drugouts',drugoutsRoutes)
 
+app.use('/api/medicinenames',medicineNameRoutes)
+
 app.use('/api/billing',billing)
 
 app.use('/api/staffReward',staffReward)
+
+app.use('/api/leaves', LeaveoutRoutes)
 
 
 

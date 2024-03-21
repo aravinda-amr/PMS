@@ -3,11 +3,12 @@ import { storage } from '../firebase';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { v4 } from 'uuid'
 import { useAuthContext } from '../hooks/useAuthContext';
-
+import { usePrescriptionContext } from '../hooks/usePrescription';
 
 const PrescriptionUpload = () => {
 
     const { user } = useAuthContext();
+    const { dispatch } = usePrescriptionContext();
 
     const [note, setNote] = useState('');
     const [substitutes, setSubstitutes] = useState('');
@@ -52,43 +53,63 @@ const PrescriptionUpload = () => {
             console.log(json.error);
         } else {
             console.log(json);
+            setNote('');
+            setSubstitutes('');
+            setImage('');
+            dispatch({type: "CREATE_PRESCRIPTION", payload: json});
         }
     }
 
     return (
-        <form>
-            <h3>Add a New Prescription</h3>
-
-            <label>Add a Note</label><br/>
+        <form className="max-w-lg mx-auto">
+            <h3 className='text-2xl font-bold mb-4'>Add a New Prescription</h3>
+        <div className='mb-4'>
+            <label className='block text-sm font-medium text-gray-700' for="note">Add a Note</label><br/>
             <textarea
                 rows = "4"
                 cols = "50"
                 onChange={(e) => setNote(e.target.value)}
-                value = {note}>
-            </textarea><br/>
-
-            <label>Substitutes</label>
-            <br/>
-            <input 
+                value = {note}
+                class="px-2 py-1 text-gray-700 border rounded-lg focus:outline-none focus:ring-blue-500"
+                >
+                
+            </textarea>
+        </div>
+            
+        <div className='mb-4'>
+            <label className='block mb-2 text-sm font-medium text-gray-700'>Substitutes</label>
+            <div className='flex items-center'>  
+                <input 
                 type="radio"
                 checked={substitutes === "true"} 
                 value="true" 
-                onClick={(e) => setSubstitutes(e.target.value)} />
-            <label>Yes</label>
-            <input 
-                type ="radio" 
-                checked={substitutes === 'false'} 
-                value="false" 
-                onClick={(e) => setSubstitutes(e.target.value)} />
-            <label>No</label>
-            <br/>
-
-            <label>Upload Prescription</label><br/>
+                onClick={(e) => setSubstitutes(e.target.value)}
+                class="mr-2" 
+                />
+                <label className='text-gray-700'>Yes</label>
+                <input 
+                    type ="radio" 
+                    checked={substitutes === 'false'} 
+                    value="false" 
+                    onClick={(e) => setSubstitutes(e.target.value)}
+                    class="ml-4 mr-2"
+                    />
+                <label className='text-gray-700'>No</label>
+            </div>
+        </div>
+            
+        <div className='mb-4'>
+            <label className='block mb-2 text-sm font-medium text-grey-700'>Upload Prescription</label><br/>
             <input type='file' onChange={(e) => { 
                 setImageUpload(e.target.files[0])
-            }}/><br/>
-            <button onClick={uploadImage}>Upload</button><br/>
-            <button onClick={handleSubmit}>Submit</button>
+            }} class="px-3 py-2 text-gray-700 border rounded-lg focus:outline-none focus:ring-blue-500"/>
+        </div>
+            
+        <div>
+            <button onClick={uploadImage} className='px-2 py-2 rounded-2xl font-black cursor-pointer hover:bg-blue-button hover:text-white hover:shadow-lg'>Upload</button>
+            <button onClick={handleSubmit} className='px-2 py-2 rounded-2xl font-black cursor-pointer hover:bg-blue-button hover:text-white hover:shadow-lg'>Submit</button>
+        </div>
+            
         </form>
     )
 }

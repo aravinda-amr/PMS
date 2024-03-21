@@ -12,11 +12,13 @@ import Loyalty from './pages/Loyalty';
 import Expired from './pages/Expired';
 import AboutExpire from './pages/AboutExpire';
 import OutOfStock from './pages/OutOfStock';
+import Prescription from './pages/Prescription';
+import Leave from './pages/Leave'
+
 import StaffReward from './pages/StaffReward';
 
 function App() {
   const { user } = useAuthContext();
-
 
   return (
     <UserContextProvider>
@@ -46,10 +48,6 @@ function App() {
               element={<Loyalty />}
             />
             <Route
-              path='/prescriptions'
-              element={<PrescriptionUpload />}
-            />
-            <Route
               path= "/expired"
               element = {<Expired/>}
             />
@@ -57,7 +55,7 @@ function App() {
               path= "/abtexpired"
               element = {<AboutExpire/>}
             />
-              <Route
+            <Route
               path= "/outofstock"
               element = {<OutOfStock/>}
             />
@@ -66,6 +64,14 @@ function App() {
               element = {<StaffReward/>}
             />
 
+             <Route
+              path='/leaves'
+              element={<Leave/>}
+            />
+            <Route
+              path="/prescription"
+              element={<Prescription/>}
+            />
           </Routes>
         </div>
       </BrowserRouter>
