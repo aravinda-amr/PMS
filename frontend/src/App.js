@@ -7,7 +7,6 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Navbar from './components/Navbar';
 import Reorder from './pages/Reorder';
-import Staffrewards from './pages/Staffrewards';
 import Loyalty from './pages/Loyalty';
 import Expired from './pages/Expired';
 import AboutExpire from './pages/AboutExpire';
@@ -41,10 +40,6 @@ function App() {
             <Route 
               path="/reorder"
               element={<Reorder/>}
-            />
-             <Route 
-              path="/Staffrewards"
-              element={<Staffrewards />}
             />
             <Route 
               path="/loyalty"

@@ -19,7 +19,6 @@ root.render(
         </PrescriptionContextProvider>
       </AuthContextProvider>
     </ReorderContextProvider>
-    
     </LeavesContextProvider>
   </React.StrictMode>
 );

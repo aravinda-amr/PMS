@@ -8,6 +8,7 @@ import LoyaltyIcon from '@mui/icons-material/Loyalty';
 import ReorderIcon from '@mui/icons-material/Reorder';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
+import MedicationOutlinedIcon from '@mui/icons-material/MedicationOutlined';
 
 
 const Navbar = () => {
@@ -55,6 +56,12 @@ const Navbar = () => {
             <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
                 <RemoveCircleIcon/>
                 <h1 className='ps-1 my-auto'>About To Expire Drugs</h1>
+            </div>
+        </Link>
+        <Link to="/prescription">
+            <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
+                <MedicationOutlinedIcon/>
+                <h1 className='ps-1 my-auto'>Prescriptions</h1>
             </div>
         </Link>
     </div>
