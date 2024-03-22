@@ -97,7 +97,7 @@ const Navbar = () => {
             </div>
         </Link>
 
-        //CHAMESHA POS
+        {/* //CHAMESHA POS */}
         
         <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
                         <PointOfSaleIcon onClick={togglePosMenu}  />
