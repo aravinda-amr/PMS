@@ -14,6 +14,9 @@ import AboutExpire from './pages/AboutExpire';
 import OutOfStock from './pages/OutOfStock';
 import AboutToOutOfStock from './pages/AboutToOutOfStocks.js';
 import Prescription from './pages/Prescription';
+import Leave from './pages/Leave'
+import Billing from './pages/Billing';
+import NewSale from './pages/NewSale';
 import Leave from './pages/Leave';
 import Inventory from './pages/Inventory';
 
@@ -81,6 +84,14 @@ function App() {
             <Route
               path="/prescription"
               element={<Prescription/>}
+            />
+            <Route
+              path="/billing"
+              element={<Billing/>}
+            />
+            <Route
+              path="/new-sale"
+              element={<NewSale/>}
             />
             
             <Route
