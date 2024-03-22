@@ -25,7 +25,7 @@ export const getReorder = async (req, res)=>{
     }
     res.status(200).json(reorder);
 }
- 
+
 //create a new Reorder
 export const createReorder = async (req, res) => {
     const { supplierEmail, batchNumber, reorderLevel } = req.body;
@@ -35,14 +35,15 @@ export const createReorder = async (req, res) => {
         if (!drug) {
             return res.status(404).json({ error: 'Drug not found' });
         }
-  
-        // Create the reorder document with the fetched quantity
+     
         const reorder = await Reorder.create({
             supplierEmail,
             batchNumber,
             reorderLevel,
-             quantity : drug.quantity// Use the quantity from the found drug document
+            quantity : drug.quantity// Use the quantity from the found drug document
+            
         });
+    
         res.status(200).json(reorder);
     } catch (error) {
         res.status(400).json({ error: error.message });

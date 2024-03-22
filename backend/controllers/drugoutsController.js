@@ -65,6 +65,21 @@ const deleteBatch = async (req, res) => {
 
 // Delete a drug name and its related batches
 const deleteDrugNameAndBatches = async (req, res) => {
+
+    const drugout = await Drug.findById(id);
+
+    if(!drugout) {
+        return res.status(404).json({error: 'No such drugout'});
+    }
+
+    res.status(200).json(drugout);
+}
+
+//create a drugout
+const createDrugout = async (req, res) => {
+    const {drugName, batchNumber, manufactureDate, expireDate, quantity, price} = req.body;
+
+    //add document to DB
     try {
         const drugNameId = req.params.id;// drugNameId is the ID of the drug name to be deleted
         // First, delete batches related to the drug name

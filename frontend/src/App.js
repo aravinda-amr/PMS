@@ -7,15 +7,23 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Navbar from './components/Navbar';
 import Reorder from './pages/Reorder';
-import Staffrewards from './pages/Staffrewards';
+
 import Loyalty from './pages/Loyalty';
 import Expired from './pages/Expired';
 import AboutExpire from './pages/AboutExpire';
 import OutOfStock from './pages/OutOfStock';
+import AboutToOutOfStock from './pages/AboutToOutOfStocks.js';
 import Prescription from './pages/Prescription';
 import Leave from './pages/Leave'
 import Billing from './pages/Billing';
 import NewSale from './pages/NewSale';
+import Leave from './pages/Leave';
+import Inventory from './pages/Inventory';
+
+
+import './index.css';
+
+import StaffReward from './pages/StaffReward';
 
 
 function App() {
@@ -44,10 +52,6 @@ function App() {
               path="/reorder"
               element={<Reorder/>}
             />
-             <Route 
-              path="/Staffrewards"
-              element={<Staffrewards />}
-            />
             <Route 
               path="/loyalty"
               element={<Loyalty />}
@@ -64,6 +68,15 @@ function App() {
               path= "/outofstock"
               element = {<OutOfStock/>}
             />
+            <Route
+              path= "/abtoutofstock"
+              element = {<AboutToOutOfStock/>}
+            />
+             <Route
+              path= "/staffReward"
+              element = {<StaffReward/>}
+            />
+
              <Route
               path='/leaves'
               element={<Leave/>}
@@ -79,6 +92,11 @@ function App() {
             <Route
               path="/new-sale"
               element={<NewSale/>}
+            />
+            
+            <Route
+                path="/inventory"
+                element={<Inventory/>}
             />
           </Routes>
         </div>

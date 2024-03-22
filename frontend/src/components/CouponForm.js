@@ -46,29 +46,31 @@ const AddCouponForm = ({id, onCouponAdded}) => {
   }
 };
 
- return (
-    <form className="coupon-form" onSubmit={handleSubmit}>
-      <label className="label-form">
-        Expiry:
-        <input
-          type="date"
-          value={expire}
-          required
-          onChange={(e) => setExpire(e.target.value)}
-        />
-      </label>
-      <label className="label-form">
-        Discount:
-        <input
-          type="number"
-          value={discount}
-          required
-          onChange={(e) => setDiscount(Number(e.target.value))}
-        />
-      </label>
-      <button className="delete-form" type="submit">Add Coupon</button>
-    </form>
- );
+return (
+  <form className="coupon-form bg-dark-blue-2 text-white p-4 rounded-lg shadow-md" onSubmit={handleSubmit}>
+    <label className="label-form block text-sm font-medium text-white">
+      Expiry:
+      <input
+        type="date"
+        value={expire}
+        required
+        onChange={(e) => setExpire(e.target.value)}
+        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-button focus:ring focus:ring-blue-button focus:ring-opacity-50 text-blue"
+      />
+    </label>
+    <label className="label-form block text-sm font-medium text-white">
+      Discount:
+      <input
+        type="number"
+        value={discount}
+        required
+        onChange={(e) => setDiscount(Number(e.target.value))}
+        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-button focus:ring focus:ring-blue-button focus:ring-opacity-50 text-blue"
+      />
+    </label>
+    <button className="delete-form bg-login1 hover:bg-login2 text-white font-semibold py-2 px-4 rounded mt-4" type="submit">Add Coupon</button>
+  </form>
+);
 };
 
 export default AddCouponForm;

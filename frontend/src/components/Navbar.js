@@ -12,6 +12,7 @@ import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
 import SalesHistoryIcon from '@mui/icons-material/History';
 import NewSaleIcon from '@mui/icons-material/AddShoppingCart';
+import MedicationOutlinedIcon from '@mui/icons-material/MedicationOutlined';
 
 const Navbar = () => {
     const { logout } = useLogout();
@@ -30,7 +31,7 @@ const Navbar = () => {
         <header>
 
 
-<div className="fixed flex flex-col top-0 left-0 w-64 bg-dark-blue h-full text-white mr-2 px-4 py-1 px-3  font-jakarta">
+<div className="fixed flex flex-col top-0 left-0 w-64 bg-dark-blue h-full text-white mr-2 px-4 py-1 font-jakarta">
     
     <img src={logo} alt="Logo" className='w-44 py-8 mx-auto'/>
     
@@ -39,6 +40,12 @@ const Navbar = () => {
             <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
                 <HomeIcon/>
                 <h1 className='ps-1 my-auto'>Home</h1>
+            </div>
+        </Link>
+        <Link to="/inventory">
+            <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
+                <RemoveCircleIcon/>
+                <h1 className='ps-1 my-auto'>Inventory</h1>
             </div>
         </Link>
         <Link to="/loyalty">
@@ -65,6 +72,32 @@ const Navbar = () => {
                 <h1 className='ps-1 my-auto'>About To Expire Drugs</h1>
             </div>
         </Link>
+        <Link to="/prescription">
+            <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
+                <MedicationOutlinedIcon/>
+                <h1 className='ps-1 my-auto'>Prescriptions</h1>
+            </div>
+        </Link>
+        <Link to="/staffReward">
+            <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
+                <MedicationOutlinedIcon/>
+                <h1 className='ps-1 my-auto'>Handled order Details</h1>
+            </div>
+        </Link>
+        <Link to="/outofstock">
+            <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
+                <MedicationOutlinedIcon/>
+                <h1 className='ps-1 my-auto'>OutOfStock</h1>
+            </div>
+        </Link>
+        <Link to="/abtoutofstock">
+            <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
+                <MedicationOutlinedIcon/>
+                <h1 className='ps-1 my-auto'>AboutToOutOfStock</h1>
+            </div>
+        </Link>
+
+        //CHAMESHA POS
         
         <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
                         <PointOfSaleIcon onClick={togglePosMenu}  />
@@ -84,8 +117,9 @@ const Navbar = () => {
                             )}
                         </div>
                     </div>
-                </div>
-            </div>
+    </div>
+    
+</div>
 
 <nav className="flex justify-end bg-dark-blue-2 h-10 items-end text-sm">
     {user &&(
@@ -110,6 +144,47 @@ const Navbar = () => {
 
 
 
+            <div className="container">
+                <Link to="/">
+                    <h1>Home</h1>
+                </Link>
+                <Link to="/loyalty">
+                    <h1>Loyalty</h1>
+                </Link>
+                <Link to="/reorder">
+                    <h1>Reorder</h1>
+                </Link>
+                <Link to="/expired">
+                    <h1>Expired Drugs</h1>
+                </Link>
+                <Link to="/abtexpired">
+                    <h1>About To Expire Drugs</h1>
+                </Link>
+                <Link to="/outofstock">
+                    <h1>Out Of Stock Drugs</h1>
+                </Link>
+                <Link to="/abtoutofstock">
+                    <h1>About To Out Of Stock Drugs</h1>
+                </Link>
+                <Link to="/staffReward">
+                    <h1>Handled order Details</h1>
+                </Link>
+                <nav>
+                    {user &&(
+                    <div>
+                        <span>{user.email}</span>
+                        <button onClick={handleClick}>Logout</button>
+                    </div>
+                    )}
+                    
+                    {!user && (
+                    <div>
+                        <Link to="/login">Login</Link>
+                        <Link to="/signup">Signup</Link>     
+                    </div>
+                    )}
+                </nav>
+            </div>
         </header>
     )
 }
