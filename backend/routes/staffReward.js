@@ -1,22 +1,17 @@
 import express from 'express';
-import { 
-    getstaffRewards,
-    getstaffReward,
-    createstaffReward } from '../controllers/staffRewardController.js';
-
-const router = express.Router() 
-
-//GET all staff rewards
-router.get('/', getstaffRewards)
-
-//GET a single staff reward
-router.get('/:id', getstaffReward)
-
-//post a new staffReward
-router.post('/', createstaffReward)
 
 
+const router = express.Router();
+
+import { getAllStaffRewards, getStaffReward, createStaffReward ,updateStaffReward, deleteStaffReward } from '../controllers/staffRewardController.js';
 
 
+// Routes for staff rewards
+router.get('/', getAllStaffRewards);
+router.get('/:id', getStaffReward);
+router.post('/',   createStaffReward);
+router.patch('/:id', updateStaffReward); 
+router.delete('/:id', deleteStaffReward);
 
 export default router;
+

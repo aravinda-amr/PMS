@@ -8,7 +8,7 @@ import LoyaltyIcon from '@mui/icons-material/Loyalty';
 import ReorderIcon from '@mui/icons-material/Reorder';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
-
+import MedicationOutlinedIcon from '@mui/icons-material/MedicationOutlined';
 
 const Navbar = () => {
     const { logout } = useLogout();
@@ -33,6 +33,12 @@ const Navbar = () => {
                 <h1 className='ps-1 my-auto'>Home</h1>
             </div>
         </Link>
+        <Link to="/inventory">
+            <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
+                <RemoveCircleIcon/>
+                <h1 className='ps-1 my-auto'>Inventory</h1>
+            </div>
+        </Link>
         <Link to="/loyalty">
             <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
                 <LoyaltyIcon/>
@@ -55,6 +61,30 @@ const Navbar = () => {
             <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
                 <RemoveCircleIcon/>
                 <h1 className='ps-1 my-auto'>About To Expire Drugs</h1>
+            </div>
+        </Link>
+        <Link to="/prescription">
+            <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
+                <MedicationOutlinedIcon/>
+                <h1 className='ps-1 my-auto'>Prescriptions</h1>
+            </div>
+        </Link>
+        <Link to="/staffReward">
+            <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
+                <MedicationOutlinedIcon/>
+                <h1 className='ps-1 my-auto'>Handled order Details</h1>
+            </div>
+        </Link>
+        <Link to="/outofstock">
+            <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
+                <MedicationOutlinedIcon/>
+                <h1 className='ps-1 my-auto'>OutOfStock</h1>
+            </div>
+        </Link>
+        <Link to="/abtoutofstock">
+            <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
+                <MedicationOutlinedIcon/>
+                <h1 className='ps-1 my-auto'>AboutToOutOfStock</h1>
             </div>
         </Link>
     </div>
@@ -85,6 +115,47 @@ const Navbar = () => {
 
 
 
+            <div className="container">
+                <Link to="/">
+                    <h1>Home</h1>
+                </Link>
+                <Link to="/loyalty">
+                    <h1>Loyalty</h1>
+                </Link>
+                <Link to="/reorder">
+                    <h1>Reorder</h1>
+                </Link>
+                <Link to="/expired">
+                    <h1>Expired Drugs</h1>
+                </Link>
+                <Link to="/abtexpired">
+                    <h1>About To Expire Drugs</h1>
+                </Link>
+                <Link to="/outofstock">
+                    <h1>Out Of Stock Drugs</h1>
+                </Link>
+                <Link to="/abtoutofstock">
+                    <h1>About To Out Of Stock Drugs</h1>
+                </Link>
+                <Link to="/staffReward">
+                    <h1>Handled order Details</h1>
+                </Link>
+                <nav>
+                    {user &&(
+                    <div>
+                        <span>{user.email}</span>
+                        <button onClick={handleClick}>Logout</button>
+                    </div>
+                    )}
+                    
+                    {!user && (
+                    <div>
+                        <Link to="/login">Login</Link>
+                        <Link to="/signup">Signup</Link>     
+                    </div>
+                    )}
+                </nav>
+            </div>
         </header>
     )
 }

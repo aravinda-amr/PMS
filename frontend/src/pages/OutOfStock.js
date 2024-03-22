@@ -15,7 +15,7 @@ export const OutOfStock =() => {
         fetchOutOfStock();
     }, [])
     return(
-        <div className="expired">
+        <div className="ml-64">
            <div className="expired_form">
              {outofstock && outofstock.map ((outof) => (
                 <OutOfStockDetials key={outof._id} outof={outof}/> 
