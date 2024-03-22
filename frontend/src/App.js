@@ -17,7 +17,11 @@ import Prescription from './pages/Prescription';
 import Leave from './pages/Leave';
 import Inventory from './pages/Inventory';
 
+
+import './index.css';
+
 import StaffReward from './pages/StaffReward';
+
 
 function App() {
   const { user } = useAuthContext();

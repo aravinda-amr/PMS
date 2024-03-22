@@ -10,6 +10,8 @@ module.exports = {
       'dark-blue':'#335e90',
       'dark-blue-2':'#3A6DA6',
       'blue-button':'#25456A',
+      'light-blue':'#A4C0DF',
+      'text-blue':'#D2DFEF',
 
       'signup1':'#4FAAE3',
       'signup2':'#0B3047',
@@ -18,10 +20,6 @@ module.exports = {
       'login2':'#1E4822',
       'login3':'#52B75B',
 
-      'background':'#E0E0E0',
-      'box':'#C2C2C2',
-
-       
     },
     fontFamily: {
       jakarta: ["Plus Jakarta Sans", 'sans-serif'],
