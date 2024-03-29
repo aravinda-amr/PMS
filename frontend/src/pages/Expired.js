@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import ExpiredDetials from '../components/ExpiredDetails';
 export const Expired =() => {
-    const [expired, setExpired] = useState(null) 
+    const [expire, setExpired] = useState(null) 
     
     useEffect(() => {
         const fetchExpired = async()=>{
@@ -16,13 +16,12 @@ export const Expired =() => {
     }, [])
     return(
         <div className="ml-64">
-           <div className="expired_form">
-             {expired && expired.map ((expire) => (
+             {expire &&
                 <ExpiredDetials key={expire._id} expire={expire}/> 
-             ))}
+             }
             </div>
          
-        </div>    
+      
     )
 }
 
