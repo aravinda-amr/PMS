@@ -17,7 +17,7 @@ import Prescription from './pages/Prescription';
 import Leave from './pages/Leave'
 import Billing from './pages/Billing';
 import NewSale from './pages/NewSale';
-import Leave from './pages/Leave';
+
 import Inventory from './pages/Inventory';
 
 
