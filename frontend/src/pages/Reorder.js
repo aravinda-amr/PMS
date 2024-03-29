@@ -5,7 +5,7 @@ import {useReordersContext} from '../hooks/useReorderContext'
 import ReorderDetails from '../components/ReorderDetails'
 import ReorderForm from '../components/ReorderForm'
 const Reorder = () =>{
-   const {reorders, dispatch} = useReordersContext() //getting the workouts and dispatch from the context
+   const {reorder, dispatch} = useReordersContext() //getting the workouts and dispatch from the context
     useEffect(() => {
         const fetchReorder = async()=>{
             const response = await fetch('/api/reorder') //fetching data from the backend and storing it in response
@@ -19,9 +19,9 @@ const Reorder = () =>{
     return(
         <div className="ml-64">
            <div className="reorders_form">
-             {reorders && reorders.map ((reorder) => ( //if workouts is not null, map through the workouts
+             {reorder && 
                 <ReorderDetails key={reorder._id} reorder={reorder}/> //passing the workout as a prop to the WorkoutDetails component
-             ))}
+             }
             </div>
            <ReorderForm/>
         </div>    
