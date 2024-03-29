@@ -3,128 +3,145 @@ import CouponTable from "./CouponTable";
 import CouponForm from "./CouponForm";
 
 const UserDetails = ({ user }) => {
-    const [showCouponTable, setShowCouponTable] = useState(false);
-    const [showCouponForm, setShowCouponForm] = useState(false);
-    const [coupons, setCoupons] = useState([]);
-    const [totalAmount, setTotalAmount] = useState(0); // State to store total amount
-
-    useEffect(() => {
-        const fetchTotalAmount = async () => {
-            try {
-                const response = await fetch(`/api/user/totalAmount/${user.contact}`);
-                const data = await response.json();
-                // Assuming the API returns an array of objects, extract the totalAmount from the first object
-                if (data.length > 0) {
-                    setTotalAmount(data[0].totalAmount);
-
-                } else {
-                    console.log('No data found');
-                }
-            } catch (error) {
-                console.error('Error fetching total amount:', error);
-            }
-        };
-
-        fetchTotalAmount();
-    }, [user.contact]); // Depend on user.contact to refetch if it changes
+  const [showCouponTable, setShowCouponTable] = useState(false);
+  const [showCouponForm, setShowCouponForm] = useState(false);
+  const [coupons, setCoupons] = useState([]);
+  const [totalAmount, setTotalAmount] = useState(0); // State to store total amount
 
 
-    /* const handleViewButtonClick = async () => {
-         setShowCouponTable(!showCouponTable);
-         if (!showCouponTable) return;
+  useEffect(() => {
+    const fetchTotalAmount = async () => {
+      try {
+        const response = await fetch(`/api/user/totalAmount/${user.contact}`);
+        const data = await response.json();
+        // Assuming the API returns an array of objects, extract the totalAmount from the first object
+        if (data.length > 0) {
+          setTotalAmount(data[0].totalAmount);
+
+        } else {
+          console.log('No data found');
+        }
+      } catch (error) {
+        console.error('Error fetching total amount:', error);
+      }
+    };
+
+    fetchTotalAmount();
+  }, [user.contact]); // Depend on user.contact to refetch if it changes
+
+
+  /* const handleViewButtonClick = async () => {
+       setShowCouponTable(!showCouponTable);
+       if (!showCouponTable) return;
  
-         const response = await fetch(`/api/user/${user._id}/coupons`);
-         const coupons = await response.json();
-         setCoupons(coupons);
-     };
- */
-    const handleAddCouponClick = () => {
-        setShowCouponForm(!showCouponForm);
+       const response = await fetch(`/api/user/${user._id}/coupons`);
+       const coupons = await response.json();
+       setCoupons(coupons);
+   };
+*/
+  const handleAddCouponClick = () => {
+    setShowCouponForm(!showCouponForm);
 
-    };
+  };
 
-    const fetchCoupons = async () => {
-        try {
-            const response = await fetch(`/api/user/${user._id}/coupons`);
-            const coupons = await response.json();
-            setCoupons(coupons);
-        } catch (error) {
-            console.error('Error fetching coupons:', error);
-        }
-    };
+  const fetchCoupons = async () => {
 
-    const handleViewButtonClick = async () => {
-        setShowCouponTable(!showCouponTable);
-        if (!showCouponTable) {
-            await fetchCoupons(); // Fetch coupons when view button is clicked
-        }
-    };
+    try {
+      const response = await fetch(`/api/user/${user._id}/coupons`);
+      const coupons = await response.json();
+      setCoupons(coupons);
+    } catch (error) {
+      console.error('Error fetching coupons:', error);
+    }
+  };
 
-    const handleDeleteCoupon = async (couponId) => {
-        try {
-            const response = await fetch(`/api/user/${user._id}/coupons/${couponId}`, {
-                method: 'DELETE',
-            });
+  const handleViewButtonClick = async () => {
 
-            if (!response.ok) {
-                throw new Error('Failed to delete coupon');
-            }
+    setShowCouponTable(!showCouponTable);
+    if (!showCouponTable) {
+      await fetchCoupons(); // Fetch coupons when view button is clicked
+    }
+  };
 
-            setCoupons(coupons.filter(coupon => coupon.id !== couponId));
-            await fetchCoupons(); // Fetch coupons after deleting a coupon
-        } catch (error) {
-            console.error('Error deleting coupon:', error);
-        }
-    };
+  const handleDeleteCoupon = async (couponId) => {
+    try {
+      const response = await fetch(`/api/user/${user._id}/coupons/${couponId}`, {
+        method: 'DELETE',
+      });
 
-    const handleEditCoupon = async (couponId, data) => {
-        try {
-            const response = await fetch(`/api/user/${user._id}/coupons/${couponId}`, {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data),
-            });
+      if (!response.ok) {
+        throw new Error('Failed to delete coupon');
+      }
 
-            if (!response.ok) {
-                throw new Error('Failed to update coupon');
-            }
+      setCoupons(coupons.filter(coupon => coupon.id !== couponId));
+      await fetchCoupons(); // Fetch coupons after deleting a coupon
+    } catch (error) {
+      console.error('Error deleting coupon:', error);
+    }
+  };
 
-            const updatedCoupon = await response.json();
-            setCoupons(coupons.map(coupon => coupon.id === couponId ? updatedCoupon : coupon));
-        } catch (error) {
-            console.error('Error updating coupon:', error);
-        }
-    };
+  const handleEditCoupon = async (couponId, data) => {
+    try {
+      const response = await fetch(`/api/user/${user._id}/coupons/${couponId}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
 
+      if (!response.ok) {
+        throw new Error('Failed to update coupon');
+      }
 
-
-    return (
-        <div className="flex">
-            <div className="bg-dark-blue text-white p-6">
-                <h4 className="text-lg font-semibold">{user.name}</h4>
-                <p className="mt-2">Total Amount: Rs.{totalAmount}</p>
-                <p className="mt-2">Contact: {user.contact}</p>
-                <div className="mt-4 flex justify-between">
-                    <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={handleViewButtonClick}>View Coupons</button>
-                    <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" onClick={handleAddCouponClick}>Add Coupon</button>
-                </div>
+      const updatedCoupon = await response.json();
+      setCoupons(coupons.map(coupon => coupon.id === couponId ? updatedCoupon : coupon));
+    } catch (error) {
+      console.error('Error updating coupon:', error);
+    }
+  };
 
 
-            </div>
-            <div className="ml-4">
-                {showCouponTable && <CouponTable coupons={coupons} onDeleteCoupon={handleDeleteCoupon} onEditCoupon={handleEditCoupon} />}
-            </div>
-            {showCouponForm && (
-                <div className="ml-4"> {/* Adjust the margin as needed */}
-                    <CouponForm id={user._id} onCouponAdded={fetchCoupons} />
-                </div>
-            )}
-        </div>
 
-
-    );
-};
+  return (
+    <div className="bg-gray-100 rounded-lg p-4 mb-4 flex flex-col">
+       <div className="bg-dark-blue-2 flex justify-between items-center px-4 py-2 rounded-t-lg">
+         <h2 className="text-lg font-medium text-white">
+           {user.name}
+         </h2>
+         <h4 className=" text-xl text-white font-medium px-4 py-2">Rs.{totalAmount}</h4> {/* Changed here */}
+       </div>
+       <div className="bg-dark-blue-2 flex items-center px-4 py-2 rounded-b-lg">
+         <h4 className="font-medium text-white mr-2">
+           Contact: {user.contact}
+         </h4>
+         <div className="flex ml-auto">
+           <button
+             className="hover:text-login1 text-white font-bold py-2 px-4 rounded mr-2 fixed-width-button"
+             onClick={handleViewButtonClick}
+           >
+             {showCouponTable ? "Hide Coupons" : "View Coupons"}
+           </button>
+           <button
+             className="hover:text-login1 text-white font-bold py-2 px-4 rounded fixed-width-button"
+             onClick={handleAddCouponClick}
+           >
+             {showCouponForm ? "Close" : "Add Coupon"}
+           </button>
+         </div>
+       </div>
+       {showCouponTable && (
+         <div className="mt-4">
+           <CouponTable coupons={coupons} onDeleteCoupon={handleDeleteCoupon} onEditCoupon={handleEditCoupon} />
+         </div>
+       )}
+       {showCouponForm && (
+         <div className="mt-4">
+           <CouponForm id={user._id} onCouponAdded={fetchCoupons} />
+         </div>
+       )}
+    </div>
+   );
+       };
 
 export default UserDetails;
