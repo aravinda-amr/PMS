@@ -188,45 +188,43 @@ export const deleteCoupon = async (req, res) => {
     res.status(200).json(bills);
   }
 
-  //Get total of all bills for a user
-  export const calculateTotalAmount = async (req, res) => {
-    try {
-       const { customerID } = req.params; // Assuming 'id' is the user ID passed in the request
-   
-    /*   if (!mongoose.Types.ObjectId.isValid(id)) {
-         return res.status(400).json({ error: 'Invalid user ID' });
-       }*/
-   
-       const sixMonthsAgo = new Date();
-       sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
-   
-       const result = await Bill.aggregate([
-         {
-           $match: {
-             customerID: customerID, // Filter by the user ID
-             invoiceDate: {
-               $gte: sixMonthsAgo,
-               $lt: new Date() // Current date
-             }
-           }
-         },
-         {
-           $group: {
-             _id: '$customerID',
-             totalAmount: {
-               $sum: '$calculateSubTotal'
-             }
+  // Get total of all bills for a user within a specified number of months
+export const calculateTotalAmount = async (req, res) => {
+  try {
+     const { customerID, months = 6 } = req.params; // Default to 6 months if not provided
+ 
+     // Calculate the date from which to start fetching the bills
+     const startDate = new Date();
+     startDate.setMonth(startDate.getMonth() - months);
+ 
+     const result = await Bill.aggregate([
+       {
+         $match: {
+           customerID: customerID, // Filter by the user ID
+           invoiceDate: {
+             $gte: startDate,
+             $lt: new Date() // Current date
            }
          }
-       ]);
-   
-       // Assuming you want to send the result back to the client
-       res.status(200).json(result);
-    } catch (error) {
-       console.error(error);
-       res.status(500).json({ message: 'An error occurred while calculating the total amount.' });
-    }
-   };
+       },
+       {
+         $group: {
+           _id: '$customerID',
+           totalAmount: {
+             $sum: '$calculateSubTotal'
+           }
+         }
+       }
+     ]);
+ 
+     // Assuming you want to send the result back to the client
+     res.status(200).json(result);
+  } catch (error) {
+     console.error(error);
+     res.status(500).json({ message: 'An error occurred while calculating the total amount.' });
+  }
+ };
+ 
 
    export const getCustomerBills = async (customerId) => {
     // Ensure the customerId is a valid ObjectId
