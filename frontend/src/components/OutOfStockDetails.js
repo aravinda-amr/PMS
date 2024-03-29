@@ -4,16 +4,16 @@ const OutOfStockDetials = ({outof})=>{
        <div className="abtexpire-details">
     <table>
         <tr>
-         <th><strong>Drug Name</strong></th>
-         <td>{outof.drugName}</td>
+         <th className="coupon-table-th border border-gray-300 px-4 py-2"><strong>Drug Name</strong></th>
+         <td className="coupon-table-th border border-gray-300 px-4 py-2">{outof.drugName}</td>
         </tr>
         <tr>
-         <th><strong>Batch Number</strong></th>
-         <td>{outof.batchNumber}</td>
+         <th className="coupon-table-th border border-gray-300 px-4 py-2"><strong>Batch Number</strong></th>
+         <td className="coupon-table-th border border-gray-300 px-4 py-2">{outof.batchNumber}</td>
        </tr>
         <tr>
-         <th><strong>Quantity</strong></th>
-         <td>{outof.quantity}</td>
+         <th className="coupon-table-th border border-gray-300 px-4 py-2"><strong>Quantity</strong></th>
+         <td className="coupon-table-th border border-gray-300 px-4 py-2">{outof.quantity}</td>
         </tr>
     </table>   
        </div>

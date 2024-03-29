@@ -40,27 +40,23 @@ const ReorderForm = () => {
     }
 
     return (
-        <form className="create" onSubmit={handleSubmit}>
-            <h3>Add a New Reorder Level</h3>
-            <label>Supplier's Email</label>
-            <input type="email" onChange={(e) => setsupplierEmail(e.target.value)} value={supplierEmail} /> 
+        <form className="bg-dark-blue-2  p-4 rounded-lg shadow-md" onSubmit={handleSubmit}>
+            <h3 className="text-white">Add a New Reorder Level</h3>
+            <label className="label-form block text-sm font-medium text-white">Supplier's Email</label>
+            <input type="email" className=" focus:border-blue-button focus:ring focus:ring-blue-button focus:ring-opacity-50 text-blue" onChange={(e) => setsupplierEmail(e.target.value)} value={supplierEmail} required/> 
             
-            <label>Batch Number:</label>
-            <input type="text" onChange={(e) => setbatchNumber(e.target.value)} value={batchNumber} /> 
+            <label className="label-form block text-sm font-medium text-white">Batch Number:</label>
+            <input type="text" className=" focus:border-blue-button focus:ring focus:ring-blue-button focus:ring-opacity-50 text-blue" onChange={(e) => setbatchNumber(e.target.value)} value={batchNumber}  required/> 
 
-            <label>Reorder Level</label>
-            <input type="number" onChange={(e) => setreorderLevel(e.target.value)} value={reorderLevel} />  
+            <label className="label-form block text-sm font-medium text-white">Reorder Level</label>
+            <input type="number"className=" focus:border-blue-button focus:ring focus:ring-blue-button focus:ring-opacity-50 text-blue" onChange={(e) => setreorderLevel(e.target.value)} value={reorderLevel} required/>  
 
 
-            <button>Add Reorder Level</button>
+            <button className="btn bg-login1 hover:bg-login2 hover:text-white mr-2 px-4 py-1 rounded-lg font-jakarta font-semibold cursor-pointer hover:transition-all">Add Reorder Level</button>
             {error && <div className="error">{error}</div>}
         </form>
     )
 }
-//from Onchange event, we get the value of the input field and set it to the state variable
-//e.target.value is the value of the input field
-//value is the value of the input field
- //if there is an error, display the error message
-// className={emptyFields.includes('supplierEmail') ? 'error' : ''}
+ 
 export default ReorderForm
 
