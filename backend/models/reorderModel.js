@@ -11,6 +11,10 @@ const reorderSchema = new Schema({
         type: String,
         required: true
     },
+    drugName:{
+        type: String,
+        required: true
+    },
     reorderLevel:{
         type: Number,
         required: true

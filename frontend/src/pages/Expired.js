@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import ExpiredDetials from '../components/ExpiredDetails';
 export const Expired =() => {
     const [expire, setExpired] = useState(null) 
+    const [searchTerm, setSearchTerm] = useState("");
+    const [filteredItems, setFilteredItems] = useState([]); // State to hold filtered items
     
     useEffect(() => {
         const fetchExpired = async()=>{
@@ -14,11 +16,32 @@ export const Expired =() => {
         }
         fetchExpired();
     }, [])
+
+    useEffect(() => {
+        // Filter items based on search term whenever searchTerm changes
+        const filtered = expire?.filter(
+            (item) => item.drugName.toLowerCase().includes(searchTerm.toLowerCase())
+        ) ?? []; // Ensure filtered is always an array
+        setFilteredItems(filtered);
+    }, [searchTerm, expire]);
+
     return(
         <div className="ml-64">
-             {expire &&
-                <ExpiredDetials key={expire._id} expire={expire}/> 
-             }
+              <input
+                type="text"
+                placeholder="Search drug names..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:ring-opacity-50 text-gray-700"
+            />
+                {filteredItems.length > 0 ? (
+                    filteredItems.map((item) => (
+                        <ExpiredDetials key={item._id}  expire={item} />
+                    ))
+                ) : (
+                    <p>No Drug Found</p>
+                )}
+
             </div>
          
       
