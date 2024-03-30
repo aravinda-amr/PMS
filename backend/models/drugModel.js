@@ -1,8 +1,6 @@
 import mongoose from "mongoose"; // import mongoose
 import Reorder from "./reorderModel.js"; // import Reorder model
-
 const Schema = mongoose.Schema// create schema
-
 const drugSchema = new Schema({
 
     drugName :{
