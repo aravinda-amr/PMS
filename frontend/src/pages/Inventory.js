@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-
 import MedicineForm from '../components/MedicineForm';
 import Batchmedicine from '../components/Batchmedicine';
+import InventorySearch from '../components/Inventorysearch';
 
 const Inventory = () => {
     const [medicinenames, setMedicinenames] = useState([]);
@@ -80,6 +80,10 @@ const Inventory = () => {
             <MedicineForm />
             <br></br>
             <Batchmedicine/> 
+            <br></br>
+            <InventorySearch/>
+          
+            
         </div>
     );
 };

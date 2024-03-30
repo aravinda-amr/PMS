@@ -76,21 +76,21 @@ const deleteDrugNameAndBatches = async (req, res) => {
 }
 
 //create a drugout
-const createDrugout = async (req, res) => {
-    const {drugName, batchNumber, manufactureDate, expireDate, quantity, price} = req.body;
+// const createDrugout = async (req, res) => {
+//     const {drugName, batchNumber, manufactureDate, expireDate, quantity, price} = req.body;
 
-    //add document to DB
-    try {
-        const drugNameId = req.params.id;// drugNameId is the ID of the drug name to be deleted
-        // First, delete batches related to the drug name
-        await Drug.deleteMany({ drugName: drugNameId });
-        // Then, delete the drug name itself
-        await MedicineName.findByIdAndDelete(drugNameId);
-        res.status(200).json({ message: 'Drug name and associated batches deleted successfully' });
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-};
+//     //add document to DB
+//     try {
+//         const drugNameId = req.params.id;// drugNameId is the ID of the drug name to be deleted
+//         // First, delete batches related to the drug name
+//         await Drug.deleteMany({ drugName: drugNameId });
+//         // Then, delete the drug name itself
+//         await MedicineName.findByIdAndDelete(drugNameId);
+//         res.status(200).json({ message: 'Drug name and associated batches deleted successfully' });
+//     } catch (error) {
+//         res.status(500).json({ message: error.message });
+//     }
+// };
 
 // Create a new drug name
 const createDrugName = async (req, res) => {
@@ -122,27 +122,56 @@ const insertBatchesForDrugName = async (req, res) => {
     }
 };
  // Get a drug name and its related batches
- const getDrugNameAndBatches = async (req, res) => {
+//  const getDrugNameAndBatches = async (req, res) => {
+//     try {
+//         const drugNameId = req.params.id;
+
+//         // Find the drug name by ID
+//         const drugName = await MedicineName.findById(drugNameId);
+//         if (!drugName) {
+//             return res.status(404).json({ message:'Drug name not found' });
+//         }
+
+//         // Find all batches related to the drug name
+//         const batches = await Drug.find({ drugName: drugNameId });
+
+//         // Extract dates from the batches
+//         const dates = batches.map(batch => batch.date);
+
+//         res.status(200).json({ drugName, batches, dates });
+//     } catch (error) {
+//         res.status(500).json({ message: error.message });
+//     }
+// };
+
+const getDrugNameAndBatches = async (req, res) => {
     try {
         const drugNameId = req.params.id;
 
         // Find the drug name by ID
         const drugName = await MedicineName.findById(drugNameId);
         if (!drugName) {
-            return res.status(404).json({ message:'Drug name not found' });
+            return res.status(404).json({ message: 'Drug name not found' });
         }
 
-        // Find all batches related to the drug name
-        const batches = await Drug.find({ drugName: drugNameId });
+        // Find the first batch entered related to the drug name
+        const firstBatch = await Drug.findOne({ drugName: drugNameId }).sort({ createdAt: 1 });
 
-        // Extract dates from the batches
-        const dates = batches.map(batch => batch.date);
+        if (!firstBatch) {
+            return res.status(404).json({ message: 'No batches found for this drug' });
+        }
 
-        res.status(200).json({ drugName, batches, dates });
+        // Extract dates from the first batch
+        const dates = [firstBatch.createdAt];
+
+        res.status(200).json({ drugName, firstBatch, dates });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
 };
+
+
+
 
  // Get all drug names along with their batches
  const getAllDrugNamesAndBatches = async (req, res) => {

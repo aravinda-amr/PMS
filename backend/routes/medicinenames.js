@@ -23,7 +23,6 @@ router.post('/drugnames/:id/batches',insertBatchesForDrugName);
 // Get all drug names and their associated batches
 router.get('/drugnames',getAllDrugNamesAndBatches);
 
-
 // Get a drug name and its associated batches
 router.get('/drugnames/:id/batches', getDrugNameAndBatches);
 
