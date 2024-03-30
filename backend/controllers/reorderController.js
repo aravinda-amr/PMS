@@ -39,6 +39,7 @@ export const createReorder = async (req, res) => {
         const reorder = await Reorder.create({
             supplierEmail,
             batchNumber,
+            drugName : drug.drugName,// Use the drugName from the found drug document
             reorderLevel,
             quantity : drug.quantity// Use the quantity from the found drug document
             

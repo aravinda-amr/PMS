@@ -25,7 +25,6 @@ import { createContext, useReducer } from "react";
     }
   }
 
-
   export const ReorderContextProvider = ({ children}) =>{ //children is a prop, which is the values that we wrap inbetween them. which is now app component
     const [state, dispatch] = useReducer(ReorderReducer, {
       reorders: null
