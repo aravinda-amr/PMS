@@ -42,6 +42,33 @@ const drugSchema = new Schema({
 //     }
 //     next();
 //    });
+
+
+//quantity update start here
+drugSchema.post('save', async function () {
+    // Calculate total quantity for the drug
+    const MedicineName = mongoose.model('MedicineName');
+    const drugName = this.drugName;
+    const totalQuantity = await this.model('Drug').aggregate([
+        {
+            $match: { drugName: drugName }
+        },
+        {
+            $group: {
+                _id: null,
+                total: { $sum: "$quantity" }
+            }
+        }
+    ]);
+
+    // Update totalquantity in medicinenameSchema
+    await MedicineName.findByIdAndUpdate(drugName, { totalquantity: totalQuantity[0].total });
+});
+//quantity update end here 
+
+
+
+
 drugSchema.pre('save', async function(next) {
     const drug = this; // refers to the current Drug being saved
   
@@ -57,4 +84,4 @@ drugSchema.pre('save', async function(next) {
     }
   });
 
-   export default mongoose.model('Drug', drugSchema)//export model   
+export default mongoose.model('Drug', drugSchema)//export model   

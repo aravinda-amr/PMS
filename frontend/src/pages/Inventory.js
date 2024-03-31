@@ -35,20 +35,16 @@ const Inventory = () => {
         return <p>Error: {error.message}</p>;
     }
    
-    const calculateQuantitySum = (batches) => {
-        return batches.reduce((total, batch) => total + batch.quantity, 0);
-      };
-   
     return (
         <div className="ml-64">
 
             <h1>Inventory</h1> 
-
                  <br></br>
             {medicinenames.map((medicine) => (
                 <div key={medicine.drugName._id} className="medicine">
 
      <h1 style={{ fontWeight: 'bold' }}>Drug Name: {medicine.drugName.drugName}</h1>
+        <h2>Total Quantity: {medicine.drugName.totalquantity}</h2> 
                     <br></br>
                     <table>
                         <thead>
@@ -72,7 +68,7 @@ const Inventory = () => {
                             ))}
                         </tbody>
                     </table>
-                    <p>Total Quantity:{calculateQuantitySum(medicine.batches)}</p>
+                    
                     <br></br>
                 </div>
             ))}

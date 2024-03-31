@@ -6,7 +6,12 @@ const medicinenameSchema = new Schema({
     drugName: {
         type: String,
         required: true
+    },
+    totalquantity: {
+        type: Number,
+        required: true
     }
+
 }, { timestamps: true });
 
 export default mongoose.model('MedicineName', medicinenameSchema);
