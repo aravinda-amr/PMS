@@ -38,6 +38,7 @@ const getBatchById = async (req, res) => {
     }
 };
 
+
 // Update a batch
 const updateBatch = async (req, res) => {
     try {
@@ -45,23 +46,73 @@ const updateBatch = async (req, res) => {
         if (!batch) {
             return res.status(404).json({ message: 'Batch not found' });
         }
+        
+        // Recalculate total quantity for the drug
+        const totalQuantity = await Drug.aggregate([
+            {
+                $match: { drugName: batch.drugName }
+            },
+            {
+                $group: {
+                    _id: null,
+                    total: { $sum: "$quantity" }
+                }
+            }
+        ]);
+
+        // Update totalquantity in MedicineName schema
+        // Use the ObjectId of drugName to find the corresponding MedicineName document
+        await MedicineName.findByIdAndUpdate(
+            batch.drugName, // Use the ObjectId of drugName
+            { totalquantity: totalQuantity[0].total },
+            { new: true }
+        );
+
         res.status(200).json(batch);
     } catch (error) {
         res.status(400).json({ message: error.message });
     }
 };
+//update batch end here
+
+
 // Delete a batch
 const deleteBatch = async (req, res) => {
     try {
+        // Find the batch to be deleted
         const batch = await Drug.findByIdAndDelete(req.params.id);
         if (!batch) {
             return res.status(404).json({ message: 'Batch not found' });
         }
+
+        // Recalculate total quantity for the drug
+        const totalQuantity = await Drug.aggregate([
+            {
+                $match: { drugName: batch.drugName }
+            },
+            {
+                $group: {
+                    _id: null,
+                    total: { $sum: "$quantity" }
+                }
+            }
+        ]);
+
+        // Update totalquantity in MedicineName schema
+        // Use the ObjectId of drugName to find the corresponding MedicineName document
+        await MedicineName.findByIdAndUpdate(
+            batch.drugName, // Use the ObjectId of drugName
+            { totalquantity: totalQuantity[0].total },
+            { new: true }
+        );
+          //delete batch
         res.status(200).json({ message: 'Batch deleted successfully' });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
 };
+//delete batch end here
+
 
 // Delete a drug name and its related batches
 const deleteDrugNameAndBatches = async (req, res) => {
@@ -74,6 +125,7 @@ const deleteDrugNameAndBatches = async (req, res) => {
 
     res.status(200).json(drugout);
 }
+
 
 //create a drugout
 // const createDrugout = async (req, res) => {
@@ -92,6 +144,7 @@ const deleteDrugNameAndBatches = async (req, res) => {
 //     }
 // };
 
+
 // Create a new drug name
 const createDrugName = async (req, res) => {
     try {
@@ -102,6 +155,7 @@ const createDrugName = async (req, res) => {
         res.status(400).json({ message: error.message });
     }
 };
+
 // Insert batches for a drug name
 const insertBatchesForDrugName = async (req, res) => {
     try {
@@ -121,6 +175,7 @@ const insertBatchesForDrugName = async (req, res) => {
         res.status(400).json({ message: error.message });
     }
 };
+
  // Get a drug name and its related batches
 //  const getDrugNameAndBatches = async (req, res) => {
 //     try {
@@ -144,6 +199,8 @@ const insertBatchesForDrugName = async (req, res) => {
 //     }
 // };
 
+
+// Get a drug name and its related batches
 const getDrugNameAndBatches = async (req, res) => {
     try {
         const drugNameId = req.params.id;
@@ -169,8 +226,6 @@ const getDrugNameAndBatches = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
-
-
 
 
  // Get all drug names along with their batches
