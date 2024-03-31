@@ -20,10 +20,6 @@ const BillDetails = ({bill, isAdmin, onDeleteMedicine }) => {
         setActiveEditBillId(bill.invoiceID); 
 };
 
-
-
-
-
     return(
     <tr className="bg-blue-200 text-dark-blue"> 
         <td className="border px-1 py-1">{bill.invoiceID}</td>

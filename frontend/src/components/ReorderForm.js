@@ -5,7 +5,7 @@ import {useReordersContext} from '../hooks/useReorderContext'
 const ReorderForm = () => {
     const {dispatch} = useReordersContext()
     const [supplierEmail, setsupplierEmail] = useState('')      
-    const [batchNumber, setbatchNumber] = useState('')
+    const [drugName, setdrugName] = useState('')
     const [reorderLevel, setreorderLevel] = useState('')
     const [error, seterror] = useState(null)
    // const [emptyFields, setemptyFields] = useState([])
@@ -15,7 +15,7 @@ const ReorderForm = () => {
      const handleSubmit = async(e) =>{
         e.preventDefault() //prevent the default behaviour of the form which means the page will not refresh when the form is submitted
 
-         const reorder = {supplierEmail, batchNumber, reorderLevel }  //create a workout object with the state variables
+         const reorder = {supplierEmail, drugName, reorderLevel }  //create a workout object with the state variables
          const response = await fetch ('/api/reorder',{ //send a post request to the server with the workout object   
             method: 'POST',
             body : JSON.stringify(reorder), //convert the workout object to a JSON string
@@ -30,7 +30,7 @@ const ReorderForm = () => {
         }
         else{
             setsupplierEmail('') //reset the state variables to empty strings
-            setbatchNumber('')//reset the state variables to empty 
+            setdrugName('')//reset the state variables to empty 
             setreorderLevel('')//reset the state variables to empty strings
            // setemptyFields([])//reset the emptyFields state variable to an empty array
             seterror(null) //reset the error state variable to null
@@ -45,8 +45,8 @@ const ReorderForm = () => {
             <label className="label-form block text-sm font-medium text-white">Supplier's Email</label>
             <input type="email" className=" focus:border-blue-button focus:ring focus:ring-blue-button focus:ring-opacity-50 text-blue" onChange={(e) => setsupplierEmail(e.target.value)} value={supplierEmail} required/> 
             
-            <label className="label-form block text-sm font-medium text-white">Batch Number:</label>
-            <input type="text" className=" focus:border-blue-button focus:ring focus:ring-blue-button focus:ring-opacity-50 text-blue" onChange={(e) => setbatchNumber(e.target.value)} value={batchNumber}  required/> 
+            <label className="label-form block text-sm font-medium text-white">Drug Name:</label>
+            <input type="text" className=" focus:border-blue-button focus:ring focus:ring-blue-button focus:ring-opacity-50 text-blue" onChange={(e) => setdrugName(e.target.value)} value={drugName}  required/> 
 
             <label className="label-form block text-sm font-medium text-white">Reorder Level</label>
             <input type="number"className=" focus:border-blue-button focus:ring focus:ring-blue-button focus:ring-opacity-50 text-blue" onChange={(e) => setreorderLevel(e.target.value)} value={reorderLevel} required/>  

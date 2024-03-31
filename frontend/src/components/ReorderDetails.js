@@ -31,7 +31,6 @@ const ReorderDetials = ({reorder})=>{
           <thead className="coupon-table-thead bg-dark-blue text-white">
             <tr className="coupon-table-tr">
               <th className="coupon-table-th border border-gray-300 px-4 py-2">Supplier Email</th>
-              <th className="coupon-table-th border border-gray-300 px-4 py-2">Batch Number</th>
               <th className="coupon-table-th border border-gray-300 px-4 py-2">Drug Name</th>
               <th className="coupon-table-th border border-gray-300 px-4 py-2">Quantity</th>
               <th className="coupon-table-th border border-gray-300 px-4 py-2">Reorder Level</th>
@@ -43,9 +42,8 @@ const ReorderDetials = ({reorder})=>{
         
               <tr>
                 <td className="coupon-table-th border border-gray-300 px-4 py-2">{reorder.supplierEmail}</td>
-                <td className="coupon-table-th border border-gray-300 px-4 py-2">{reorder.batchNumber}</td>
                 <td className="coupon-table-th border border-gray-300 px-4 py-2">{reorder.drugName}</td>
-                <td className="coupon-table-th border border-gray-300 px-4 py-2">{reorder.quantity}</td>        
+                <td className="coupon-table-th border border-gray-300 px-4 py-2">{reorder.totalquantity}</td>        
                 <td className="coupon-table-th border border-gray-300 px-4 py-2">{reorder.reorderLevel}</td>
                 <td className="border border-gray-300 px-4 py-2">
                  <button className="btn bg-login1 hover:bg-login2 hover:text-white mr-2 px-4 py-1 rounded-lg font-jakarta font-semibold cursor-pointer hover:transition-all" onClick ={handleClick}>Delete</button>
