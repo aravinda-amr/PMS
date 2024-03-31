@@ -34,6 +34,7 @@ const ReorderDetials = ({reorder})=>{
               <th className="coupon-table-th border border-gray-300 px-4 py-2">Drug Name</th>
               <th className="coupon-table-th border border-gray-300 px-4 py-2">Quantity</th>
               <th className="coupon-table-th border border-gray-300 px-4 py-2">Reorder Level</th>
+              <th className="coupon-table-th border border-gray-300 px-4 py-2">Status</th>
               <th className="border border-gray-300 px-4 py-2"></th>
              
             </tr>
@@ -45,12 +46,12 @@ const ReorderDetials = ({reorder})=>{
                 <td className="coupon-table-th border border-gray-300 px-4 py-2">{reorder.drugName}</td>
                 <td className="coupon-table-th border border-gray-300 px-4 py-2">{reorder.totalquantity}</td>        
                 <td className="coupon-table-th border border-gray-300 px-4 py-2">{reorder.reorderLevel}</td>
+                <td className="coupon-table-th border border-gray-300 px-4 py-2" style={{ color: reorder.status ? 'red' : 'green' }}>{reorder.status ? 'yes' : 'no'}</td>
                 <td className="border border-gray-300 px-4 py-2">
                  <button className="btn bg-login1 hover:bg-login2 hover:text-white mr-2 px-4 py-1 rounded-lg font-jakarta font-semibold cursor-pointer hover:transition-all" onClick ={handleClick}>Delete</button>
                  <button className="btn bg-signup1 hover:bg-signup2 hover:text-white mr-2 px-4 py-1 rounded-lg font-jakarta font-semibold cursor-pointer hover:transition-all" onClick={handleUpdate}>Edit</button>
                </td>
               </tr>
-            
           </tbody>
         </table>
       </div>

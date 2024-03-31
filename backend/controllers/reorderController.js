@@ -28,20 +28,23 @@ export const getReorder = async (req, res)=>{
 
 //create a new Reorder
 export const createReorder = async (req, res) => {
-    const { supplierEmail, drugName , reorderLevel } = req.body;
+    const { supplierEmail, drugName , reorderLevel} = req.body;
 
     try {
         const drug = await MedicineName.findOne({drugName}); //
         if (!drug) {
             return res.status(404).json({ error: 'Drug not found' });
         }
-     
+       
+
         const reorder = await Reorder.create({
             supplierEmail,
             drugName,// Use the drugName from the found drug document
             reorderLevel,
-            totalquantity : drug.totalquantity// Use the quantity from the found drug document
+            totalquantity : drug.totalquantity,// Use the quantity from the found drug document
+            status: drug.totalquantity <= reorderLevel ? true : false
         });  
+       
         res.status(200).json(reorder);
     } catch (error) {
         res.status(400).json({ error: error.message });

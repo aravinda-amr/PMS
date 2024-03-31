@@ -17,7 +17,10 @@ const reorderSchema = new Schema({
     },
     totalquantity:{
         type: Number,
-        // type: mongoose.Schema.Types.ObjectId, ref:'Drug',
+        required: true
+    },
+    status:{
+        type: Boolean,
         required: true
     }
 }, {timestamps: true})
