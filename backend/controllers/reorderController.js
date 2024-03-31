@@ -1,5 +1,5 @@
 import Reorder from  '../models/reorderModel.js'
-import Drug from  '../models/drugModel.js'
+import MedicineName from '../models/medicineModel.js'
 
 import mongoose from "mongoose"
 
@@ -28,23 +28,20 @@ export const getReorder = async (req, res)=>{
 
 //create a new Reorder
 export const createReorder = async (req, res) => {
-    const { supplierEmail, batchNumber, reorderLevel } = req.body;
+    const { supplierEmail, drugName , reorderLevel } = req.body;
 
     try {
-        const drug = await Drug.findOne({batchNumber}); //
+        const drug = await MedicineName.findOne({drugName}); //
         if (!drug) {
             return res.status(404).json({ error: 'Drug not found' });
         }
      
         const reorder = await Reorder.create({
             supplierEmail,
-            batchNumber,
-            drugName : drug.drugName,// Use the drugName from the found drug document
+            drugName,// Use the drugName from the found drug document
             reorderLevel,
-            quantity : drug.quantity// Use the quantity from the found drug document
-            
-        });
-    
+            totalquantity : drug.totalquantity// Use the quantity from the found drug document
+        });  
         res.status(200).json(reorder);
     } catch (error) {
         res.status(400).json({ error: error.message });

@@ -7,10 +7,6 @@ const reorderSchema = new Schema({
         type: String,
         required:true
     },
-    batchNumber:{
-        type: String,
-        required: true
-    },
     drugName:{
         type: String,
         required: true
@@ -19,7 +15,7 @@ const reorderSchema = new Schema({
         type: Number,
         required: true
     },
-    quantity:{
+    totalquantity:{
         type: Number,
         // type: mongoose.Schema.Types.ObjectId, ref:'Drug',
         required: true
