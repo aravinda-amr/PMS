@@ -27,6 +27,28 @@ const Inventory = () => {
         fetchMedicinenames();
     }, []);
 
+     // Function to fetch updated medicinenames after adding a batch
+     const fetchMedicinenames = async () => {
+        try {
+            const response = await fetch('/api/medicinenames/drugnames');
+            if (!response.ok) {
+                throw new Error('Failed to fetch updated medicinenames');
+            }
+            const data = await response.json();
+            setMedicinenames(data);
+        } catch (error) {
+            console.error('Error fetching updated medicinenames:', error.message);
+        }
+    };
+
+    const handleAddBatchSuccess = () => {
+        fetchMedicinenames();
+    };
+
+    const handleAddMedicineSuccess = () => {
+        fetchMedicinenames(); // Fetch updated list of medicines
+    };
+
     if (loading) {
         return <p>Loading...</p>;
     }
@@ -73,15 +95,17 @@ const Inventory = () => {
                 </div>
             ))}
 
-            <MedicineForm />
+            <MedicineForm onSuccess={handleAddBatchSuccess}/>
             <br></br>
-            <Batchmedicine/> 
+            <Batchmedicine onSuccess={handleAddBatchSuccess} onUpdateDrugs={handleAddMedicineSuccess}/> 
             <br></br>
-            <InventorySearch/>
+            <InventorySearch  medicinenames={medicinenames}/>
+
           
+
             
         </div>
     );
 };
 
-export default Inventory;
+export default Inventory;

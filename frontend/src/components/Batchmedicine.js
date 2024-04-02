@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'; // Add useEffect
 
-const Batchmedicine = () => {
+const Batchmedicine = ({ onSuccess , onUpdateDrugs }) => {
     const [batchNumber, setBatchNumber] = useState('');  // Add state for batchNumber
     const [manufactureDate, setManufactureDate] = useState('');  // Add state for manufactureDate
     const [expireDate, setExpireDate] = useState('');  // Add state for expireDate
@@ -26,7 +26,7 @@ const Batchmedicine = () => {
         };
 
         fetchDrugs();
-    }, []);
+    }, [onUpdateDrugs]);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -49,9 +49,9 @@ const Batchmedicine = () => {
                 },
             });
     
-            console.log('Response status:', response.status);
-            const responseData = await response.text();
-            console.log('Response data:', responseData);
+            // console.log('Response status:', response.status);
+            // const responseData = await response.text();
+            // console.log('Response data:', responseData);
     
             if (!response.ok) {
                 throw new Error('Failed to add batch');
@@ -64,8 +64,19 @@ const Batchmedicine = () => {
             setQuantity('');
             setPrice('');
             setError(null);
+
+       // Call the onSuccess function passed from the parent component
+
+            if (typeof onSuccess === 'function') {
+                onSuccess();
+            }
+
+            if (typeof onUpdateDrugs === 'function') {
+                onUpdateDrugs();
+            }
     
             console.log('Batch added successfully');
+            
         } catch (error) {
             setError(error.message);
             console.error('Error adding batch:', error);

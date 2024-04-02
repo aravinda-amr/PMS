@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
 
-  const MedicineForm = () => {
+  const MedicineForm = ({ onSuccess }) => {
 
     const [drugName, setDrugName] = useState('');
-    const [error, setError] = useState(null);
+    const [error, setError] = useState(null); 
 
     const handleSubmit = async (event) => {
         event.preventDefault();
 
         const newMedicine = {
             drugName,
+            totalquantity: 0 // Set a default value or retrieve it from somewhere else
+
         };
 
         try {
@@ -29,6 +31,14 @@ import React, { useState } from 'react';
             setDrugName('');
             setError(null);
             console.log('Medicine drug added successfully!');
+
+             // Call the onSuccess function passed from the parent component
+            if (typeof onSuccess === 'function') {
+                onSuccess(drugName);
+            }   
+        
+            console.log('Medicine drug added successfully!');
+
         } catch (error) {
             setError(error.message);
         }
@@ -55,19 +65,3 @@ import React, { useState } from 'react';
 
 export default MedicineForm;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  

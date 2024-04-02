@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useMemo  } from 'react';
 
-const InventorySearch = () => {
-    const [drugs, setDrugs] = useState([]);
+const InventorySearch = ({onSuccess , medicinenames = []}) => {
+    // const [drugs, setDrugs] = useState([]);
     const [selectedDrug, setSelectedDrug] = useState('');
     const [firstBatch, setFirstBatch] = useState(null);
     const [selectedDrugName, setSelectedDrugName] = useState('');
@@ -15,8 +15,8 @@ const InventorySearch = () => {
                 if (!response.ok) {
                     throw new Error('Failed to fetch drugs');
                 }
-                const data = await response.json();
-                setDrugs(data);
+                // const data = await response.json();
+                // setDrugs(data);
             } catch (error) {
                 console.error('Error fetching drugs:', error.message);
             }
@@ -39,6 +39,13 @@ const InventorySearch = () => {
             const data = await response.json();
             setFirstBatch(data.firstBatch);
             setSelectedDrugName(data.drugName.drugName);
+
+            // Call the onSuccess function passed from the parent component
+            if (typeof onSuccess === 'function') {
+                onSuccess();
+            }
+
+            console.log('Batch details fetched successfully:', data);
             
         } catch (error) {
             console.error('Error fetching batch details:', error.message);
@@ -48,9 +55,12 @@ const InventorySearch = () => {
     const handleDrugChange = (event) => {
         setSelectedDrug(event.target.value);
     };
-    const filteredDrugs = drugs.filter(drug =>
-        drug.drugName.drugName.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    
+    const filteredDrugs = useMemo(() => {
+        return medicinenames.filter(drug =>
+            drug.drugName.drugName.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+    }, [medicinenames, searchTerm]);
 
     return (
         <div>
@@ -83,6 +93,7 @@ const InventorySearch = () => {
                     <p>Price: {firstBatch.price}</p>
                 </div>
             )}
+            
         </div>
     );
 };
