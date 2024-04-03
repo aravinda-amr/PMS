@@ -9,6 +9,7 @@ import reorderRoutes from './routes/reorder.js';
 import drugoutsRoutes from './routes/drugouts.js';
 import LeaveoutRoutes from './routes/leaveout.js'
 import medicineNameRoutes from './routes/medicinenames.js';
+import leaderboardRoutes from './routes/leaderboard.js';
 
 
 
@@ -21,7 +22,7 @@ import outofstockRoutes from './routes/outofstocks.js';
 import abtoutofstocksRoutes from './routes/abtoutofstocks.js';
 import billing from './routes/billing.js';
 import staffReward from './routes/staffReward.js';
-
+import leaderboard from './routes/leaderboard.js';
 
 dotenv.config()
 
@@ -60,6 +61,9 @@ app.use('/api/billing',billing)
 app.use('/api/staffReward',staffReward)
 
 app.use('/api/leaves', LeaveoutRoutes)
+
+app.use('/api/leaderboard', leaderboard)
+
 
 
 
