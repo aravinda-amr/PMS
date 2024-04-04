@@ -10,46 +10,40 @@ const Loyalty = () => {
  const [searchTerm, setSearchTerm] = useState("");
  const [filteredUsers, setFilteredUsers] = useState([]);
  const [months, setMonths] = useState(6); // State for the number of months
- const [isFiltered, setIsFiltered] = useState(true);
+ const [isFiltered, setIsFiltered] = useState(true); // Initially set to true to display filtered users
  const [isLoading, setIsLoading] = useState(true);
 
- // Fetch and filter users initially
+ // Fetch and filter users with total > 100 initially
  useEffect(() => {
     const fetchAndFilterUsers = async () => {
-       setIsLoading(true);
-       try {
-         // Fetch all users in a single request
-         const response = await fetch("/api/user");
-         if (!response.ok) throw new Error('Failed to fetch users');
-         const users = await response.json();
-   
-         // Fetch total amounts for all users in a single request
-         const totalAmountsResponse = await fetch(`/api/user/totalAmounts?months=${months}`);
-         if (!totalAmountsResponse.ok) throw new Error('Failed to fetch total amounts');
-         const totalAmounts = await totalAmountsResponse.json();
-   
-         // Combine user data with total amounts
-         const usersWithTotalAmounts = users.map(user => ({
-           ...user,
-           totalAmount: totalAmounts[user.contact] || 0
-         }));
-   
-         // Filter users based on total amount
-         const filteredUsers = usersWithTotalAmounts.filter(user => user.totalAmount > 100);
-   
-         dispatch({ type: "SET_USERS", payload: filteredUsers });
-         setFilteredUsers(filteredUsers);
-         setIsFiltered(true);
-       } catch (error) {
-         console.error(error);
-       } finally {
-         setIsLoading(false);
-       }
+      setIsLoading(true);
+      try {
+        const response = await fetch("/api/user");
+        if (!response.ok) throw new Error('Failed to fetch users');
+        const users = await response.json();
+        const filteredUsersWithTotal = await Promise.all(
+          users.map(async (user) => {
+            const totalResponse = await fetch(`/api/user/totalAmount/${user.contact}?months=${months}`);
+            const totalData = await totalResponse.json();
+            if (totalData.length > 0 && totalData[0].totalAmount > 100) {
+              return { ...user, totalAmount: totalData[0].totalAmount };
+            }
+            return null;
+          })
+        );
+        const filteredUsers = filteredUsersWithTotal.filter((user) => user !== null);
+        dispatch({ type: "SET_USERS", payload: filteredUsers });
+        setFilteredUsers(filteredUsers); // Set filtered users
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setIsLoading(false);
+      }
     };
-   
+
     fetchAndFilterUsers();
-   }, [dispatch, months]); // Use the months state here
-   
+ }, [dispatch, months]); // Added months to dependency array
+
  // Add the input field for setting the number of months
  const handleMonthsChange = (event) => {
     setMonths(event.target.value);
