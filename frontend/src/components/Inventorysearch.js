@@ -6,6 +6,7 @@ const InventorySearch = ({onSuccess , medicinenames = []}) => {
     const [firstBatch, setFirstBatch] = useState(null);
     const [selectedDrugName, setSelectedDrugName] = useState('');
     const [searchTerm, setSearchTerm] = useState('');
+    
   
 
     useEffect(() => {
@@ -86,10 +87,6 @@ const InventorySearch = ({onSuccess , medicinenames = []}) => {
                 <div>
                     <h2>Medicine Details:-</h2>
                     <p>Drug Name: {selectedDrugName}</p>
-                    <p>Batch Number: {firstBatch.batchNumber}</p>
-                    {/* <p>Manufacture Date: {firstBatch.manufactureDate}</p>
-                    <p>Expire Date: {firstBatch.expireDate}</p>
-                    <p>Quantity: {firstBatch.quantity}</p> */}
                     <p>Price: {firstBatch.price}</p>
                 </div>
             )}
