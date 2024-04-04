@@ -181,28 +181,29 @@ const insertBatchesForDrugName = async (req, res) => {
     }
 };
 
- // Get a drug name and its related batches
-//  const getDrugNameAndBatches = async (req, res) => {
-//     try {
-//         const drugNameId = req.params.id;
+ // get drug name by search
+ const getDrugNamesearch = async (req, res) => {
+    try {
+        const drugNameId = req.params.id;
 
-//         // Find the drug name by ID
-//         const drugName = await MedicineName.findById(drugNameId);
-//         if (!drugName) {
-//             return res.status(404).json({ message:'Drug name not found' });
-//         }
+        // Find the drug name by ID
+        const drugName = await MedicineName.findById(drugNameId);
+        if (!drugName) {
+            return res.status(404).json({ message:'Drug name not found' });
+        }
 
-//         // Find all batches related to the drug name
-//         const batches = await Drug.find({ drugName: drugNameId });
+        // Find all batches related to the drug name
+        const batches = await Drug.find({ drugName: drugNameId });
 
-//         // Extract dates from the batches
-//         const dates = batches.map(batch => batch.date);
+        // Extract dates from the batches
+        const dates = batches.map(batch => batch.date);
 
-//         res.status(200).json({ drugName, batches, dates });
-//     } catch (error) {
-//         res.status(500).json({ message: error.message });
-//     }
-// };
+        res.status(200).json({ drugName, batches, dates });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+    // get drug name by search end here
 
 
 // Get a drug name and its related batches
@@ -265,6 +266,7 @@ export {
     createDrugName,
     insertBatchesForDrugName,
     getDrugNameAndBatches,
-    getAllDrugNamesAndBatches
+    getAllDrugNamesAndBatches,
+    getDrugNamesearch
 };
 
