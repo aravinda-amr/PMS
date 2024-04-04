@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 
 const AddCouponForm = ({ id, onCouponAdded }) => {
- const [expire, setExpire] = useState('');
- const [discount, setDiscount] = useState('');
+  const [expire, setExpire] = useState('');
+  const [discount, setDiscount] = useState('');
 
- const generateCouponCode = () => {
+  const generateCouponCode = () => {
     let result = '';
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     const charactersLength = characters.length;
@@ -12,9 +12,9 @@ const AddCouponForm = ({ id, onCouponAdded }) => {
       result += characters.charAt(Math.floor(Math.random() * charactersLength));
     }
     return result;
- };
+  };
 
- const handleSubmit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const couponCode = generateCouponCode();
     const couponData = { expire, discount, couponCode };
@@ -41,9 +41,9 @@ const AddCouponForm = ({ id, onCouponAdded }) => {
     } catch (error) {
       console.error('Error adding coupon:', error);
     }
- };
+  };
 
- return (
+  return (
     <form
       className="coupon-form bg-dark-blue-2 text-white p-4 rounded-lg shadow-md"
       onSubmit={handleSubmit}
@@ -56,8 +56,9 @@ const AddCouponForm = ({ id, onCouponAdded }) => {
             value={expire}
             required
             onChange={(e) => setExpire(e.target.value)}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-button focus:ring focus:ring-blue-button focus:ring-opacity-50 text-dark-blue p-2"
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 text-dark-blue p-2"
           />
+
         </label>
         <label className="text-sm font-medium text-white">
           Discount:
@@ -77,7 +78,7 @@ const AddCouponForm = ({ id, onCouponAdded }) => {
         Add Coupon
       </button>
     </form>
- );
+  );
 };
 
 export default AddCouponForm;

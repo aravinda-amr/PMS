@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from "react";
 import CouponTable from "./CouponTable";
 import CouponForm from "./CouponForm";
+import { Typography, Button } from '@mui/material'; // Import Material-UI components
 
 const UserDetails = ({ user }) => {
   const [showCouponTable, setShowCouponTable] = useState(false);
   const [showCouponForm, setShowCouponForm] = useState(false);
   const [coupons, setCoupons] = useState([]);
-  const [totalAmount, setTotalAmount] = useState(0); // State to store total amount
+  const [totalAmount, setTotalAmount] = useState(0);
+  const [isLoadingCoupons, setIsLoadingCoupons] = useState(false);
+  
 
 
   useEffect(() => {
@@ -41,19 +44,21 @@ const UserDetails = ({ user }) => {
 */
   const handleAddCouponClick = () => {
     setShowCouponForm(!showCouponForm);
-
   };
 
   const fetchCoupons = async () => {
-
+    setIsLoadingCoupons(true); // Set loading state to true
     try {
       const response = await fetch(`/api/user/${user._id}/coupons`);
       const coupons = await response.json();
       setCoupons(coupons);
     } catch (error) {
       console.error('Error fetching coupons:', error);
+    } finally {
+      setIsLoadingCoupons(false); // Set loading state to false
     }
   };
+
 
   const handleViewButtonClick = async () => {
 
@@ -105,43 +110,46 @@ const UserDetails = ({ user }) => {
 
   return (
     <div className="bg-gray-100 rounded-lg p-4 mb-4 flex flex-col">
-       <div className="bg-dark-blue-2 flex justify-between items-center px-4 py-2 rounded-t-lg">
-         <h2 className="text-lg font-medium text-white">
-           {user.name}
-         </h2>
-         <h4 className=" text-xl text-white font-medium px-4 py-2">Rs.{totalAmount}</h4> {/* Changed here */}
-       </div>
-       <div className="bg-dark-blue-2 flex items-center px-4 py-2 rounded-b-lg">
-         <h4 className="font-medium text-white mr-2">
-           Contact: {user.contact}
-         </h4>
-         <div className="flex ml-auto">
-           <button
-             className="hover:text-login1 text-white font-bold py-2 px-4 rounded mr-2 fixed-width-button"
-             onClick={handleViewButtonClick}
-           >
-             {showCouponTable ? "Hide Coupons" : "View Coupons"}
-           </button>
-           <button
-             className="hover:text-login1 text-white font-bold py-2 px-4 rounded fixed-width-button"
-             onClick={handleAddCouponClick}
-           >
-             {showCouponForm ? "Close" : "Add Coupon"}
-           </button>
-         </div>
-       </div>
-       {showCouponTable && (
-         <div className="mt-4">
-           <CouponTable coupons={coupons} onDeleteCoupon={handleDeleteCoupon} onEditCoupon={handleEditCoupon} />
-         </div>
-       )}
-       {showCouponForm && (
-         <div className="mt-4">
-           <CouponForm id={user._id} onCouponAdded={fetchCoupons} />
-         </div>
-       )}
+      <div className="bg-dark-blue-2 flex justify-between items-center px-4 py-2 rounded-t-lg">
+        <Typography variant="h6" component="h2" className="text-white">
+          {user.name}
+        </Typography>
+        <Typography variant="h5" component="h4" className="text-white font-medium px-4 py-2">
+          Rs.{totalAmount}
+        </Typography>
+      </div>
+      <div className="bg-dark-blue-2 flex items-center px-4 py-2 rounded-b-lg">
+        <Typography variant="subtitle1" component="h4" className="text-white font-medium mr-2">
+          Contact: {user.contact}
+        </Typography>
+        <div className="flex ml-auto">
+          <button
+            className="hover:text-login1 text-white font-bold py-2 px-4 rounded mr-2 fixed-width-button"
+            onClick={handleViewButtonClick}
+          >
+            {showCouponTable ? "Hide Coupons" : "View Coupons"}
+          </button>
+          <button
+            className="hover:text-login1 text-white font-bold py-2 px-4 rounded fixed-width-button"
+            onClick={handleAddCouponClick}
+          >
+            {showCouponForm ? "Hide Form" : "Add Coupon"}
+          </button>
+        </div>
+      </div>
+      {showCouponTable && (
+        <div className="mt-4">
+          <CouponTable coupons={coupons} onDeleteCoupon={handleDeleteCoupon} onEditCoupon={handleEditCoupon} isLoading={isLoadingCoupons} />
+        </div>
+      )}
+
+      {showCouponForm && (
+        <div className="mt-4">
+          <CouponForm id={user._id} onCouponAdded={fetchCoupons} />
+        </div>
+      )}
     </div>
-   );
-       };
+  );
+};
 
 export default UserDetails;
