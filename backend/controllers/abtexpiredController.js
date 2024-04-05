@@ -1,20 +1,17 @@
-import Drug from  '../models/drugModel.js'
-import mongoose from "mongoose"
 
-//get all expired drugs
-export const getabtExpired = async (req, res)=>{
- 
- 
+
+import Drug from '../models/drugModel.js';
+
+// Get all drugs that will expire in the next 30 days
+export const getabtExpired = async (req, res) => {
     const now = new Date();
     const expirationThreshold = new Date(now.getTime());
     expirationThreshold.setDate(expirationThreshold.getDate() + 30);
-  
+
+    // Corrected query to find drugs expiring in the next 30 days
     const abtexpired = await Drug.find({
-      expireDate: { $lt: expirationThreshold, $gt: now } // Changed operator
+        expireDate: { $gte: now, $lt: expirationThreshold }
     });
 
-
-  res.status(200).json(abtexpired);
+    res.status(200).json(abtexpired);
 }
-
-
