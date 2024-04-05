@@ -16,7 +16,7 @@ import medicineNameRoutes from './routes/medicinenames.js';
 import staffRewardRoutes from './routes/staffReward.js';
 /*import handledRoutes from './routes/handled.js';*/
 import expiredRoutes from './routes/expired.js';
-import abtexpiredRoutes from './routes/expired.js';
+import abtexpiredRoutes from './routes/abtexpired.js';
 import outofstockRoutes from './routes/outofstocks.js';
 import abtoutofstocksRoutes from './routes/abtoutofstocks.js';
 import billing from './routes/billing.js';
