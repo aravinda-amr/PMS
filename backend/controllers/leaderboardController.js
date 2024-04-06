@@ -52,6 +52,7 @@ const calculateLeaderboardData = async () => {
                     mostPrescriptionHandledCount: 1,
                     mostCashAmountHandledPid: 1,
                     mostCashAmountHandledAmount: 1
+
                 }
             }
         ]);
@@ -169,7 +170,23 @@ export const deleteLeaderboard = async (req, res) => {
     }
 };
 
+// Add cash prize to leaderboard
+export const addCashPrize = async (req, res) => {
+    try {
+        const { month, year, cashPrize } = req.body;
+        const existingEntry = await leaderboard.findOne({ month, year });
 
+        if (!existingEntry) {
+            return res.status(404).json({ message: 'Leaderboard entry not found' });
+        }
+
+        existingEntry.cashPrize = cashPrize;
+        await existingEntry.save();
+        res.json(existingEntry);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
 
 
 
