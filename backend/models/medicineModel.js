@@ -16,19 +16,9 @@ const medicinenameSchema = new Schema({
 
 }, { timestamps: true });
 
-medicinenameSchema.post('findOneAndUpdate', async function(doc, next) {
-    if (this.getUpdate().totalquantity) {
-        const updatedQuantity = this.getUpdate().totalquantity;
-        const drugName = doc.drugName;
-
-        // Update all Reorder documents with the same drugName
-        await Reorder.updateMany(
-            { drugName: drugName },
-            { totalquantity: updatedQuantity }
-        );
-    }
-    next();
+medicinenameSchema.post('findOneAndUpdate', async function(doc) {
+    // Update corresponding reorder documents with the new totalquantity
+    await Reorder.updateMany({ drugName: doc.drugName }, { totalquantity: doc.totalquantity });
 });
-
 
 export default mongoose.model('MedicineName', medicinenameSchema);

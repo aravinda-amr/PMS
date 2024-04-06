@@ -35,8 +35,7 @@ export const createReorder = async (req, res) => {
         if (!drug) {
             return res.status(404).json({ error: 'Drug not found' });
         }
-       
-
+    
         const reorder = await Reorder.create({
             supplierEmail,
             drugName,// Use the drugName from the found drug document
