@@ -1,32 +1,37 @@
 import React, { useState } from 'react';
 
-const LeaderboardPrizeForm = ({ onCouponAdded }) => {
- const [month, setMonth] = useState('');
- const [year, setYear] = useState('');
- const [cashPrize, setCashPrize] = useState('');
+const LeaderboardPrizeForm = ({ id, onPrizeAdded }) => {
+  const [cashPrize, setCashPrize] = useState('');
 
- const handleSubmit = async (e) => {
-    e.preventDefault();
-   
-    try {
-       const response = await fetch('/api/addCashPrize', {
-         method: 'POST',
-         headers: {
-           'Content-Type': 'application/json',
-         },
-         body: JSON.stringify({ month, year, cashPrize }),
-       });
-   
-       if (!response.ok) {
-         throw new Error('Failed to add cash prize');
-       }
-   
-       const data = await response.json();
-       onCouponAdded(data); // Assuming onCouponAdded is a function passed as a prop to update the UI
-    } catch (error) {
-       console.error('Error adding cash prize:', error);
-    }
-   };
+  const handleSubmit = async (e) => {
+      e.preventDefault();
+  
+      try {
+          const response = await fetch(`/api/leaderboard/${id}/addCashPrize`, {
+              method: 'PATCH',
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ cashPrize }),
+          });
+  
+          if (!response.ok) {
+              throw new Error('Failed to add cash prize');
+          }
+  
+          setCashPrize('');
+  
+          const data = await response.json();
+          const newCashPrize = data.cashPrize;
+  
+          if (onPrizeAdded) {
+              onPrizeAdded(newCashPrize);
+          }
+      } catch (error) {
+          console.error('Error adding cash prize:', error);
+      }
+  };
+
    
   return (
     <form
