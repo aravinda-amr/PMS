@@ -52,20 +52,16 @@ const calculateLeaderboardData = async () => {
                     mostPrescriptionHandledCount: 1,
                     mostCashAmountHandledPid: 1,
                     mostCashAmountHandledAmount: 1
-
                 }
             }
         ]);
 
-        return leaderboardData;
+        return leaderboardData || []; // Ensure an array is returned
     } catch (error) {
         console.error("Error calculating leaderboard data:", error);
+        return []; // Return an empty array in case of error
     }
 };
-
-
-
-
 
 // Controller to get all leaderboards
 export const getAllLeaderboards = async (req, res) => {
@@ -90,15 +86,12 @@ export const getLeaderboard = async (req, res) => {
     }
 };
 
-
-
-//create new leaderboard
-
-
 // Function to create or update leaderboard entries
 export const createLeaderboardEntry = async (data) => {
     try {
-       
+        if (!Array.isArray(data)) {
+            throw new Error("Data is not iterable");
+        }
 
         for (const item of data) {
             const existingEntry = await leaderboard.findOne({ month: item.month, year: item.year });
@@ -108,7 +101,6 @@ export const createLeaderboardEntry = async (data) => {
                 existingEntry.mostPrescriptionHandledPid = item.mostPrescriptionHandledPid;
                 existingEntry.mostCashAmountHandledPid = item.mostCashAmountHandledPid;
                 await existingEntry.save();
-                // console.log(`Leaderboard data updated for month ${item.month}, year ${item.year}`);
             } else {
                 // Insert new document
                 const leaderboardEntry = new leaderboard({
@@ -118,10 +110,8 @@ export const createLeaderboardEntry = async (data) => {
                     mostCashAmountHandledPid: item.mostCashAmountHandledPid,
                 });
                 await leaderboardEntry.save();
-                // console.log(`New leaderboard data added for month ${item.month}, year ${item.year}`);
             }
         }
-        // console.log("Leaderboard data updated/inserted successfully.");
     } catch (error) {
         console.error("Error updating/inserting leaderboard data:", error);
     }
@@ -131,7 +121,11 @@ export const createLeaderboardEntry = async (data) => {
 (async () => {
     try {
         const leaderboardData = await calculateLeaderboardData();
-        await createLeaderboardEntry(leaderboardData);
+        if (Array.isArray(leaderboardData)) {
+            await createLeaderboardEntry(leaderboardData);
+        } else {
+            console.error("Leaderboard data is not an array");
+        }
     } catch (error) {
         console.error("Error:", error);
     }
@@ -170,6 +164,8 @@ export const deleteLeaderboard = async (req, res) => {
     }
 };
 
+
+
 // Get cash prize from leaderboard
 export const getCashPrize = async (req, res) => {
     console.log('getCashPrize called'); // Debugging
@@ -204,50 +200,15 @@ export const addCashPrize = async (req, res) => {
     }
 };
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      
+// Controller to delete a cashprize by pharmacistID
+export const deleteCashPrize = async (req, res) => {
+    try {
+        const result = await leaderboard.deleteOne({ cashPrize: req.params.cashPrize });
+        if (result.deletedCount === 0) {
+            return res.status(404).json({ message: 'cash prize not found' });
+        }
+        res.json({ message: 'cash prize deleted' });
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+};
