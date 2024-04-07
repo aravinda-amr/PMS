@@ -21,11 +21,11 @@ const staffRewardSchema = new Schema({
     },
     
     invoiceCount: {
-        type: String,
+        type: Number,
         required: true
     },
     totalCashAmount: {
-        type: String,
+        type: Number,
         required: true
     },
    
