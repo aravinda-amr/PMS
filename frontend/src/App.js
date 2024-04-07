@@ -19,7 +19,7 @@ import NewSale from './pages/NewSale';
 import StaffReward from './pages/StaffReward';
 import Leaderboard from './pages/Leaderboard.js';
 import Inventory from './pages/Inventory';
-
+import Allprescri from './pages/Allprescriptions.js';
 
 import './index.css';
 
@@ -101,6 +101,10 @@ function App() {
             <Route
                 path="/inventory"
                 element={<Inventory/>}
+            />
+            <Route
+                path="/allp"
+                element={<Allprescri/>}
             />
           </Routes>
         </div>

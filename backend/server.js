@@ -23,6 +23,7 @@ import abtoutofstocksRoutes from './routes/abtoutofstocks.js';
 import billing from './routes/billing.js';
 import staffReward from './routes/staffReward.js';
 import leaderboard from './routes/leaderboard.js';
+import allprescriptionRoutes from './routes/AllPrescriptions.js';
 
 dotenv.config()
 
@@ -41,6 +42,8 @@ app.use((req, res, next) => {
 app.use('/api/user', userRoutes)
 
 app.use('/api/prescription', prescriptionRoutes)
+
+app.use('/api/prescriptiongetall', allprescriptionRoutes )
 
 app.use('/api/reorder', reorderRoutes)
 
