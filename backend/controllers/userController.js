@@ -116,7 +116,7 @@ export const deleteCoupon = async (req, res) => {
   //Update a coupon for a user
   export const updateCoupon = async (req, res) => {
     const { id, couponId } = req.params;
-    const { expire, discount, couponCode } = req.body;
+    const { expire, discount, used } = req.body;
   
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).json({ error: 'No such user' });
@@ -128,27 +128,19 @@ export const deleteCoupon = async (req, res) => {
       return res.status(400).json({ error: 'No such user' });
     }
   
-    const coupon = user.coupons.id(couponId);
+    const coupon = user.coupons.find((coupon) => coupon._id == couponId);
   
     if (!coupon) {
       return res.status(400).json({ error: 'No such coupon' });
     }
   
-    if (expire) {
-      coupon.expire = expire;
-    }
-  
-    if (discount) {
-      coupon.discount = discount;
-    }
-  
-    if (couponCode) {
-      coupon.couponCode = couponCode;
-    }
+    coupon.expire = expire;
+    coupon.discount = discount;
+    coupon.used = used;
   
     await user.save();
   
-    res.status(200).json(coupon);
+    res.status(200).json(user.coupons);
   }
 
   //Get total amount within six months for a user
