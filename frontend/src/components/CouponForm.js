@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { format } from 'date-fns';
 
 // Define the generateCouponCode function before using it
@@ -12,12 +12,25 @@ const generateCouponCode = () => {
   return result;
 };
 
-const AddCouponForm = ({ id, onCouponAdded, coupon, isEditing, couponStatus, onFormSubmit }) => {
-  const [expire, setExpire] = useState(coupon ? format(new Date(coupon.expire), 'yyyy-MM-dd') : '');
-  const [discount, setDiscount] = useState(coupon ? coupon.discount : '');
-  const [used, setUsed] = useState(coupon ? coupon.used : false);
-  const [couponCode] = useState(coupon ? coupon.couponCode : generateCouponCode());
+const AddCouponForm = ({ id, onCouponAdded, coupon, isEditing, onFormSubmit, onReset }) => {
+  const [expire, setExpire] = useState('');
+  const [discount, setDiscount] = useState('');
+  const [used, setUsed] = useState(false);
+  const [couponCode, setCouponCode] = useState('');
 
+  useEffect(() => {
+    if (coupon) {
+      setExpire(format(new Date(coupon.expire), 'yyyy-MM-dd'));
+      setDiscount(coupon.discount);
+      setUsed(coupon.used);
+      setCouponCode(coupon.couponCode);
+    } else {
+      setExpire('');
+      setDiscount('');
+      setUsed(false);
+      setCouponCode(generateCouponCode());
+    }
+ }, [coupon]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -55,6 +68,10 @@ const AddCouponForm = ({ id, onCouponAdded, coupon, isEditing, couponStatus, onF
         onCouponAdded();
       }
 
+      if (onReset) {
+        onReset();
+      }
+      
       // Call the onFormSubmit function to hide the form
       if (onFormSubmit) {
         onFormSubmit();

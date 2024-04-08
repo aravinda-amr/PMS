@@ -41,7 +41,11 @@ const UserDetails = ({ user }) => {
 
   const handleAddCouponClick = () => {
     setShowCouponForm(!showCouponForm);
-  };
+    if (!showCouponForm) {
+       resetForm(); // Reset the form fields
+    }
+   };
+   
 
   const fetchCoupons = async () => {
     setIsLoadingCoupons(true); // Set loading state to true
@@ -82,6 +86,12 @@ const UserDetails = ({ user }) => {
     }
   };
 
+  const resetForm = () => {
+    setSelectedCoupon(null);
+    setIsEditing(false);
+   };
+   
+
   return (
     <div className="bg-gray-100 rounded-lg p-4 mb-4 flex flex-col">
       <div className="bg-dark-blue-2 flex justify-between items-center px-4 py-2 rounded-t-lg">
@@ -119,7 +129,7 @@ const UserDetails = ({ user }) => {
 
       {showCouponForm && (
         <div className="mt-4">
-          <CouponForm id={user._id} onCouponAdded={fetchCoupons} coupon={selectedCoupon} isEditing={isEditing} onFormSubmit={handleAddCouponClick} />
+          <CouponForm id={user._id} onCouponAdded={fetchCoupons} coupon={selectedCoupon} isEditing={isEditing} onFormSubmit={handleAddCouponClick} onReset={resetForm}/>
         </div>
       )}
     </div>
