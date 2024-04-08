@@ -1,9 +1,11 @@
     import React, { useState, useEffect } from 'react';
     import { AiOutlineDelete, AiOutlineEdit ,AiFillDelete  } from 'react-icons/ai';
+    import {MdClose} from "react-icons/md";
     import MedicineForm from '../components/MedicineForm';
     import Batchmedicine from '../components/Batchmedicine';
     import InventorySearch from '../components/Inventorysearch';
     import BatchUpdateForm from '../components/BatchUpdateForm'; 
+    import TextField from '@mui/material/TextField';
 
 
     const Inventory = () => {
@@ -152,45 +154,71 @@
 
         return (
             <div className="ml-64">
+                <h1 className="text-3xl font-bold mb-4">Inventory</h1> 
+                <div className="flex space-x-4 ml-5 absolute mt-4 mr-6">
+                    <MedicineForm onSuccess={handleAddBatchSuccess} />
+                    <Batchmedicine onSuccess={handleAddBatchSuccess} onUpdateDrugs={handleAddMedicineSuccess} />
+                </div>
+                <div className="relative mb-4 flex justify-end">
+                <div className="flex items-center">
+                        <div className="flex items-center mr-10 ">
+                        <TextField
+                        label="Search medicine..."
+                        variant="outlined"
+                        size="small"
+                        value={searchTerm}
+                        onChange={handleSearch} 
+                        // className="border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 mr-10"
+                        />
 
-                <h1>Inventory</h1> 
-                <br/>
-                <input 
-                    type="text" 
-                    placeholder="Search medicine..." 
-                    value={searchTerm} 
-                    onChange={handleSearch} 
-                />
-                    <br></br>
+                    </div>
+
+                    </div>
+
+                    {searchTerm && (
+                        <button 
+                            onClick={() => setSearchTerm('')} 
+                            className="absolute right-8 top-0 mt-2 mr-3 text-gray-500 hover:text-gray-700 bg-white rounded-full p-1 "
+                        >
+                          <MdClose/>
+                        </button>
+                    )}
+                    
+           
+                    
+            </div>
+              
 
                     
                 {filteredMedicines.map((medicine) => (
-                    <div key={medicine.drugName._id} className="medicine">
+                    <div key={medicine.drugName._id} className=" ml-8 mr-8 medicine  border-gray-300 rounded-lg px-8 py-6 mb-8 bg-dark-blue text-white" >
 
-                <h1 style={{ fontWeight: 'bold' }}>Drug Name: {medicine.drugName.drugName}</h1>
-                    <h2>Total Quantity: {medicine.drugName.totalquantity}</h2> 
-                                <br></br>
-                                <table>
+                <h2 style={{ fontWeight: 'bold',fontSize: '23px' }}>Drug Name: {medicine.drugName.drugName}</h2>
+                    <h2 className="text-lg">Total Quantity: {medicine.drugName.totalquantity}</h2>      
+                    <br></br>          
+                                <table className="w-full">
                                     <thead>
                                         <tr>
-                                            <th>Batch Number</th>
+                                            <th >Batch Number</th>
                                             <th>Manufacture Date</th>
                                             <th>Expire Date</th>
                                             <th>Quantity</th>
                                             <th>Price</th>
+                                            <th></th>
+                                            <th></th>
                                         </tr>
                             </thead>
                             <tbody>
                                 {medicine.batches.map((batch) => (
-                                    <tr key={batch._id}>
-                                        <td>{batch.batchNumber}</td>
-                                        <td>{new Date(batch.manufactureDate).toLocaleDateString()}</td>
-                                        <td>{new Date(batch.expireDate).toLocaleDateString()}</td>
-                                        <td>{batch.quantity}</td>
-                                        <td>{batch.price}</td>
-                                        <td><button onClick={() => handleDeleteBatch(batch._id)}> <AiOutlineDelete /> </button></td>
+                                    <tr key={batch._id} >
+                                        <td className="text-center text-lg">{batch.batchNumber}</td>
+                                        <td className="text-center text-lg">{new Date(batch.manufactureDate).toLocaleDateString()}</td>
+                                        <td className="text-center text-lg">{new Date(batch.expireDate).toLocaleDateString()}</td>
+                                        <td className="text-center text-lg">{batch.quantity}</td>
+                                        <td className="text-center text-lg">{batch.price}</td>
+                                        <td className="text-center text-lg"><button onClick={() => handleDeleteBatch(batch._id)} className="text-red-600"> <AiOutlineDelete /> </button></td>
                                         <td>
-                                        <button onClick={() => handleUpdateButtonClick(batch._id)}>  <AiOutlineEdit /></button>
+                                        <button onClick={() => handleUpdateButtonClick(batch._id)} className="text-blue-600"> <AiOutlineEdit /></button>
                                         </td>
                                         
                                     </tr>
@@ -199,10 +227,10 @@
                         </table>
                         
                         <br></br>
-                        <button onClick={() => handleDeleteMedicine(medicine.drugName._id)}><AiFillDelete /></button>
+                        <button onClick={() => handleDeleteMedicine(medicine.drugName._id)}className="text-red-600 "><AiFillDelete /></button>
                     </div>
                 ))}
-
+                <div className="flex space-x-4 ml-5 absolute mt-4 mr-6">
                 {showUpdateForm && (
                     <BatchUpdateForm
                         batchId={selectedBatch}
@@ -223,12 +251,8 @@
                         }, {})}
                     />
                 )}
+                </div>
 
-
-                <MedicineForm onSuccess={handleAddBatchSuccess}/>
-                <br></br>
-                <Batchmedicine onSuccess={handleAddBatchSuccess} onUpdateDrugs={handleAddMedicineSuccess}/> 
-                <br></br>
                 <InventorySearch  medicinenames={medicinenames}/>
 
             
