@@ -9,6 +9,17 @@ const UserDetails = ({ user }) => {
   const [coupons, setCoupons] = useState([]);
   const [totalAmount, setTotalAmount] = useState(0);
   const [isLoadingCoupons, setIsLoadingCoupons] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+ const [selectedCoupon, setSelectedCoupon] = useState(null);
+ const [couponStatus, setCouponStatus] = useState(false);
+
+ const handleEditCoupon = (couponId) => {
+    const coupon = coupons.find(c => c._id === couponId);
+    setSelectedCoupon(coupon);
+    setIsEditing(true);
+    setShowCouponForm(true); 
+    setCouponStatus(coupon.used);
+ };
   
 
 
@@ -85,7 +96,7 @@ const UserDetails = ({ user }) => {
     }
   };
 
-  const handleEditCoupon = async (couponId, data) => {
+ /* const handleEditCoupon = async (couponId, data) => {
     try {
       const response = await fetch(`/api/user/${user._id}/coupons/${couponId}`, {
         method: 'PATCH',
@@ -104,7 +115,7 @@ const UserDetails = ({ user }) => {
     } catch (error) {
       console.error('Error updating coupon:', error);
     }
-  };
+  };*/
 
 
 
@@ -145,7 +156,7 @@ const UserDetails = ({ user }) => {
 
       {showCouponForm && (
         <div className="mt-4">
-          <CouponForm id={user._id} onCouponAdded={fetchCoupons} />
+          <CouponForm id={user._id} onCouponAdded={fetchCoupons} coupon={selectedCoupon} isEditing={isEditing} onFormSubmit={handleAddCouponClick} />
         </div>
       )}
     </div>
