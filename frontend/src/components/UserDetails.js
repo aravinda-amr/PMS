@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import CouponTable from "./CouponTable";
 import CouponForm from "./CouponForm";
-import { Typography, Button } from '@mui/material'; // Import Material-UI components
+import { Typography } from '@mui/material'; // Import Material-UI components
 
 const UserDetails = ({ user }) => {
   const [showCouponTable, setShowCouponTable] = useState(false);
@@ -10,25 +10,21 @@ const UserDetails = ({ user }) => {
   const [totalAmount, setTotalAmount] = useState(0);
   const [isLoadingCoupons, setIsLoadingCoupons] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
- const [selectedCoupon, setSelectedCoupon] = useState(null);
- const [couponStatus, setCouponStatus] = useState(false);
+  const [selectedCoupon, setSelectedCoupon] = useState(null);
 
- const handleEditCoupon = (couponId) => {
+  const handleEditCoupon = (couponId) => {
     const coupon = coupons.find(c => c._id === couponId);
     setSelectedCoupon(coupon);
     setIsEditing(true);
-    setShowCouponForm(true); 
-    setCouponStatus(coupon.used);
- };
-  
-
+    setShowCouponForm(true);
+  };
 
   useEffect(() => {
     const fetchTotalAmount = async () => {
       try {
         const response = await fetch(`/api/user/totalAmount/${user.contact}`);
         const data = await response.json();
-        // Assuming the API returns an array of objects, extract the totalAmount from the first object
+
         if (data.length > 0) {
           setTotalAmount(data[0].totalAmount);
 
@@ -43,16 +39,6 @@ const UserDetails = ({ user }) => {
     fetchTotalAmount();
   }, [user.contact]); // Depend on user.contact to refetch if it changes
 
-
-  /* const handleViewButtonClick = async () => {
-       setShowCouponTable(!showCouponTable);
-       if (!showCouponTable) return;
- 
-       const response = await fetch(`/api/user/${user._id}/coupons`);
-       const coupons = await response.json();
-       setCoupons(coupons);
-   };
-*/
   const handleAddCouponClick = () => {
     setShowCouponForm(!showCouponForm);
   };
@@ -95,29 +81,6 @@ const UserDetails = ({ user }) => {
       console.error('Error deleting coupon:', error);
     }
   };
-
- /* const handleEditCoupon = async (couponId, data) => {
-    try {
-      const response = await fetch(`/api/user/${user._id}/coupons/${couponId}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to update coupon');
-      }
-
-      const updatedCoupon = await response.json();
-      setCoupons(coupons.map(coupon => coupon.id === couponId ? updatedCoupon : coupon));
-    } catch (error) {
-      console.error('Error updating coupon:', error);
-    }
-  };*/
-
-
 
   return (
     <div className="bg-gray-100 rounded-lg p-4 mb-4 flex flex-col">

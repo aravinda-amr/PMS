@@ -2,20 +2,10 @@ import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { format } from 'date-fns';
-import { useState } from 'react';
 
 const CouponTable = ({ coupons, onDeleteCoupon, onEditCoupon, isLoading }) => {
-  const [selectedCoupon, setSelectedCoupon] = useState(null);
- 
-  const handleEditCoupon = (couponId) => {
-     const coupon = coupons.find(c => c._id === couponId);
-     setSelectedCoupon(coupon);
-     onEditCoupon(couponId);
-  };
-
-
   if (isLoading) {
-     return <Typography variant="body1">Loading...</Typography>;
+    return <Typography variant="body1">Loading...</Typography>;
   }
   return (
     <TableContainer component={Paper}>
@@ -35,7 +25,7 @@ const CouponTable = ({ coupons, onDeleteCoupon, onEditCoupon, isLoading }) => {
               <TableCell sx={{ fontWeight: 'bold', color: 'primary.main' }}>{coupon.discount}%</TableCell>
               <TableCell sx={{ fontSize: '0.875rem', color: 'text.secondary' }}>{format(new Date(coupon.expire), 'MM/dd/yyyy')}</TableCell>
               <TableCell sx={{ fontSize: '0.875rem', color: coupon.used ? 'error.main' : 'success.main' }}>{coupon.couponCode}</TableCell>
-              <TableCell sx={{ fontWeight: 'bold',fontSize: '0.875rem', color: coupon.used ? 'error.main' : 'success.main' }}>{coupon.used ? 'Used' : 'Active'}</TableCell>
+              <TableCell sx={{ fontWeight: 'bold', fontSize: '0.875rem', color: coupon.used ? 'error.main' : 'success.main' }}>{coupon.used ? 'Used' : 'Active'}</TableCell>
               <TableCell>
                 <IconButton onClick={() => onDeleteCoupon(coupon._id)}>
                   <DeleteIcon />
