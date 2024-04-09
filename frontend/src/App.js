@@ -11,7 +11,7 @@ import Loyalty from './pages/Loyalty';
 import Expired from './pages/Expired';
 import AboutExpire from './pages/AboutExpire';
 import OutOfStock from './pages/OutOfStock';
-import AboutToOutOfStock from './pages/AboutToOutOfStocks.js';
+import AboutToOutOfStock from './pages/AboutToOutOfStocks';
 import Prescription from './pages/Prescription';
 import Leave from './pages/Leave'
 import Billing from './pages/Billing';
@@ -20,7 +20,7 @@ import StaffReward from './pages/StaffReward';
 import Leaderboard from './pages/Leaderboard.js';
 import Inventory from './pages/Inventory';
 
-
+import SalesReport from './pages/SR'
 import './index.css';
 
 
@@ -102,6 +102,12 @@ function App() {
                 path="/inventory"
                 element={<Inventory/>}
             />
+
+            <Route
+                path="/salesreport"
+                element={<SalesReport/>}
+            />
+
           </Routes>
         </div>
       </BrowserRouter>
