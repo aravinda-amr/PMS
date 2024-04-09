@@ -16,19 +16,13 @@ import Prescription from './pages/Prescription.js';
 import Leave from './pages/Leave.js'
 import Billing from './pages/Billing.js';
 import NewSale from './pages/NewSale.js';
+import StaffReward from './pages/StaffReward.js';
 
 import Inventory from './pages/Inventory.js';
 
-
+import SalesReport from './pages/SR.js'
 import './index.css';
 
-import StaffReward from './pages/StaffReward.js';
-
-
-
-
-
-import SalesReport from './pages/SR.js'
 
 
 function App() {
