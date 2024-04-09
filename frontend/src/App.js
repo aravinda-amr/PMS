@@ -2,25 +2,25 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useAuthContext } from './hooks/useAuthContext';
 import { UserContextProvider } from './context/UserContext';
 //Pages & Components
-import Home from './pages/Home.js';
-import Login from './pages/Login.js';
-import Signup from './pages/Signup.js';
+import Home from './pages/Home';
+import Login from './pages/Login';
+import Signup from './pages/Signup';
 import Navbar from './components/Navbar';
-import Reorder from './pages/Reorder.js';
-import Loyalty from './pages/Loyalty.js';
-import Expired from './pages/Expired.js';
-import AboutExpire from './pages/AboutExpire.js';
-import OutOfStock from './pages/OutOfStock.js';
-import AboutToOutOfStock from './pages/AboutToOutOfStocks.js';
-import Prescription from './pages/Prescription.js';
-import Leave from './pages/Leave.js'
-import Billing from './pages/Billing.js';
-import NewSale from './pages/NewSale.js';
-import StaffReward from './pages/StaffReward.js';
+import Reorder from './pages/Reorder';
+import Loyalty from './pages/Loyalty';
+import Expired from './pages/Expired';
+import AboutExpire from './pages/AboutExpire';
+import OutOfStock from './pages/OutOfStock';
+import AboutToOutOfStock from './pages/AboutToOutOfStocks';
+import Prescription from './pages/Prescription';
+import Leave from './pages/Leave'
+import Billing from './pages/Billing';
+import NewSale from './pages/NewSale';
+import StaffReward from './pages/StaffReward';
 
-import Inventory from './pages/Inventory.js';
+import Inventory from './pages/Inventory';
 
-import SalesReport from './pages/SR.js'
+import SalesReport from './pages/SR'
 import './index.css';
 
 
