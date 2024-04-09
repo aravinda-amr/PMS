@@ -9,6 +9,9 @@ const LeaderboardDetails = ({ leaderboard }) => {
     const [cashPrize, setCashPrize] = useState([]);
     const [month, setMonth] = useState(leaderboard.month);
     const [year, setYear] = useState(leaderboard.year);
+    const [editMode, setEditMode] = useState(false);
+    const [editingCashPrize, setEditingCashPrize] = useState(null);
+
 
     // Function to convert month number to month name
     const getMonthName = (monthNumber) => {
@@ -42,9 +45,19 @@ const LeaderboardDetails = ({ leaderboard }) => {
         }
     };
 
+    const handleEditCashPrize = (cashPrizeToEdit) => {
+        setEditingCashPrize(cashPrizeToEdit);
+        setEditMode(true); // Enable edit mode
+        setShowPrizeForm(true); // Show the form for editing
+    };
+
     const updateCashPrize = (newCashPrize) => {
         setCashPrize(newCashPrize);
+        setEditMode(false); // Reset edit mode
+        setEditingCashPrize(null); // Reset the cash prize being edited
     };
+
+
 
     return (
         <div className="bg-gray-100 rounded-lg p-4 mb-4 flex flex-col">
@@ -79,12 +92,17 @@ const LeaderboardDetails = ({ leaderboard }) => {
             </div>
             {showPrizeForm && (
                 <div className="mt-4">
-                    <LeaderboardPrizeForm onPrizeAdded={updateCashPrize} id={leaderboard._id} />
+                    <LeaderboardPrizeForm
+                        onPrizeAdded={updateCashPrize}
+                        id={leaderboard._id}
+                        initialCashPrize={editingCashPrize}
+                        editMode={editMode}
+                    />
                 </div>
             )}
             {showCashPrizesDetails && (
                 <div className="mt-4">
-                    <LeaderboardPrizeDisplay leaderboard={leaderboard} cashPrize={cashPrize} />
+                    <LeaderboardPrizeDisplay leaderboard={leaderboard} cashPrize={cashPrize} onEditCashPrize={handleEditCashPrize} />
                 </div>
             )}
 
