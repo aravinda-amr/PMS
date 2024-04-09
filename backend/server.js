@@ -9,7 +9,7 @@ import reorderRoutes from './routes/reorder.js';
 import drugoutsRoutes from './routes/drugouts.js';
 import LeaveoutRoutes from './routes/leaveout.js'
 import medicineNameRoutes from './routes/medicinenames.js';
-
+import salesreportsRoutes from './routes/comment.js'
 
 
 
@@ -62,6 +62,7 @@ app.use('/api/leaves', LeaveoutRoutes)
 
 app.use('/api/leaderboard', leaderboard)
 
+app.use('/api/salesreport', salesreportsRoutes )
 
 
 

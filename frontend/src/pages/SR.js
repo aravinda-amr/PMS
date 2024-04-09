@@ -14,7 +14,7 @@ const SalesReport = () => {
   useEffect(() => {
 
     const fetchWorkouts = async () => {
-      const response= await fetch('/api/comments')
+      const response= await fetch('/api/salesreport')
       const json = await response.json()
 
       if(response.ok){
@@ -29,16 +29,16 @@ const SalesReport = () => {
   
 
   return(
-    <div>
-    <div className="sr">
-      <div className="workouts">
+    <div className='ml-64'>
+       
+    <h1 className="text-2xl font-semibold text-gray-800 ml-64">Sales Report</h1>
+      <CommentForm />
         {comment && comment.map((comments) =>(
           <CommentDetails key={comments._id} comments={comments} />
         ))}
         </div>
-        <CommentForm />
-    </div>
-    </div>
+    
+  
   )
 }
 
