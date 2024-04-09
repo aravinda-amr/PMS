@@ -43,6 +43,7 @@ const UserDetails = ({ user }) => {
     setShowCouponForm(!showCouponForm);
     if (!showCouponForm) {
        resetForm(); // Reset the form fields
+       setShowCouponTable(true);
     }
    };
    
