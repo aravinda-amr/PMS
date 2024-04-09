@@ -9,12 +9,10 @@ import reorderRoutes from './routes/reorder.js';
 import drugoutsRoutes from './routes/drugouts.js';
 import LeaveoutRoutes from './routes/leaveout.js'
 import medicineNameRoutes from './routes/medicinenames.js';
-import leaderboardRoutes from './routes/leaderboard.js';
 
 
 
 
-import staffRewardRoutes from './routes/staffReward.js';
 /*import handledRoutes from './routes/handled.js';*/
 import expiredRoutes from './routes/expired.js';
 import abtexpiredRoutes from './routes/abtexpired.js';

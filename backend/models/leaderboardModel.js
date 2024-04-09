@@ -25,7 +25,6 @@ const learderboardSchema = new Schema({
     },
     cashPrize: {
         type: Number,
-        required: true
     }
    
 }, {timestamps: true});
