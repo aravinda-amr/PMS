@@ -76,6 +76,7 @@ const AddCouponForm = ({ id, onCouponAdded, coupon, isEditing, onFormSubmit, onR
       if (onFormSubmit) {
         onFormSubmit();
       }
+      onCouponAdded();
     } catch (error) {
       console.error('Error updating coupon:', error);
     }
