@@ -13,7 +13,7 @@ const calculateLeaderboardData = async () => {
                         $push: {
                             pharmacistID: "$pharmacistID",
                             invoiceCount: { $toInt: "$invoiceCount" },
-                            totalCashAmount: { $toInt: "$totalCashAmount" }
+                            totalCashAmount: { $toDouble: "$totalCashAmount" }
                         }
                     }
                 }
@@ -23,7 +23,8 @@ const calculateLeaderboardData = async () => {
             },
             {
                 $sort: {
-                    "pharmacists.invoiceCount": -1
+                    "pharmacists.invoiceCount": -1,
+                    "pharmacists.totalCashAmount": -1,
                 }
             },
             {
@@ -117,19 +118,7 @@ export const createLeaderboardEntry = async (data) => {
     }
 };
 
-// Example usage
-(async () => {
-    try {
-        const leaderboardData = await calculateLeaderboardData();
-        if (Array.isArray(leaderboardData)) {
-            await createLeaderboardEntry(leaderboardData);
-        } else {
-            console.error("Leaderboard data is not an array");
-        }
-    } catch (error) {
-        console.error("Error:", error);
-    }
-})();
+
 
 
 // Controller to update a leaderboard by pharmacistID
@@ -168,7 +157,6 @@ export const deleteLeaderboard = async (req, res) => {
 
 // Get cash prize from leaderboard
 export const getCashPrize = async (req, res) => {
-    console.log('getCashPrize called'); // Debugging
     try {
         const leaderboardEntry = await leaderboard.findById(req.params.id).select('cashPrize -_id');
         if (!leaderboardEntry) {
@@ -200,15 +188,4 @@ export const addCashPrize = async (req, res) => {
     }
 };
 
-// Controller to delete a cashprize by pharmacistID
-export const deleteCashPrize = async (req, res) => {
-    try {
-        const result = await leaderboard.deleteOne({ cashPrize: req.params.cashPrize });
-        if (result.deletedCount === 0) {
-            return res.status(404).json({ message: 'cash prize not found' });
-        }
-        res.json({ message: 'cash prize deleted' });
-    } catch (err) {
-        res.status(500).json({ message: err.message });
-    }
-};
+
