@@ -17,7 +17,10 @@ export const commentsReducer = (state, action) => {
             return{
                 comment: state.comment.filter((c) => c._id !== action.payload._id)
             }
-
+         case 'UPDATE_COMMENTS':  
+            return{
+              comment: state.comment.map((r) => r._id === action.payload._id ? action.payload : r)
+            }    
         default:
             return state    
     }

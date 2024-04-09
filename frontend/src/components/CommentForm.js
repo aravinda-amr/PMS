@@ -17,7 +17,7 @@ const CommentForm = () => {
 
         const comment = {title, day, note}
 
-        const response = await fetch('/api/comments/',{
+        const response = await fetch('/api/salesreport',{
             method: 'POST',
             body:JSON.stringify(comment),
             headers:{
@@ -47,37 +47,36 @@ const CommentForm = () => {
 
     return (
 
-        <form className="comment-details" onSubmit={handleSubmit}>
+        <form className="bg-dark-blue-2  p-4 rounded-lg shadow-md" onSubmit={handleSubmit}>
 
-        <h3>Verification</h3>
+        <h3 className="text-white"> Verification</h3>
 
-        <label>Verified By:</label>
+        <label className="label-form block text-sm font-medium text-white">Verified By:</label>
         <input
             type="text"
             onChange={(e) => setTitle(e.target.value)}
             value={title}
-           className={emptyFields.includes('title') ? 'error' : ''}
+            className=" focus:border-blue-button focus:ring focus:ring-blue-button focus:ring-opacity-50 text-blue" 
         />
 
-        <label>Special Notes:</label>
+        <label className="label-form block text-sm font-medium text-white">Special Notes:</label>
         <input
             type="text"
             onChange={(e) => setNote(e.target.value)}
             value={note}
-          className={emptyFields.includes('note') ? 'error' : ''}
+            className=" focus:border-blue-button focus:ring focus:ring-blue-button focus:ring-opacity-50 text-blue" 
 
         />
 
-        <label>Date:</label>
+        <label className="label-form block text-sm font-medium text-white">Date:</label>
         <input
             type="date"
             onChange={(e) => setDay(e.target.value)}
             value={day}
-          className={emptyFields.includes('day') ? 'error' : ''}
-
+            className=" focus:border-blue-button focus:ring focus:ring-blue-button focus:ring-opacity-50 text-blue" 
         />
 
-        <button>Submit</button>
+        <button className="btn bg-login1 hover:bg-login2 hover:text-white mr-2 px-4 py-1 rounded-lg font-jakarta font-semibold cursor-pointer hover:transition-all">Submit</button>
         {error && <div className="error">{error}</div>}
 
         </form>
