@@ -25,6 +25,12 @@ import './index.css';
 import StaffReward from './pages/StaffReward.js';
 
 
+
+
+
+import SalesReport from './pages/SR.js'
+
+
 function App() {
   const { user } = useAuthContext();
 

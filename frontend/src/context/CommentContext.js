@@ -1,6 +1,7 @@
 import {createContext, useReducer} from 'react'
 
-export const CommentContext = createContext()
+//creating a context object
+export const CommentContext = createContext() 
 
 export const commentsReducer = (state, action) => {
     switch(action.type){
