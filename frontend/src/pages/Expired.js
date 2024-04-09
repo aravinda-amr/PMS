@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import ExpiredDetials from '../components/ExpiredDetails';
+import TextField from '@mui/material/TextField';
 export const Expired =() => {
     const [expire, setExpired] = useState(null) 
     const [searchTerm, setSearchTerm] = useState("");
@@ -27,13 +28,20 @@ export const Expired =() => {
 
     return(
         <div className="ml-64">
-              <input
-                type="text"
-                placeholder="Search drug names..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:ring-opacity-50 text-gray-700"
+         <div className="flex justify-between items-center bg-gray-100 rounded-lg p-4 mb-4"> 
+            <h1 className="text-2xl font-semibold text-gray-800 ml-64">Expired Drugs</h1>
+       
+        <div className="flex items-center">
+            <TextField
+              label="Search users..."
+              variant="outlined"
+              size="small"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full px-4 py-2 rounded-md border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:ring-opacity-50 text-gray-700 field"
             />
+          </div> 
+          </div>
                 {filteredItems.length > 0 ? (
                     filteredItems.map((item) => (
                         <ExpiredDetials key={item._id}  expire={item} />

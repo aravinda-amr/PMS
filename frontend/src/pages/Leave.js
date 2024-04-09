@@ -24,7 +24,7 @@ const Leave = () => {
   },[dispatch])
 
   return(
-    <div className="home">
+    <div className="ml-64">
       <div className="workouts">
         {leaves && leaves.map((leave) =>(
           <LeaveDetails key={leave._id} leave={leave} />

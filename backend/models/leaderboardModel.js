@@ -1,15 +1,10 @@
-
 import mongoose from 'mongoose';
 
 const Schema = mongoose.Schema;
 
-const staffRewardSchema = new Schema({
+const learderboardSchema = new Schema({
 
-    pharmacistID: {
-        type: String,
-        required: true
-    },
-
+   
     month:{
         type: String,
         required: true
@@ -20,16 +15,19 @@ const staffRewardSchema = new Schema({
         required: true
     },
     
-    invoiceCount: {
-        type: Number,
+    mostPrescriptionHandledPid: {
+        type: String,
         required: true
     },
-    totalCashAmount: {
-        type: Number,
+    mostCashAmountHandledPid: {
+        type: String,
         required: true
     },
+    cashPrize: {
+        type: Number,
+    }
    
 }, {timestamps: true});
 
 
-export default mongoose.model('staffReward', staffRewardSchema)
+export default mongoose.model('leaderboard', learderboardSchema)

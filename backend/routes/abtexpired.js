@@ -1,5 +1,5 @@
 import express from 'express';
-import {getabtExpired } from '../controllers/expiredController.js';
+import {getabtExpired } from '../controllers/abtexpiredController.js';
 
 
 const router = express.Router();

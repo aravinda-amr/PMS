@@ -13,15 +13,14 @@ import medicineNameRoutes from './routes/medicinenames.js';
 
 
 
-import staffRewardRoutes from './routes/staffReward.js';
 /*import handledRoutes from './routes/handled.js';*/
 import expiredRoutes from './routes/expired.js';
-import abtexpiredRoutes from './routes/expired.js';
+import abtexpiredRoutes from './routes/abtexpired.js';
 import outofstockRoutes from './routes/outofstocks.js';
 import abtoutofstocksRoutes from './routes/abtoutofstocks.js';
 import billing from './routes/billing.js';
 import staffReward from './routes/staffReward.js';
-
+import leaderboard from './routes/leaderboard.js';
 
 dotenv.config()
 
@@ -60,6 +59,9 @@ app.use('/api/billing',billing)
 app.use('/api/staffReward',staffReward)
 
 app.use('/api/leaves', LeaveoutRoutes)
+
+app.use('/api/leaderboard', leaderboard)
+
 
 
 

@@ -17,7 +17,7 @@ import Leave from './pages/Leave'
 import Billing from './pages/Billing';
 import NewSale from './pages/NewSale';
 import StaffReward from './pages/StaffReward';
-
+import Leaderboard from './pages/Leaderboard.js';
 import Inventory from './pages/Inventory';
 
 import SalesReport from './pages/SR'
@@ -74,6 +74,11 @@ function App() {
              <Route
               path= "/staffReward"
               element = {<StaffReward/>}
+            />
+
+            <Route
+              path= "/leaderboard"
+              element = {<Leaderboard/>}
             />
 
              <Route

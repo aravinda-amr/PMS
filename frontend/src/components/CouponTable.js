@@ -1,52 +1,51 @@
-import React from 'react';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton, Typography } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import { format } from 'date-fns';
 
-const CouponTable = ({ coupons, onDeleteCoupon, onEditCoupon }) => {
+const CouponTable = ({ coupons, onDeleteCoupon, onEditCoupon, isLoading }) => {
+  if (isLoading) {
+    return <Typography variant="body1">Loading...</Typography>;
+  }
   return (
-    <div className="overflow-x-auto rounded-lg shadow-md mt-4">
-      <table className="w-full min-w-full divide-y divide-gray-200">
-  <thead className="bg-dark-blue text-white">
-    <tr className="text-left">
-      <th className="p-4 font-medium">Discount</th>
-      <th className="p-4 font-medium">Expire Date</th>
-      <th className="p-4 font-medium">Coupon Code</th>
-      <th className="p-4 font-medium">Status</th>
-      <th className="p-4 font-medium">Actions</th>
-    </tr>
-  </thead>
-  <tbody className="text-white-700">
-          {coupons.length === 0 ? (
-            <tr className="text-center py-4">
-              <td colSpan="5">No coupons available</td>
-            </tr>
-          ) : (
-            coupons.map((coupon) => (
-              <tr key={coupon._id} className="hover:bg-gray-100">
-                <td className="p-4">{coupon.discount}%</td>
-                <td className="p-4">{coupon.expire}</td>
-                <td className="p-4">{coupon.couponCode}</td>
-                <td className="p-4">{coupon.used ? 'Used' : 'Active'}</td>
-                <td className="p-4 flex space-x-2">
-                  <button
-                    type="button"
-                    className="inline-flex items-center px-3 py-2 text-sm font-medium text-center rounded-md bg-red-500 hover:bg-red-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white"
-                    onClick={() => onDeleteCoupon(coupon._id)}
-                  >
-                    Delete
-                  </button>
-                  <button
-                    type="button"
-                    className="inline-flex items-center px-3 py-2 text-sm font-medium text-center rounded-md bg-green-500 hover:bg-green-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white"
-                    onClick={() => onEditCoupon(coupon._id)}
-                  >
-                    Edit
-                  </button>
-                </td>
-              </tr>
-            ))
+    <TableContainer component={Paper}>
+      <Table aria-label="simple table" >
+        <TableHead className="bg-dark-blue text-white">
+          <TableRow>
+            <TableCell sx={{ color: 'white' }}>Discount</TableCell>
+            <TableCell sx={{ color: 'white' }}>Expire Date</TableCell>
+            <TableCell sx={{ color: 'white' }}>Coupon Code</TableCell>
+            <TableCell sx={{ color: 'white' }}>Status</TableCell>
+            <TableCell sx={{ color: 'white' }}>Actions</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {coupons.map((coupon) => (
+            <TableRow key={coupon._id}>
+              <TableCell sx={{ fontWeight: 'bold', color: 'primary.main' }}>{coupon.discount}%</TableCell>
+              <TableCell sx={{ fontSize: '0.875rem', color: 'text.secondary' }}>{format(new Date(coupon.expire), 'MM/dd/yyyy')}</TableCell>
+              <TableCell sx={{ fontSize: '0.875rem', color: coupon.used ? 'error.main' : 'success.main' }}>{coupon.couponCode}</TableCell>
+              <TableCell sx={{ fontWeight: 'bold', fontSize: '0.875rem', color: coupon.used ? 'error.main' : 'success.main' }}>{coupon.used ? 'Used' : 'Active'}</TableCell>
+              <TableCell>
+                <IconButton onClick={() => onDeleteCoupon(coupon._id)}>
+                  <DeleteIcon />
+                </IconButton>
+                <IconButton onClick={() => onEditCoupon(coupon._id)}>
+                  <EditIcon />
+                </IconButton>
+              </TableCell>
+            </TableRow>
+          ))}
+          {coupons.length === 0 && (
+            <TableRow>
+              <TableCell colSpan={5} align="center">
+                <Typography variant="body1">No coupons available</Typography>
+              </TableCell>
+            </TableRow>
           )}
-        </tbody>
-      </table>
-    </div>
+        </TableBody>
+      </Table>
+    </TableContainer>
   );
 };
 
