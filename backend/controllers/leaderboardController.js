@@ -189,3 +189,39 @@ export const addCashPrize = async (req, res) => {
 };
 
 
+//Delete cash prize from leaderboard
+export const deleteCashPrize = async (req, res) => {
+    try {
+        const result = await leaderboard.findByIdAndUpdate(
+            req.params.id,
+            { $unset: { cashPrize: "" } },
+            { new: true }
+        );
+        if (!result) {
+            return res.status(404).json({ message: 'Leaderboard entry not found' });
+        }
+        res.json(result);
+    }
+    catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+}
+
+
+//Update cash prize from leaderboard
+export const updateCashPrize = async (req, res) => {
+    try {
+        const result = await leaderboard.findByIdAndUpdate(
+            req.params.id,
+            { cashPrize: req.body.cashPrize },
+            { new: true }
+        );
+        if (!result) {
+            return res.status(404).json({ message: 'Leaderboard entry not found' });
+        }
+        res.json(result);
+    }
+    catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+}
