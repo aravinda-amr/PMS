@@ -16,7 +16,10 @@ export const LeavesReducer = (state, action) => {
             return{
                 leaves: state.leaves.filter((w) => w._id !== action.payload._id)
             }
-
+        case 'UPDATE_WORKOUT':  
+            return{
+              leaves: state.leaves.map((r) => r._id === action.payload._id ? action.payload : r)
+            }
         default:
             return state    
     }

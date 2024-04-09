@@ -25,13 +25,13 @@ const Leave = () => {
 
   return(
     <div className="ml-64">
-      <div className="workouts">
+  
+      <LeavesForm />
         {leaves && leaves.map((leave) =>(
           <LeaveDetails key={leave._id} leave={leave} />
         ))}
         </div>
-        <LeavesForm />
-    </div>
+
   )
 }
 

@@ -48,46 +48,45 @@ const LeavesForm = () => {
 
     return (
 
-        <form className="create" onSubmit={handleSubmit}>
+        <form className="bg-dark-blue-2  p-4 rounded-lg shadow-md" onSubmit={handleSubmit}>
 
-        <h3>Request A Leave</h3>
+        <h3 className="text-white">Request A Leave</h3>
 
-        <label>Name:</label>
+        <label className="label-form block text-sm font-medium text-white">Name:</label>
         <input
             type="text"
             onChange={(e) => setname(e.target.value)}
             value={name}
-            className={emptyFields.includes('name') ? 'error' : ''}
+            className=" focus:border-blue-button focus:ring focus:ring-blue-button focus:ring-opacity-50 text-blue"
         />
 
-        <label>Date (from)</label>
+        <label className="label-form block text-sm font-medium text-white">Date (from)</label>
         <input
             type="date"
             onChange={(e) => setdateFrom(e.target.value)}
             value={dateFrom}
-            className={emptyFields.includes('dateFrom') ? 'error' : ''}
+            className=" focus:border-blue-button focus:ring focus:ring-blue-button focus:ring-opacity-50 text-blue"
 
         />
 
-        <label>Date(to)</label>
+        <label className="label-form block text-sm font-medium text-white">Date(to)</label>
         <input
             type="date"
             onChange={(e) => setdateTo(e.target.value)}
             value={dateTo}
-            className={emptyFields.includes('dateTo') ? 'error' : ''}
+            className=" focus:border-blue-button focus:ring focus:ring-blue-button focus:ring-opacity-50 text-blue"
 
         />
 
-        <label>Reason</label>
+        <label className="label-form block text-sm font-medium text-white">Reason</label>
         <input
             type="text"
             onChange={(e) => setReason(e.target.value)}
             value={reason}
-            className={emptyFields.includes('reason') ? 'error' : ''}
-
+            className=" focus:border-blue-button focus:ring focus:ring-blue-button focus:ring-opacity-50 text-blue"
         />
 
-        <button>Submite</button>
+        <button className="btn bg-login1 hover:bg-login2 hover:text-white mr-2 px-4 py-1 rounded-lg font-jakarta font-semibold cursor-pointer hover:transition-all">Submit</button>
         {error && <div className="error">{error}</div>}
 
         </form>
