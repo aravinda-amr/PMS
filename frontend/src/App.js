@@ -12,6 +12,7 @@ import Expired from './pages/Expired.js';
 import AboutExpire from './pages/AboutExpire.js';
 import OutOfStock from './pages/OutOfStock.js';
 import AboutToOutOfStock from './pages/AboutToOutOfStocks.js';
+import SalesReport from './pages/SR.js'
 import Prescription from './pages/Prescription.js';
 import Leave from './pages/Leave.js'
 import Billing from './pages/Billing.js';
@@ -20,7 +21,9 @@ import StaffReward from './pages/StaffReward.js';
 
 import Inventory from './pages/Inventory.js';
 
-import SalesReport from './pages/SR.js'
+
+
+
 import './index.css';
 
 
