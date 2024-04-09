@@ -96,6 +96,12 @@ const Navbar = () => {
                 <h1 className='ps-1 my-auto'>AboutToOutOfStock</h1>
             </div>
         </Link>
+        <Link to="/salesreport">
+            <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
+                <RemoveCircleIcon/>
+                <h1 className='ps-1 my-auto'>SalesReport</h1>
+            </div>
+        </Link>
 
         {/* //CHAMESHA POS */}
         
