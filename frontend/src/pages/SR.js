@@ -31,7 +31,7 @@ const SalesReport = () => {
   return(
     <div className='ml-64'>
        
-    <h1 className="text-2xl font-semibold text-gray-800 ml-64">Sales Report</h1>
+      <h1 className="text-2xl font-semibold text-gray-800 ml-64" style={{ textAlign: 'center' }}>Sales Report</h1>
       <CommentForm />
         {comment && comment.map((comments) =>(
           <CommentDetails key={comments._id} comments={comments} />

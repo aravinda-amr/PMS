@@ -47,11 +47,12 @@ const CommentForm = () => {
 
     return (
 
-        <form className="bg-dark-blue-2  p-4 rounded-lg shadow-md" onSubmit={handleSubmit}>
+        <form className="p-4 rounded-lg shadow-md" onSubmit={handleSubmit} style={{ color: 'black' }}>
 
-        <h3 className="text-white"> Verification</h3>
 
-        <label className="label-form block text-sm font-medium text-white">Verified By:</label>
+        <h2 className="text-black"> Verification</h2>
+
+        <label className="label-form block text-sm font-medium text-black">Verified By:</label>
         <input
             type="text"
             onChange={(e) => setTitle(e.target.value)}
@@ -59,7 +60,7 @@ const CommentForm = () => {
             className=" focus:border-blue-button focus:ring focus:ring-blue-button focus:ring-opacity-50 text-blue" 
         />
 
-        <label className="label-form block text-sm font-medium text-white">Special Notes:</label>
+        <label className="label-form block text-sm font-medium text-black">Special Notes:</label>
         <input
             type="text"
             onChange={(e) => setNote(e.target.value)}
@@ -68,7 +69,7 @@ const CommentForm = () => {
 
         />
 
-        <label className="label-form block text-sm font-medium text-white">Date:</label>
+        <label className="label-form block text-sm font-medium text-black">Date:</label>
         <input
             type="date"
             onChange={(e) => setDay(e.target.value)}
