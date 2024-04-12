@@ -3,7 +3,9 @@ import {     getBills,
             getBill, 
             createBill, 
             deleteMedicineFromBill, 
-            updateBill } from '../controllers/billingController.js';
+            updateBill,} from '../controllers/billingController.js';
+        
+
 const router = express.Router();
 
 //Get all bills
@@ -16,10 +18,13 @@ router.get('/:id', getBill)
 //POST a new bill
 router.post('/', createBill) 
 
-//Delete a bill
+//Delete a medicine from bill
 router.delete('/:invoiceID/:medicineIndex', deleteMedicineFromBill)
 
 //Update a bill
 router.patch('/:id', updateBill)
+
+
+
 
 export default router;

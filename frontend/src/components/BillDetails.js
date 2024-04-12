@@ -41,7 +41,7 @@ const BillDetails = ({bill, isAdmin, onDeleteMedicine }) => {
                             <tr key={index} className="bg-blue-200 text-dark-blue">
                                 <td className="border px-4 py-0.5 text-sm whitespace-nowrap">{medicine.drugName}</td>
                                 <td className="border px-4 py-0.5 text-sm">{medicine.purchaseQuantity}</td>
-                                <td className="border px-4 py-0.5 text-sm">{medicine.unitPrice}</td>
+                                <td className="border px-4 py-0.5 text-sm">{medicine.price}</td>
                                   {isAdmin && activeEditBillId === bill.invoiceID &&(
                                         <td className="border px-4 py-0.5 text-sm">
                                             <FaTrash

@@ -1,5 +1,7 @@
-
+import Drug from '../models/drugModel.js';
+import MedicineName from '../models/medicineModel.js';
 import Bill from '../models/billingModel.js';
+import User from '../models/userModel.js'; 
 import mongoose from 'mongoose';
 const{Types} = mongoose;
 
@@ -7,7 +9,7 @@ const{Types} = mongoose;
 
 // Function to calculate item total for each medicine
 const calculateItemTotal = (medicine) => {
-    const itemTotal = parseFloat((medicine.purchaseQuantity * medicine.unitPrice).toFixed(2));
+    const itemTotal = parseFloat((medicine.purchaseQuantity * medicine.price).toFixed(2));
     return itemTotal.toFixed(2); // Ensure two decimal places are always displayed
 };
 
@@ -136,43 +138,67 @@ const getBill = async(req, res) => {
 };
 
 //create a new bill
-const createBill=async(req, res) => {
-    const {pharmacistID,customerID, invoiceDate, medicines, discount} = req.body;
+const createBill = async (req, res) => {
+    const { pharmacistID, customerID, invoiceDate, medicines, discount } = req.body;
 
-    //generate a new objectID for the invoiceID
+    // generate a new objectID for the invoiceID
     const invoiceID = new Types.ObjectId();
 
-    //Validate customerID
-    if(!isValidPhoneNumber(customerID)){
-        return res.status(400).json({error: 'Invalid customerID.It should be a 10-digit phone number'});
+    // Validate customerID
+    if (!isValidPhoneNumber(customerID)) {
+        return res.status(400).json({ error: 'Invalid customerID. It should be a 10-digit phone number' });
     }
-//Create a new bill documemt in the database
+
     try {
+        // Fetch the unit price for each medicine and include it in the bill
+        const medicinesWithPrice = [];
+
+        for (const medicine of medicines) {
+            const medicineInfo = await MedicineName.findOne({ drugName: medicine.drugName }).lean();
+           
+               if (!medicineInfo) {
+                   return res.status(400).json({ error:` No such medicine: ${medicine.drugName}`});
+               }
+        
+            // Fetch the unit price for the medicine from the Drug model
+            const drug = await Drug.findOne({ drugName: medicineInfo._id }).lean(); 
+            if (!drug) {
+                return res.status(400).json({ error: `No such medicine: ${medicine.drugName}` });
+            }
+
+
+            // Include the unit price in the medicine object
+            const medicineWithPrice = {
+                drugName: medicineInfo.drugName,
+                ...medicine,
+                price: drug.price,
+                calculateItemTotal: calculateItemTotal(medicine)
+            };
+            medicinesWithPrice.push(medicineWithPrice);
+        }
+
+        
+
+        // Create a new bill document in the database
         const bill = await Bill.create({
             _id: invoiceID,
             pharmacistID,
-            customerID, 
-            invoiceDate, 
-            medicines: Array.isArray(medicines) ? medicines.map((medicine, index) => ({ 
-                ...medicine, 
-                index:index+1,//Add auto-generated index to each medicine
-                calculateItemTotal: calculateItemTotal(medicine) //Calculate total cost for each medicine   
-            })) : [] //Ensure that medicines is an array
+            customerID,
+            invoiceDate,
+            medicines: Array.isArray(medicinesWithPrice) ? medicinesWithPrice : [], // Ensure that medicines is an array
         });
 
+        // Calculate subtotal and grand total for the bill
         const subTotal = calculateSubTotal(bill.medicines);
-
-
-        //Calculate grand total for the bill
         const grandTotal = calculateGrandTotal(subTotal, discount || 0);
 
-        //update the bill with calculated subtotal and grandtotal
+        // Update the bill with calculated subtotal and grand total
         bill.calculateSubTotal = subTotal;
         bill.discount = discount;
         bill.grandTotal = grandTotal;
 
-         //Save the updated bill
-         await bill.save();
+        // Save the updated bill
+        await bill.save();
 
         const response = {
             invoiceID: bill._id,
@@ -182,27 +208,27 @@ const createBill=async(req, res) => {
             medicines: bill.medicines.map(medicine => ({
                 drugName: medicine.drugName,
                 purchaseQuantity: medicine.purchaseQuantity,
-                unitPrice: medicine.unitPrice,
+                price: medicine.price,
                 calculateItemTotal: medicine.calculateItemTotal
             })),
-            subTotal:subTotal,
+            subTotal: subTotal,
             discount: bill.discount || 0,
             grandTotal: grandTotal
         };
-  
-        //Remove _id from the response
+
+        // Remove _id from the response
         delete response._id;
 
-    
-        //Send the response
+        // Send the response
         res.status(200).json(response);
 
     } catch (error) {
-        //Handle errors
+        // Handle errors
         console.error('Error creating bill:', error);
-        res.status(400).json({ error: error.message});
+        res.status(400).json({ error: error.message });
     }
 };
+
 
 
 //delete a medicine from a bill
@@ -277,7 +303,7 @@ const updateBill = async(req, res) => {
    
     // Add new medicine to the bill
     if (medicines && Array.isArray(medicines) && medicines.length > 0) {
-    for (const { drugName, purchaseQuantity, unitPrice } of medicines) {
+    for (const { drugName, purchaseQuantity, price } of medicines) {
         const existingMedicineIndex = existingBill.medicines.findIndex(medicine => medicine.drugName === drugName);
         if (existingMedicineIndex !== -1) {
             // If medicine already exists, update the purchase quantity
@@ -288,8 +314,8 @@ const updateBill = async(req, res) => {
             existingBill.medicines.push({
                 drugName,
                 purchaseQuantity,
-                unitPrice,
-                calculateItemTotal: calculateItemTotal({ drugName, purchaseQuantity, unitPrice })
+                price,
+                calculateItemTotal: calculateItemTotal({ drugName, purchaseQuantity, price })
             });
         }
     }
@@ -318,10 +344,16 @@ const updateBill = async(req, res) => {
 };
 
 
+
+
+
+
 export{
+    
     getBills,
     getBill,
     createBill,
     deleteMedicineFromBill,
-    updateBill
+    updateBill,
+   
 }

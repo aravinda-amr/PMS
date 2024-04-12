@@ -256,6 +256,43 @@ const getDrugNameAndBatches = async (req, res) => {
     }
 };
 
+const getDrugNamesWithPrice = async (req, res) => {
+    try {
+        // Find all drugs with their prices from the first batch
+        const drugsWithPrices = await Drug.aggregate([
+            {
+                $group: {
+                    _id: "$drugName", // Group by drugName
+                    price: { $first: "$price" } // Get the price from the first batch
+                }
+            },
+            {
+                $lookup: {
+                    from: "medicinenames", // Lookup the drugName in the MedicineName collection
+                    localField: "_id",
+                    foreignField: "_id",
+                    as: "drugName"
+                }
+            },
+            {
+                $project: {
+                    _id: 0,
+                    drugName: { $arrayElemAt: ["$drugName.drugName", 0] }, // Get the drugName from the lookup result
+                    price: 1 // Include the price
+                }
+            }
+        ]);
+
+        res.json(drugsWithPrices);
+        
+    } catch (error) {
+        console.error('Error fetching drug names with price:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
+
+
 export {  
     createBatch,
     getAllBatches,
@@ -267,6 +304,7 @@ export {
     insertBatchesForDrugName,
     getDrugNameAndBatches,
     getAllDrugNamesAndBatches,
-    getDrugNamesearch
+    getDrugNamesearch,
+    getDrugNamesWithPrice
 };
 
