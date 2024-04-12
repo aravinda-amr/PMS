@@ -1,16 +1,13 @@
-
 import mongoose from 'mongoose';
 
 
 const Schema = mongoose.Schema;
 
 const billingSchema = new Schema({
-
     pharmacistID: {
         type: String,
         required: true
     },
-    
     customerID: {
         type: String,
         required: true
@@ -19,25 +16,20 @@ const billingSchema = new Schema({
         type: Date,
         required: true
     },
-    medicines:[{
-        drugName: String,
+    medicines: [{
+        drugName: String, 
         purchaseQuantity: Number,
-        unitPrice: Number,
-        calculateItemTotal: Number,
-    
+        price: Number,
+        calculateItemTotal: Number
     }],
-
     calculateSubTotal: Number,
-
-   discount: {
-         type: Number,
-         default: 0
+    discount: {
+        type: Number,
+        default: 0
     },
+    couponCode: String,
     grandTotal: Number
-   
-   
-}, {timestamps: true});
+}, { timestamps: true });
 
+export default mongoose.model('Bill', billingSchema);
 
-
-export default mongoose.model('Bill', billingSchema)

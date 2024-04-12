@@ -6,7 +6,8 @@ import {
     insertBatchesForDrugName,
     getDrugNameAndBatches,
     getAllDrugNamesAndBatches,
-    getDrugNamesearch
+    getDrugNamesearch,
+    getDrugNamesWithPrice,
            } from '../controllers/drugoutsController.js';
 
 
@@ -29,6 +30,9 @@ router.get('/drugnames/:id/batches', getDrugNameAndBatches);
 
 // Get drug names by search
 router.get('/drugnames/:id/search', getDrugNamesearch);
+// Get all drug names with price
+router.get('/drugnames/withprice', getDrugNamesWithPrice);
+
 
 
 export default router;
