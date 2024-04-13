@@ -3,19 +3,25 @@
 import { useEffect, useState } from 'react';
 import AboutToOutOfStockDetials from '../components/AboutToOutOfStockDetials';
 import TextField from '@mui/material/TextField';
+import CircularProgress from '@mui/material/CircularProgress';
+
 
 export const AboutToOutOfStock = () => {
     const [abouttooutofstock, setabouttooutofstock] = useState(null);
     const [searchTerm, setSearchTerm] = useState("");
     const [filteredItems, setFilteredItems] = useState([]); // State to hold filtered items
+    const [isLoading, setIsLoading] = useState(true); 
+
 
     useEffect(() => {
         const fetchOutOfStock = async () => {
+            setIsLoading(true);
             const response = await fetch('/api/abtoutofstock'); // Corrected URL
             const json = await response.json();
             if (response.ok) {
                 setabouttooutofstock(json);
             }
+            setIsLoading(false);
         };
         fetchOutOfStock();
     }, []);
@@ -44,14 +50,19 @@ export const AboutToOutOfStock = () => {
             />
           </div> 
           </div>
-          
-                {filteredItems.length > 0 ? (
+          {isLoading ? (
+                <div className="flex justify-center items-center h-40">
+                    <CircularProgress />
+                </div>
+            ) : (
+                filteredItems.length > 0 ? (
                     filteredItems.map((item) => (
                         <AboutToOutOfStockDetials key={item._id} abtoutof={item} />
                     ))
                 ) : (
                     <p>No Drug Found</p>
-                )}
+                )
+            )}
             </div>
       
     );

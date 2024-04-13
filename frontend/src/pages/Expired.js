@@ -1,19 +1,25 @@
 import { useEffect, useState } from 'react';
 import ExpiredDetials from '../components/ExpiredDetails';
 import TextField from '@mui/material/TextField';
+import CircularProgress from '@mui/material/CircularProgress';
+
+
 export const Expired =() => {
     const [expire, setExpired] = useState(null) 
     const [searchTerm, setSearchTerm] = useState("");
     const [filteredItems, setFilteredItems] = useState([]); // State to hold filtered items
-    
+    const [isLoading, setIsLoading] = useState(true); 
+
     useEffect(() => {
         const fetchExpired = async()=>{
+            setIsLoading(true);
             const response = await fetch('/api/expired') //fetching data from the backend and storing it in response
             const json = await response.json(); //converting the response to json
             if(response.ok){ //if the response is okay
                 setExpired(json) //dispatching the action to the reducer 
                 //dispatching the action to the reducer
             }
+            setIsLoading(false);
         }
         fetchExpired();
     }, [])
@@ -42,17 +48,22 @@ export const Expired =() => {
             />
           </div> 
           </div>
-                {filteredItems.length > 0 ? (
+          {isLoading ? (
+                <div className="flex justify-center items-center h-40">
+                    <CircularProgress />
+                </div>
+            ) : (
+                filteredItems.length > 0 ? (
                     filteredItems.map((item) => (
-                        <ExpiredDetials key={item._id}  expire={item} />
+                        <ExpiredDetials key={item._id} expire={item} />
                     ))
                 ) : (
                     <p>No Drug Found</p>
-                )}
-
+                )
+            )}
+               
             </div>
-         
-      
+
     )
 }
 

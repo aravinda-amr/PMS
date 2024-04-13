@@ -1,62 +1,97 @@
-import { useState } from "react"
-import {useReordersContext} from '../hooks/useReorderContext'
 
+
+import { useState } from "react";
+import { useReordersContext } from '../hooks/useReorderContext';
 
 const ReorderForm = () => {
-    const {dispatch} = useReordersContext()
-    const [supplierEmail, setsupplierEmail] = useState('')      
-    const [drugName, setdrugName] = useState('')
-    const [reorderLevel, setreorderLevel] = useState('')
-    const [error, seterror] = useState(null)
-   // const [emptyFields, setemptyFields] = useState([])
+    const { dispatch } = useReordersContext();
+    const [supplierEmail, setSupplierEmail] = useState('');
+    const [drugName, setDrugName] = useState('');
+    const [reorderLevel, setReorderLevel] = useState('');
+    const [error, setError] = useState(null);
+    const [showPopup, setShowPopup] = useState(false); // State to manage popup visibility
+    const [showCheckmark, setShowCheckmark] = useState(false);
 
-
-
-     const handleSubmit = async(e) =>{
-        e.preventDefault() //prevent the default behaviour of the form which means the page will not refresh when the form is submitted
-
-         const reorder = {supplierEmail, drugName, reorderLevel }  //create a workout object with the state variables
-         const response = await fetch ('/api/reorder',{ //send a post request to the server with the workout object   
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const reorder = { supplierEmail, drugName, reorderLevel };
+        const response = await fetch('/api/reorder', {
             method: 'POST',
-            body : JSON.stringify(reorder), //convert the workout object to a JSON string
-             headers:{
-                'Content-Type' : 'application/json' //specify the content type of the request
-             }
-        })
-         const json =await response.json()//convert the response to a JSON object
-         if(!response.ok){
-            seterror(json.error) //if the response is not ok which means the response is a error status 400, set the error state variable to the error message 
-            //setemptyFields(json.emptyFields)//if the response is not ok, set the emptyFields state variable to the emptyFields message
+            body: JSON.stringify(reorder),
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        const json = await response.json();
+        if (!response.ok) {
+            setError(json.error);
+            setShowCheckmark(false);
+        } else {
+            setSupplierEmail('');
+            setDrugName('');
+            setReorderLevel('');
+            setError(null);
+            console.log('new workout added', json);
+            dispatch({ type: 'CREATE_REORDER', payload: json });
+            setShowPopup(false); // Close the popup after successful submission
+            setShowCheckmark(true);
         }
-        else{
-            setsupplierEmail('') //reset the state variables to empty strings
-            setdrugName('')//reset the state variables to empty 
-            setreorderLevel('')//reset the state variables to empty strings
-           // setemptyFields([])//reset the emptyFields state variable to an empty array
-            seterror(null) //reset the error state variable to null
-            console.log('new workout added', json)
-           dispatch({type: 'CREATE_REORDER', payload: json}) //dispatch the action to the reducer (add the new workout to the workouts array in the state variable
-        }
-    }
+    };
+
+    const togglePopup = () => {
+        setShowPopup(!showPopup);
+    };
 
     return (
-        <form className="bg-dark-blue-2  p-4 rounded-lg shadow-md" onSubmit={handleSubmit}>
-            <h3 className="text-white">Add a New Reorder Level</h3>
-            <label className="label-form block text-sm font-medium text-white">Supplier's Email</label>
-            <input type="email" className=" focus:border-blue-button focus:ring focus:ring-blue-button focus:ring-opacity-50 text-blue" onChange={(e) => setsupplierEmail(e.target.value)} value={supplierEmail} required/> 
-            
-            <label className="label-form block text-sm font-medium text-white">Drug Name:</label>
-            <input type="text" className=" focus:border-blue-button focus:ring focus:ring-blue-button focus:ring-opacity-50 text-blue" onChange={(e) => setdrugName(e.target.value)} value={drugName}  required/> 
+        <>
+            <button className="btn bg-login1 hover:bg-login2 hover:text-white mr-2 px-4 py-1 rounded-lg font-jakarta font-semibold cursor-pointer hover:transition-all" onClick={togglePopup}>
+                Add a New Reorder Level
+            </button>
+            {showPopup && (
+                <div className="fixed z-10 inset-0 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+                    <div className="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                        <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+                        <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+                        <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                            <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                                <h3 className="text-lg leading-6 font-medium text-gray-900" id="modal-title">
+                                    Add a New Reorder Level
+                                </h3>
+                                <div className="mt-2">
+                                    <form onSubmit={handleSubmit} className="reorder-form bg-dark-blue-2 p-4 rounded-lg shadow-md">
+                                        <label className="block text-sm font-medium text-gray-700" htmlFor="supplierEmail">Supplier's Email</label>
+                                        <input type="email" id="supplierEmail" className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" onChange={(e) => setSupplierEmail(e.target.value)} value={supplierEmail} required />
+                                        
+                                        <label className="block text-sm font-medium text-gray-700 mt-4" htmlFor="drugName">Drug Name:</label>
+                                        <input type="text" id="drugName" className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" onChange={(e) => setDrugName(e.target.value)} value={drugName} required />
+    
+                                        <label className="block text-sm font-medium text-gray-700 mt-4" htmlFor="reorderLevel">Reorder Level</label>
+                                        <input type="number" id="reorderLevel" className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" onChange={(e) => setReorderLevel(e.target.value)} value={reorderLevel} required />
+                                        <br/>
+                                    
+                                        <button type="submit" className="btn bg-login1 hover:bg-login2 hover:text-white mr-2 px-4 py-1 rounded-lg font-jakarta font-semibold cursor-pointer hover:transition-all">
+                                            Add Reorder Level
+                                        </button>
+                                        {error && <div className="mt-4" style={{ color: 'red' }}>{error}</div>}
+                                        {!error && showCheckmark && (
+                                        <div className="flex justify-center items-center h-12">
+                                              <span className="text-green-500 text-4xl animate-pulse">✔</span>
+                                        </div>
+                                )}
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+        </>
+    );
+    
+};
 
-            <label className="label-form block text-sm font-medium text-white">Reorder Level</label>
-            <input type="number"className=" focus:border-blue-button focus:ring focus:ring-blue-button focus:ring-opacity-50 text-blue" onChange={(e) => setreorderLevel(e.target.value)} value={reorderLevel} required/>  
+export default ReorderForm;
 
 
-            <button className="btn bg-login1 hover:bg-login2 hover:text-white mr-2 px-4 py-1 rounded-lg font-jakarta font-semibold cursor-pointer hover:transition-all">Add Reorder Level</button>
-            {error && <div className="error">{error}</div>}
-        </form>
-    )
-}
- 
-export default ReorderForm
+
 
