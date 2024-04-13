@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import {useReordersContext} from '../hooks/useReorderContext'
 import TextField from '@mui/material/TextField';
+import CircularProgress from '@mui/material/CircularProgress';
 
 //components
 import ReorderDetails from '../components/ReorderDetails'
@@ -9,8 +10,10 @@ const Reorder = () =>{
    const {reorders, dispatch} = useReordersContext() //getting the workouts and dispatch from the context
    const [searchTerm, setSearchTerm] = useState("");
    const [filteredItems, setFilteredItems] = useState([]); // State to hold filtered items
+   const [isLoading, setIsLoading] = useState(true);
     useEffect(() => {
         const fetchReorder = async()=>{
+            setIsLoading(true);
             const response = await fetch('/api/reorder') //fetching data from the backend and storing it in response
             const json = await response.json(); //converting the response to json
             if(response.ok){ //if the response is okay
@@ -26,6 +29,9 @@ const Reorder = () =>{
             (item) => item.drugName.toLowerCase().includes(searchTerm.toLowerCase())
         ) ?? []; // Ensure filtered is always an array
         setFilteredItems(filtered);
+       
+            setIsLoading(false);
+        
     }, [searchTerm, reorders]);
 
     return(
@@ -48,15 +54,23 @@ const Reorder = () =>{
              {/* {reorders && reorders.map((reorders)=>
                 <ReorderDetails key={reorders._id} reorder={reorders} /> //passing the workout as a prop to the WorkoutDetails component
              )} */}
+             {isLoading ? (
+        <div className="flex justify-center items-center h-screen ml-64">
+          <CircularProgress />
+        </div> 
+        ) : (
+            <div>
                 <ReorderForm />
                 {filteredItems.length > 0 ? (
                     filteredItems.map((item) => (
                         <ReorderDetails key={item._id} reorder={item} /> 
                     ))
+              
                 ) : (
                     <p>No Drug Found</p>
                 )}
-
+                    </div>  
+            )}
           
          
         </div>    

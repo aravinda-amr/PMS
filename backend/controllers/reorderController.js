@@ -70,20 +70,45 @@ export const deleteReorder = async (req, res)=>{
 }
 
 //update a reorder
-export const updateReorder = async (req, res)=>{
-        const {id} = req.params
+// export const updateReorder = async (req, res)=>{
+//         const {id} = req.params
     
-        if(!mongoose.Types.ObjectId.isValid(id)){
-            return res.status(404).json({msg: `No Reorder with id: ${id}`})//if the id is not a valid mongoose id, return a 404 status code and a message
-        }
-        const reorder= await Reorder.findOneAndUpdate({_id: id}, {
-            ...req.body //spread the request body and update the fields
-        })
-        if (!reorder){
-            return res.status(404).json({msg: `No Reorder with id: ${id}`});//if no workout is found, return a 404 status code and a message
-          }
-          res.status(200).json(reorder)
+//         if(!mongoose.Types.ObjectId.isValid(id)){
+//             return res.status(404).json({msg: `No Reorder with id: ${id}`})//if the id is not a valid mongoose id, return a 404 status code and a message
+//         }
+//         const reorder= await Reorder.findOneAndUpdate({_id: id}, {
+//             ...req.body //spread the request body and update the fields
+//         })
+//         if (!reorder){
+//             return res.status(404).json({msg: `No Reorder with id: ${id}`});//if no workout is found, return a 404 status code and a message
+//           }
+//           res.status(200).json(reorder)
+//     }
+// update a reorder
+export const updateReorder = async (req, res) => {
+    const { id } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(404).json({ msg: `No Reorder with id: ${id}` });
     }
+
+    try {
+        const { reorderLevel } = req.body;
+        const reorder = await Reorder.findByIdAndUpdate(id, req.body, { new: true });
+
+        if (!reorder) {
+            return res.status(404).json({ msg: `No Reorder with id: ${id}` });
+        }
+
+        // Update status based on the updated reorder level
+        reorder.status = reorder.totalquantity <= reorderLevel;
+        await reorder.save();
+
+        res.status(200).json(reorder);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+};
 
 
 
