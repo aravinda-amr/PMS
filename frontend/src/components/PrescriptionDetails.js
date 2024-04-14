@@ -7,7 +7,7 @@ const PrescriptionDetails = ({ prescription }) => {
     const { dispatch } = usePrescriptionContext();
 
     const handleClick = async () => {
-        const response = await fetch("/api/prescription/" + prescription._id, {
+        const response = await fetch("/api/allPres/" + prescription._id, {
             method: "DELETE",
         });
         const json = await response.json();
@@ -16,7 +16,7 @@ const PrescriptionDetails = ({ prescription }) => {
     }
 
     const handleUpdate = async () => {
-        const response = await fetch("/api/prescription/" + prescription._id, {
+        const response = await fetch("/api/allPres/" + prescription._id, {
             method: "PUT",
         });
         const json = await response.json();
@@ -33,11 +33,11 @@ const PrescriptionDetails = ({ prescription }) => {
             <p>{prescription.substitutes}</p>
 
             <h3>Prescription Image</h3>
-            {/* <img src={prescription.prescriptionImg} alt="prescription" /> */}
+            <img src={prescription.prescriptionImg} alt="prescription" width={100} height={60}/>
 
-            {/* <h3>Created At</h3>
-            <p>{prescription.createdAt}</p>
-            <p>{formatDistanceToNow(new Date(prescription.createdAt), {addSuffix : true})}</p> */}
+            <h3>Created At</h3>
+            {/* <p>{prescription.createdAt}</p> */}
+            <p>{formatDistanceToNow(new Date(prescription.createdAt), {addSuffix : true})}</p>
 
             <button onClick={handleClick}>Delete</button>
             <button onClick={handleUpdate}>Update</button>

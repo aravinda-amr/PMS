@@ -12,7 +12,7 @@ const Prescription = () => {
     
     useEffect(() => {
         const fetchPrescriptions = async () => {
-        const response = await fetch("/api/prescription");
+        const response = await fetch("/api/allPres");
         const json = await response.json();
         console.log(json);
         if (response.ok) {
