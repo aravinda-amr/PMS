@@ -22,6 +22,9 @@ import billing from './routes/billing.js';
 import staffReward from './routes/staffReward.js';
 import leaderboard from './routes/leaderboard.js';
 
+//import all pres
+import allPres from './routes/ShowPres.js';
+
 dotenv.config()
 
 const app = express()
@@ -64,7 +67,7 @@ app.use('/api/leaderboard', leaderboard)
 
 app.use('/api/salesreport', salesreportsRoutes )
 
-
+app.use('/api/allPres', allPres)
 
 //connect to the database
 mongoose.connect(process.env.MONGO_URI)
