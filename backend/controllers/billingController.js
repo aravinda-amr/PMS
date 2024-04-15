@@ -1,4 +1,4 @@
-
+import User from '../models/userModel.js';
 import Bill from '../models/billingModel.js';
 import mongoose from 'mongoose';
 const{Types} = mongoose;
@@ -19,6 +19,11 @@ const calculateSubTotal = (medicines) => {
     return subTotal.toFixed(2); // Ensure two decimal places are always displayed
 };
 
+// Function to calculate discount
+const calculateDiscount = (subtotal, discountPercentage) => {
+    return subtotal * (discountPercentage / 100);
+};
+
 //Function to calculate grand total for the bill
 const calculateGrandTotal = (subTotal, discount) => {
     // Parse the discount as a number, or default to 0 if it's null
@@ -29,7 +34,7 @@ const calculateGrandTotal = (subTotal, discount) => {
         throw new Error('Invalid discount');
     }
     //Subtract discount from the subtotal to get the grand total
-    const grandTotal = subTotal - discount;
+    const grandTotal = subTotal - parsedDiscount;
     return grandTotal.toFixed(2); // Ensure two decimal places are always displayed 
 };
 
@@ -37,6 +42,7 @@ const calculateGrandTotal = (subTotal, discount) => {
 const isValidPhoneNumber = (phoneNumber) => {
     return /^\d{10}$/.test(phoneNumber);
 };
+
 
 //get all bills
 const getBills = async (req, res)=> {
@@ -142,12 +148,22 @@ const createBill=async(req, res) => {
     //generate a new objectID for the invoiceID
     const invoiceID = new Types.ObjectId();
 
-    //Validate customerID
-    if(!isValidPhoneNumber(customerID)){
-        return res.status(400).json({error: 'Invalid customerID.It should be a 10-digit phone number'});
-    }
+
 //Create a new bill documemt in the database
     try {
+
+        // Retrieve discount for the customer
+        const customerDiscount = await getDiscountForCustomer({ params: { customerID } });
+       
+        // Calculate subtotal
+        const subTotal = calculateSubTotal(medicines);
+
+          // Calculate discount based on subtotal and customer discount
+          const calculatedDiscount = calculateDiscount(subTotal, customerDiscount || discount || 0);
+
+        // Calculate grand total for the bill
+        const grandTotal = calculateGrandTotal(subTotal, calculatedDiscount);
+
         const bill = await Bill.create({
             _id: invoiceID,
             pharmacistID,
@@ -160,19 +176,7 @@ const createBill=async(req, res) => {
             })) : [] //Ensure that medicines is an array
         });
 
-        const subTotal = calculateSubTotal(bill.medicines);
-
-
-        //Calculate grand total for the bill
-        const grandTotal = calculateGrandTotal(subTotal, discount || 0);
-
-        //update the bill with calculated subtotal and grandtotal
-        bill.calculateSubTotal = subTotal;
-        bill.discount = discount;
-        bill.grandTotal = grandTotal;
-
-         //Save the updated bill
-         await bill.save();
+        
 
         const response = {
             invoiceID: bill._id,
@@ -186,7 +190,7 @@ const createBill=async(req, res) => {
                 calculateItemTotal: medicine.calculateItemTotal
             })),
             subTotal:subTotal,
-            discount: bill.discount || 0,
+            discount: calculatedDiscount,
             grandTotal: grandTotal
         };
   
@@ -273,6 +277,10 @@ const updateBill = async(req, res) => {
     if(invoiceDate){
         existingBill.invoiceDate = invoiceDate;
     }
+
+     // Retrieve discount for the customer
+     const customerDiscount = await getDiscountForCustomer(customerID || existingBill.customerID);
+
     
    
     // Add new medicine to the bill
@@ -317,11 +325,35 @@ const updateBill = async(req, res) => {
 }
 };
 
+const getDiscountForCustomer = async (req, res) => {
+    try {
+        const { customerID } = req.params;
+        
+        const user = await User.findOne({ contact: customerID });
+
+
+        if (!user) {
+            return res.status(404).json({ error: 'No such user' });
+        }
+
+        // Assuming you want to use the first coupon available
+        const discount = user.coupons.length > 0 ? user.coupons[0].discount : 0;
+
+        res.status(200).json({ discount });
+    } catch (error) {
+        console.error('Error retrieving discount:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
+
+
 
 export{
     getBills,
     getBill,
     createBill,
     deleteMedicineFromBill,
-    updateBill
+    updateBill,
+    getDiscountForCustomer
 }

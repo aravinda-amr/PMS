@@ -3,7 +3,9 @@ import {     getBills,
             getBill, 
             createBill, 
             deleteMedicineFromBill, 
-            updateBill } from '../controllers/billingController.js';
+            updateBill,
+            getDiscountForCustomer,
+} from '../controllers/billingController.js';
 const router = express.Router();
 
 //Get all bills
@@ -21,5 +23,8 @@ router.delete('/:invoiceID/:medicineIndex', deleteMedicineFromBill)
 
 //Update a bill
 router.patch('/:id', updateBill)
+
+// Route to retrieve discount for a user
+router.get('/:customerID/discount', getDiscountForCustomer);
 
 export default router;
