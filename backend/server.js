@@ -2,6 +2,9 @@ import express from 'express';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 
+//import jobs
+import cronJobs from './jobs/cronJobs.js';
+
 //import routes
 import userRoutes from './routes/user.js';
 import prescriptionRoutes from './routes/prescription.js';
@@ -26,6 +29,8 @@ import leaderboard from './routes/leaderboard.js';
 import allPres from './routes/ShowPres.js';
 
 dotenv.config()
+
+cronJobs.init();
 
 const app = express()
 
