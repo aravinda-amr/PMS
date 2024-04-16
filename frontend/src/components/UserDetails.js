@@ -83,10 +83,7 @@ const UserDetails = ({ user }) => {
       <div className="bg-dark-blue-2 flex justify-between items-center px-4 py-2 rounded-t-lg">
         <div className="flex items-center">
           <Typography variant="h6" component="h2" className="text-white mr-2">
-            {user.name}
-          </Typography>
-          <Typography variant="subtitle1" component="h4" className="text-white font-medium">
-            Coupons: {coupons.length}
+            {user.name} : {coupons.length}
           </Typography>
         </div>
 
