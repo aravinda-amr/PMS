@@ -107,26 +107,42 @@ export const createCoupon = async (req, res) => {
  }
  
 
-//Delete a coupon from a user
+// Delete a coupon from a user
 export const deleteCoupon = async (req, res) => {
   const { id, couponId } = req.params;
-
+ 
   if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(400).json({ error: 'No such user' });
+     return res.status(400).json({ error: 'No such user' });
   }
-
+ 
   const user = await User.findById(id);
-
+ 
   if (!user) {
-    return res.status(400).json({ error: 'No such user' });
+     return res.status(400).json({ error: 'No such user' });
   }
-
-  user.coupons = user.coupons.filter((coupon) => coupon._id != couponId);
-
+ 
+  // Find the index of the coupon to be deleted
+  const couponIndex = user.coupons.findIndex((coupon) => coupon._id == couponId);
+ 
+  if (couponIndex === -1) {
+     return res.status(400).json({ error: 'No such coupon' });
+  }
+ 
+  // Remove the coupon from the array
+  user.coupons.splice(couponIndex, 1);
+ 
+  // Recalculate the accessNumber for all coupons that come after the deleted one
+  user.coupons.forEach((coupon, index) => {
+     if (index >= couponIndex) {
+       coupon.accessNumber = index + 1; // Update the accessNumber
+     }
+  });
+ 
   await user.save();
-
+ 
   res.status(200).json(user.coupons);
-}
+ }
+ 
 
 //Update a coupon for a user
 export const updateCoupon = async (req, res) => {

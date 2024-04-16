@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { format, addWeeks } from 'date-fns';
+import { format, addWeeks, differenceInDays } from 'date-fns';
+
+
 
 // Define the generateCouponCode function before using it
 const generateCouponCode = () => {
@@ -17,23 +19,41 @@ const AddCouponForm = ({ id, onCouponAdded, coupon, isEditing, onFormSubmit, onR
   const [discount, setDiscount] = useState(1);
   const [used, setUsed] = useState(false);
   const [couponCode, setCouponCode] = useState('');
- 
+  const [expiryDifference, setExpiryDifference] = useState(''); // New state to hold the formatted difference
+
   useEffect(() => {
-     if (coupon) {
-       setExpire(format(new Date(coupon.expire), 'yyyy-MM-dd'));
-       setDiscount(coupon.discount);
-       setUsed(coupon.used);
-       setCouponCode(coupon.couponCode);
-     } else {
-       // Set the default expiry date to two weeks from today
-       const twoWeeksFromToday = addWeeks(new Date(), 2);
-       setExpire(format(twoWeeksFromToday, 'yyyy-MM-dd'));
-       setDiscount(1);
-       setUsed(false);
-       setCouponCode(generateCouponCode());
-     }
+    if (coupon) {
+      setExpire(format(new Date(coupon.expire), 'yyyy-MM-dd'));
+      setDiscount(coupon.discount);
+      setUsed(coupon.used);
+      setCouponCode(coupon.couponCode);
+    } else {
+      const twoWeeksFromToday = addWeeks(new Date(), 2);
+      setExpire(format(twoWeeksFromToday, 'yyyy-MM-dd'));
+      setDiscount(1);
+      setUsed(false);
+      setCouponCode(generateCouponCode());
+    }
   }, [coupon]);
- 
+
+  // Calculate and set the expiry difference whenever the expire state changes
+  useEffect(() => {
+    if (expire) {
+       const expiryDate = new Date(expire);
+       const now = new Date();
+       const daysDifference = differenceInDays(expiryDate, now);
+   
+       let differenceText = '';
+       if (daysDifference > 0) {
+         differenceText = `${daysDifference} day(s) from now`;
+       } else {
+         differenceText = 'Expired';
+       }
+   
+       setExpiryDifference(differenceText);
+    }
+   }, [expire]);
+   
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -100,7 +120,7 @@ const AddCouponForm = ({ id, onCouponAdded, coupon, isEditing, onFormSubmit, onR
             onChange={(e) => setExpire(e.target.value)}
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 text-dark-blue p-2"
           />
-
+          <p className="text-xs text-gray-400">{expiryDifference}</p>
         </label>
         <label className="text-sm font-medium text-white">
           Discount:
@@ -108,8 +128,8 @@ const AddCouponForm = ({ id, onCouponAdded, coupon, isEditing, onFormSubmit, onR
             type="number"
             value={discount}
             required
-            min="1" 
-            max="100" 
+            min="1"
+            max="100"
             onChange={(e) => setDiscount(Number(e.target.value))}
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-button focus:ring focus:ring-blue-button focus:ring-opacity-50 text-dark-blue p-2"
           />
