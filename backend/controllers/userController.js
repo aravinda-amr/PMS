@@ -70,27 +70,42 @@ export const getCoupons = async (req, res) => {
   res.status(200).json(coupons);
 };
 
-//Add a coupon to a user
+// Add a coupon to a user
 export const createCoupon = async (req, res) => {
   const { id } = req.params;
   const { expire, discount, couponCode } = req.body;
-
+ 
   if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(400).json({ error: 'No such user' });
+     return res.status(400).json({ error: 'No such user' });
   }
-
+ 
   const user = await User.findById(id);
-
+ 
   if (!user) {
-    return res.status(400).json({ error: 'No such user' });
+     return res.status(400).json({ error: 'No such user' });
   }
-
-  user.coupons.push({ expire, discount, couponCode });
-
+ 
+  // Find the highest accessNumber in the user's coupons
+  const highestAccessNumber = user.coupons.reduce((highest, coupon) => {
+     return coupon.accessNumber > highest ? coupon.accessNumber : highest;
+  }, 0);
+ 
+  // Create the new coupon with an incremented accessNumber
+  const newCoupon = {
+     accessNumber: highestAccessNumber + 1, // Increment the accessNumber
+     expire,
+     discount,
+     couponCode,
+     used: false // Assuming you want to set used to false by default
+  };
+ 
+  user.coupons.push(newCoupon);
+ 
   await user.save();
-
+ 
   res.status(200).json(user.coupons);
-}
+ }
+ 
 
 //Delete a coupon from a user
 export const deleteCoupon = async (req, res) => {

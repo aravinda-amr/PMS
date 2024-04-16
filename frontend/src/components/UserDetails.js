@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import CouponTable from "./CouponTable";
 import CouponForm from "./CouponForm";
 import { Typography } from '@mui/material'; // Import Material-UI components
@@ -7,48 +7,11 @@ const UserDetails = ({ user }) => {
   const [showCouponTable, setShowCouponTable] = useState(false);
   const [showCouponForm, setShowCouponForm] = useState(false);
   const [coupons, setCoupons] = useState([]);
-  const [totalAmount, setTotalAmount] = useState(0);
   const [isLoadingCoupons, setIsLoadingCoupons] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [selectedCoupon, setSelectedCoupon] = useState(null);
 
-  const handleEditCoupon = (couponId) => {
-    const coupon = coupons.find(c => c._id === couponId);
-    setSelectedCoupon(coupon);
-    setIsEditing(true);
-    setShowCouponForm(true);
-  };
-
-  useEffect(() => {
-    const fetchTotalAmount = async () => {
-      try {
-        const response = await fetch(`/api/user/totalAmount/${user.contact}`);
-        const data = await response.json();
-
-        if (data.length > 0) {
-          setTotalAmount(data[0].totalAmount);
-
-        } else {
-          console.log('No data found');
-        }
-      } catch (error) {
-        console.error('Error fetching total amount:', error);
-      }
-    };
-
-    fetchTotalAmount();
-  }, [user.contact]); // Depend on user.contact to refetch if it changes
-
-  const handleAddCouponClick = () => {
-    setShowCouponForm(!showCouponForm);
-    if (!showCouponForm) {
-       resetForm(); // Reset the form fields
-       setShowCouponTable(true);
-    }
-   };
-   
-
-  const fetchCoupons = async () => {
+  const fetchCoupons = useMemo(() => async () => {
     setIsLoadingCoupons(true); // Set loading state to true
     try {
       const response = await fetch(`/api/user/${user._id}/coupons`);
@@ -59,15 +22,37 @@ const UserDetails = ({ user }) => {
     } finally {
       setIsLoadingCoupons(false); // Set loading state to false
     }
+  }, [user._id]); // Depend on user._id to refetch if it changes
+
+
+  useEffect(() => {
+    fetchCoupons();
+  }, [fetchCoupons]);
+
+  const handleAddCouponClick = () => {
+    setShowCouponForm(!showCouponForm);
+    if (!showCouponForm) {
+      resetForm(); // Reset the form fields
+      setShowCouponTable(true); // Ensure the table is shown when the form is shown
+      if (!coupons.length) { // Fetch coupons only if they are not already loaded
+        fetchCoupons();
+      }
+    }
   };
 
-
-  const handleViewButtonClick = async () => {
-
+  const handleViewButtonClick = () => {
     setShowCouponTable(!showCouponTable);
-    if (!showCouponTable) {
-      await fetchCoupons(); // Fetch coupons when view button is clicked
+    if (!showCouponTable && !coupons.length) { // Fetch coupons only if they are not already loaded
+      fetchCoupons();
     }
+  };
+
+  const handleEditCoupon = (couponId) => {
+    const coupon = coupons.find(c => c._id === couponId);
+    setSelectedCoupon(coupon);
+    setIsEditing(true);
+    setShowCouponForm(true);
+
   };
 
   const handleDeleteCoupon = async (couponId) => {
@@ -90,19 +75,26 @@ const UserDetails = ({ user }) => {
   const resetForm = () => {
     setSelectedCoupon(null);
     setIsEditing(false);
-   };
-   
+  };
+
 
   return (
     <div className="bg-gray-100 rounded-lg p-4 mb-4 flex flex-col">
       <div className="bg-dark-blue-2 flex justify-between items-center px-4 py-2 rounded-t-lg">
-        <Typography variant="h6" component="h2" className="text-white">
-          {user.name}
-        </Typography>
+        <div className="flex items-center">
+          <Typography variant="h6" component="h2" className="text-white mr-2">
+            {user.name}
+          </Typography>
+          <Typography variant="subtitle1" component="h4" className="text-white font-medium">
+            Coupons: {coupons.length}
+          </Typography>
+        </div>
+
         <Typography variant="h5" component="h4" className="text-white font-medium px-4 py-2">
-          Rs.{totalAmount}
+          Rs.{user.totalAmount}
         </Typography>
       </div>
+
       <div className="bg-dark-blue-2 flex items-center px-4 py-2 rounded-b-lg">
         <Typography variant="subtitle1" component="h4" className="text-white font-medium mr-2">
           Contact: {user.contact}
@@ -130,7 +122,7 @@ const UserDetails = ({ user }) => {
 
       {showCouponForm && (
         <div className="mt-4">
-          <CouponForm id={user._id} onCouponAdded={fetchCoupons} coupon={selectedCoupon} isEditing={isEditing} onFormSubmit={handleAddCouponClick} onReset={resetForm}/>
+          <CouponForm id={user._id} onCouponAdded={fetchCoupons} coupon={selectedCoupon} isEditing={isEditing} onFormSubmit={handleAddCouponClick} onReset={resetForm} />
         </div>
       )}
     </div>

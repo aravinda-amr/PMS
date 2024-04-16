@@ -12,9 +12,10 @@ const CouponTable = ({ coupons, onDeleteCoupon, onEditCoupon, isLoading }) => {
       <Table aria-label="simple table" >
         <TableHead className="bg-dark-blue text-white">
           <TableRow>
+          <TableCell sx={{ color: 'white' }}></TableCell>
             <TableCell sx={{ color: 'white' }}>Discount</TableCell>
             <TableCell sx={{ color: 'white' }}>Expire Date</TableCell>
-            <TableCell sx={{ color: 'white' }}>Coupon Code</TableCell>
+            
             <TableCell sx={{ color: 'white' }}>Status</TableCell>
             <TableCell sx={{ color: 'white' }}>Actions</TableCell>
           </TableRow>
@@ -22,9 +23,10 @@ const CouponTable = ({ coupons, onDeleteCoupon, onEditCoupon, isLoading }) => {
         <TableBody>
           {coupons.map((coupon) => (
             <TableRow key={coupon._id}>
+              <TableCell sx={{ fontWeight: 'bold',fontSize: '0.875rem', color: 'text.secondary' }}>{coupon.accessNumber}</TableCell>
               <TableCell sx={{ fontWeight: 'bold', color: 'primary.main' }}>{coupon.discount}%</TableCell>
               <TableCell sx={{ fontSize: '0.875rem', color: 'text.secondary' }}>{format(new Date(coupon.expire), 'MM/dd/yyyy')}</TableCell>
-              <TableCell sx={{ fontSize: '0.875rem', color: coupon.used ? 'error.main' : 'success.main' }}>{coupon.couponCode}</TableCell>
+              {/*<TableCell sx={{ fontSize: '0.875rem', color: coupon.used ? 'error.main' : 'success.main' }}>{coupon.couponCode}</TableCell>*/}
               <TableCell sx={{ fontWeight: 'bold', fontSize: '0.875rem', color: coupon.used ? 'error.main' : 'success.main' }}>{coupon.used ? 'Used' : 'Active'}</TableCell>
               <TableCell>
                 <IconButton onClick={() => onDeleteCoupon(coupon._id)}>

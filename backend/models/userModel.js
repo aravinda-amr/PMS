@@ -7,8 +7,17 @@ const Schema = mongoose.Schema;
 
 //coupon schema
 const couponSchema = new Schema({
+    accessNumber: {
+        type: Number,
+        required: true,
+        default: 1 
+    },
     expire: String,
-    discount: Number,
+    discount:{
+        type: Number,
+        required: true,
+        default: 1 
+    },
     couponCode: {
         type: String,
         required: true,
@@ -19,6 +28,8 @@ const couponSchema = new Schema({
         default: false
     }
    });
+   
+   
 
 const userSchema = new Schema({
     email: {
