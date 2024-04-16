@@ -16,6 +16,7 @@ const Loyalty = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [users, setUsers] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
+  const [customTotalAmount, setCustomTotalAmount] = useState(""); // Default to 100
 
 
   useEffect(() => {
@@ -27,7 +28,7 @@ const Loyalty = () => {
         const users = await response.json();
         const usersWithTotal = await Promise.all(
           users.map(async (user) => {
-            const totalResponse = await fetch(`/api/user/totalAmount/${user.contact}`);
+            const totalResponse = await fetch(`/api/user/totalAmount/${user.contact}?months=${months}`);
             const totalData = await totalResponse.json();
             return { ...user, totalAmount: totalData.length > 0 ? totalData[0].totalAmount : 0 };
           })
@@ -44,50 +45,41 @@ const Loyalty = () => {
     };
 
     fetchAndFilterUsers();
-  }, []); // Empty dependency array means this effect runs once on component mount
-  // Add the input field for setting the number of months
-  {/* const handleMonthsChange = (event) => {
-    setMonths(event.target.value);
-  };*/}
-
+  }, [months]);
 
   const handleFetchClick = () => {
     // Toggle the isFiltered state
     setIsFiltered(!isFiltered);
 
-    // Determine the new state based on the current isFiltered value
-    if (!isFiltered) {
-      // If not filtered, show all users
-      setFilteredUsers(users);
-    } else {
-      // If filtered, show only users with total > 100
-      const filtered = users.filter(user => user.totalAmount > 100);
-      setFilteredUsers(filtered);
-    }
+    // Apply the customTotalAmount filter to all users
+    const filtered = users.filter(user => user.totalAmount > customTotalAmount);
+    setFilteredUsers(filtered);
   };
-
-
-
-
 
   // Search functionality (unchanged)
   useEffect(() => {
     let filtered;
     if (isFiltered) {
-      // If filtered, only include users with totalAmount > 100
-      filtered = users.filter(user => user.totalAmount > 100 && (
+      // If filtered, only include users with totalAmount > customTotalAmount
+      filtered = users.filter(user => user.totalAmount > customTotalAmount && (
         user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         user.contact.includes(searchTerm)
       ));
     } else {
       // If not filtered, include all users
+      // If customTotalAmount is set, filter users with totalAmount > customTotalAmount
+      // Otherwise, include all users
       filtered = users.filter(user => (
-        user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        user.contact.includes(searchTerm)
-      ));
+        !customTotalAmount || user.totalAmount > customTotalAmount
+      ) && (
+          user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          user.contact.includes(searchTerm)
+        ));
     }
     setFilteredUsers(filtered);
-  }, [searchTerm, users, isFiltered]); // Add isFiltered to the dependency array
+  }, [searchTerm, users, isFiltered, customTotalAmount]); // Add customTotalAmount to the dependency array
+
+
 
 
   const downloadCSV = () => {
@@ -126,25 +118,40 @@ const Loyalty = () => {
             variant="outlined"
             size="small"
             onClick={handleFetchClick}
-            className="ml-4  h-10 flex-shrink-0"
+            className="ml-4 h-10 flex-shrink-0"
           >
             {isFiltered ? "All Users" : "Total > 100"}
           </Button>
           <input
             type="number"
             name="customAmount"
-            placeholder=""
-            className="ml-4 px-3 py-2 border border-dark-blue-2 rounded-md  h-10 "
+            placeholder="Custom amount"
+            className="ml-4 h-10 px-3 py-2 border border-dark-blue-2 rounded-md text-gray-700"
+            value={customTotalAmount}
+            onChange={(e) => setCustomTotalAmount(e.target.value ? Number(e.target.value) : "")}
           />
+
         </div>
-        <Button
-          variant="outlined"
-          size="small"
-          onClick={downloadCSV}
-          className=" h-10 flex-shrink-0"
-        >
-          Download CSV
-        </Button>
+        <div className="flex items-center space-x-4">
+          <label className="text-gray-600">Months:</label>
+          <input
+            type="number"
+            name="Months"
+            placeholder="Months"
+            className="w-14 h-10 px-3 py-2 border border-dark-blue-2 rounded-md text-gray-700"
+            value={months}
+            onChange={(e) => setMonths(e.target.value ? Number(e.target.value) : 6)}
+          />
+
+          <Button
+            variant="outlined"
+            size="small"
+            onClick={downloadCSV}
+            className="h-10 flex-shrink-0"
+          >
+            Download CSV
+          </Button>
+        </div>
       </div>
 
       <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
@@ -173,7 +180,7 @@ const Loyalty = () => {
         <DialogActions>
           <Button onClick={() => setOpenDialog(false)}>Cancel</Button>
           <Button onClick={() => {
-            const fileName = isFiltered ? 'customers_over_100.csv' : 'all_customers.csv';
+            const fileName = isFiltered ? `customers_over_${customTotalAmount}.csv` : 'all_customers.csv';
             // Proceed with the CSV download
             const csvContent = filteredUsers.map(user => `${user.name},${user.contact},${user.totalAmount}`).join('\n');
             const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });

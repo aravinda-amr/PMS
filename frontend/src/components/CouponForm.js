@@ -145,7 +145,7 @@ const AddCouponForm = ({ id, onCouponAdded, coupon, isEditing, onFormSubmit, onR
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-button focus:ring focus:ring-blue-button focus:ring-opacity-50 text-dark-blue p-2"
           >
             <option value="active">Active</option>
-            <option value="used">Used</option>
+            <option value="used">Inactive</option>
           </select>
         </label>
 

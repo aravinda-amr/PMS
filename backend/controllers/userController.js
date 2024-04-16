@@ -209,8 +209,10 @@ export const getBills = async (req, res) => {
 // Get total of all bills for a user within a specified number of months
 export const calculateTotalAmount = async (req, res) => {
   try {
-    const { customerID, months = 6 } = req.params; // Default to 6 months if not provided
+    //const { customerID, months = 6 } = req.params; // Default to 6 months if not provided
 
+    const { customerID } = req.params;
+    const months = req.query.months ? Number(req.query.months) : 6; // Use the months query parameter or default to 6
     // Calculate the date from which to start fetching the bills
     const startDate = new Date();
     startDate.setMonth(startDate.getMonth() - months);
