@@ -27,7 +27,7 @@ const CouponTable = ({ coupons, onDeleteCoupon, onEditCoupon, isLoading }) => {
               <TableCell sx={{ fontWeight: 'bold', color: 'primary.main' }}>{coupon.discount}%</TableCell>
               <TableCell sx={{ fontSize: '0.875rem', color: 'text.secondary' }}>{format(new Date(coupon.expire), 'MM/dd/yyyy')}</TableCell>
               {/*<TableCell sx={{ fontSize: '0.875rem', color: coupon.used ? 'error.main' : 'success.main' }}>{coupon.couponCode}</TableCell>*/}
-              <TableCell sx={{ fontWeight: 'bold', fontSize: '0.875rem', color: coupon.used ? 'error.main' : 'success.main' }}>{coupon.used ? 'Used' : 'Active'}</TableCell>
+              <TableCell sx={{ fontWeight: 'bold', fontSize: '0.875rem', color: coupon.used ? 'error.main' : 'success.main' }}>{coupon.used ? 'Inactive' : 'Active'}</TableCell>
               <TableCell>
                 <IconButton onClick={() => onDeleteCoupon(coupon._id)}>
                   <DeleteIcon />
