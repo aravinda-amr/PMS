@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { format } from 'date-fns';
+import { format, addWeeks } from 'date-fns';
 
 // Define the generateCouponCode function before using it
 const generateCouponCode = () => {
@@ -14,23 +14,26 @@ const generateCouponCode = () => {
 
 const AddCouponForm = ({ id, onCouponAdded, coupon, isEditing, onFormSubmit, onReset }) => {
   const [expire, setExpire] = useState('');
-  const [discount, setDiscount] = useState('');
+  const [discount, setDiscount] = useState(1);
   const [used, setUsed] = useState(false);
   const [couponCode, setCouponCode] = useState('');
-
+ 
   useEffect(() => {
-    if (coupon) {
-      setExpire(format(new Date(coupon.expire), 'yyyy-MM-dd'));
-      setDiscount(coupon.discount);
-      setUsed(coupon.used);
-      setCouponCode(coupon.couponCode);
-    } else {
-      setExpire('');
-      setDiscount('');
-      setUsed(false);
-      setCouponCode(generateCouponCode());
-    }
- }, [coupon]);
+     if (coupon) {
+       setExpire(format(new Date(coupon.expire), 'yyyy-MM-dd'));
+       setDiscount(coupon.discount);
+       setUsed(coupon.used);
+       setCouponCode(coupon.couponCode);
+     } else {
+       // Set the default expiry date to two weeks from today
+       const twoWeeksFromToday = addWeeks(new Date(), 2);
+       setExpire(format(twoWeeksFromToday, 'yyyy-MM-dd'));
+       setDiscount(1);
+       setUsed(false);
+       setCouponCode(generateCouponCode());
+     }
+  }, [coupon]);
+ 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -71,7 +74,7 @@ const AddCouponForm = ({ id, onCouponAdded, coupon, isEditing, onFormSubmit, onR
       if (onReset) {
         onReset();
       }
-      
+
       // Call the onFormSubmit function to hide the form
       if (onFormSubmit) {
         onFormSubmit();
@@ -105,6 +108,8 @@ const AddCouponForm = ({ id, onCouponAdded, coupon, isEditing, onFormSubmit, onR
             type="number"
             value={discount}
             required
+            min="1" 
+            max="100" 
             onChange={(e) => setDiscount(Number(e.target.value))}
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-button focus:ring focus:ring-blue-button focus:ring-opacity-50 text-dark-blue p-2"
           />

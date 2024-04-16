@@ -1,19 +1,23 @@
 import { useEffect, useState } from "react";
-import { useUsers } from "../hooks/useUsers";
 import UserDetails from "../components/UserDetails";
 import CircularProgress from '@mui/material/CircularProgress';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
 
 const Loyalty = () => {
-  const { user, dispatch } = useUsers();
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [months, setMonths] = useState(6); // State for the number of months
   const [isFiltered, setIsFiltered] = useState(true); // Initially set to true to display filtered users
   const [isLoading, setIsLoading] = useState(true);
+  const [users, setUsers] = useState([]);
+  const [openDialog, setOpenDialog] = useState(false);
 
-  // Fetch and filter users with total > 100 initially
+
   useEffect(() => {
     const fetchAndFilterUsers = async () => {
       setIsLoading(true);
@@ -21,19 +25,17 @@ const Loyalty = () => {
         const response = await fetch("/api/user");
         if (!response.ok) throw new Error('Failed to fetch users');
         const users = await response.json();
-        const filteredUsersWithTotal = await Promise.all(
+        const usersWithTotal = await Promise.all(
           users.map(async (user) => {
-            const totalResponse = await fetch(`/api/user/totalAmount/${user.contact}?months=${months}`);
+            const totalResponse = await fetch(`/api/user/totalAmount/${user.contact}`);
             const totalData = await totalResponse.json();
-            if (totalData.length > 0 && totalData[0].totalAmount > 100) {
-              return { ...user, totalAmount: totalData[0].totalAmount };
-            }
-            return null;
+            return { ...user, totalAmount: totalData.length > 0 ? totalData[0].totalAmount : 0 };
           })
         );
-        const filteredUsers = filteredUsersWithTotal.filter((user) => user !== null);
-        dispatch({ type: "SET_USERS", payload: filteredUsers });
-        setFilteredUsers(filteredUsers); // Set filtered users
+        // Filter users to only include those with totalAmount > 100
+        const filteredUsers = usersWithTotal.filter(user => user.totalAmount > 100);
+        setUsers(usersWithTotal); // Store all users
+        setFilteredUsers(filteredUsers); // Initially, show users with totalAmount > 100
       } catch (error) {
         console.error(error);
       } finally {
@@ -42,71 +44,56 @@ const Loyalty = () => {
     };
 
     fetchAndFilterUsers();
-  }, [dispatch, months]); // Added months to dependency array
-
+  }, []); // Empty dependency array means this effect runs once on component mount
   // Add the input field for setting the number of months
-  const handleMonthsChange = (event) => {
+  {/* const handleMonthsChange = (event) => {
     setMonths(event.target.value);
-  };
+  };*/}
 
 
-  const handleFetchClick = async () => {
-    setIsLoading(true);
-    if (isFiltered) {
-      // Fetch all users
-      const response = await fetch("/api/user");
-      if (response.ok) {
-        const json = await response.json();
-        // Fetch total amount for each user
-        const usersWithTotal = await Promise.all(
-          json.map(async (user) => {
-            const totalResponse = await fetch(`/api/user/totalAmount/${user.contact}?months=${months}`);
-            const totalData = await totalResponse.json();
-            // Include the total amount in the user object
-            return { ...user, totalAmount: totalData.length > 0 ? totalData[0].totalAmount : 0 };
-          })
-        );
-        dispatch({ type: "SET_USERS", payload: usersWithTotal });
-        setFilteredUsers(usersWithTotal); // Set all users with total amounts
-        setIsFiltered(false); // Set the toggle state to false after fetching all users
-      }
+  const handleFetchClick = () => {
+    // Toggle the isFiltered state
+    setIsFiltered(!isFiltered);
+
+    // Determine the new state based on the current isFiltered value
+    if (!isFiltered) {
+      // If not filtered, show all users
+      setFilteredUsers(users);
     } else {
-      // Fetch and filter users with total > 100
-      const response = await fetch("/api/user");
-      if (response.ok) {
-        const json = await response.json();
-        const filteredUsersWithTotal = await Promise.all(
-          json.map(async (user) => {
-            const totalResponse = await fetch(`/api/user/totalAmount/${user.contact}?months=${months}`);
-            console.log(months);
-            const totalData = await totalResponse.json();
-            if (totalData.length > 0 && totalData[0].totalAmount > 100) {
-              return { ...user, totalAmount: totalData[0].totalAmount };
-            }
-            return null;
-          })
-        );
-        const filteredUsers = filteredUsersWithTotal.filter((user) => user !== null);
-        dispatch({ type: "SET_USERS", payload: filteredUsers });
-        setFilteredUsers(filteredUsers); // Set filtered users
-        setIsFiltered(true); // Set the toggle state to true after filtering
-      }
+      // If filtered, show only users with total > 100
+      const filtered = users.filter(user => user.totalAmount > 100);
+      setFilteredUsers(filtered);
     }
-    setIsLoading(false);
   };
+
 
 
 
 
   // Search functionality (unchanged)
   useEffect(() => {
-    const filtered = user?.filter(
-      (user) =>
+    let filtered;
+    if (isFiltered) {
+      // If filtered, only include users with totalAmount > 100
+      filtered = users.filter(user => user.totalAmount > 100 && (
         user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         user.contact.includes(searchTerm)
-    );
+      ));
+    } else {
+      // If not filtered, include all users
+      filtered = users.filter(user => (
+        user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        user.contact.includes(searchTerm)
+      ));
+    }
     setFilteredUsers(filtered);
-  }, [searchTerm, user]);
+  }, [searchTerm, users, isFiltered]); // Add isFiltered to the dependency array
+
+
+  const downloadCSV = () => {
+    setOpenDialog(true); // Open the dialog instead of downloading immediately
+  };
+
 
   return (
 
@@ -133,16 +120,75 @@ const Loyalty = () => {
 
         </div>
       </div>
-      <div className="p-4 ml-64">
+      <div className="p-4 ml-64 flex space-x-4 justify-between">
+        <div className="flex items-center space-x-4">
+          <Button
+            variant="outlined"
+            size="small"
+            onClick={handleFetchClick}
+            className="ml-4  h-10 flex-shrink-0"
+          >
+            {isFiltered ? "All Users" : "Total > 100"}
+          </Button>
+          <input
+            type="number"
+            name="customAmount"
+            placeholder=""
+            className="ml-4 px-3 py-2 border border-dark-blue-2 rounded-md  h-10 "
+          />
+        </div>
         <Button
           variant="outlined"
           size="small"
-          onClick={handleFetchClick}
-          className="ml-4"
+          onClick={downloadCSV}
+          className=" h-10 flex-shrink-0"
         >
-          {isFiltered ? "All Users" : "Total > 100"}
+          Download CSV
         </Button>
       </div>
+
+      <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
+        <DialogTitle>Download CSV</DialogTitle>
+        <DialogContent>
+          <table className="w-full">
+            <thead>
+              <tr>
+                <th className="px-4">Name</th>
+                <th className="px-4">Contact</th>
+                <th className="px-4">Total Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredUsers.map((user, index) => (
+                <tr key={index}>
+                  <td className="px-4 py-2">{user.name}</td>
+                  <td className="px-4 py-2">{user.contact}</td>
+                  <td className="px-4 py-2">{user.totalAmount}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </DialogContent>
+
+        <DialogActions>
+          <Button onClick={() => setOpenDialog(false)}>Cancel</Button>
+          <Button onClick={() => {
+            const fileName = isFiltered ? 'customers_over_100.csv' : 'all_customers.csv';
+            // Proceed with the CSV download
+            const csvContent = filteredUsers.map(user => `${user.name},${user.contact},${user.totalAmount}`).join('\n');
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = fileName; // Use the determined file name
+            link.click();
+            link.remove();
+            setOpenDialog(false);
+          }}>Download</Button>
+        </DialogActions>
+      </Dialog>
+
+
       {isLoading ? (
         <div className="flex justify-center items-center h-screen ml-64">
           <CircularProgress />
