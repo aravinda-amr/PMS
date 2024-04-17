@@ -180,7 +180,14 @@ const Loyalty = () => {
         <DialogActions>
           <Button onClick={() => setOpenDialog(false)}>Cancel</Button>
           <Button onClick={() => {
-            const fileName = isFiltered ? `customers_over_${customTotalAmount}.csv` : 'all_customers.csv';
+            let fileName;
+            if (isFiltered) {
+              // When isFiltered is true, use customTotalAmount if set, otherwise default to 100
+              fileName = customTotalAmount ? `customers_over_${customTotalAmount}.csv` : 'customers_over_100.csv';
+            } else {
+              // When isFiltered is false, include all users, but still differentiate by customTotalAmount if set
+              fileName = customTotalAmount ? `customers_over_${customTotalAmount}.csv` : 'all_customers.csv';
+            }
             // Proceed with the CSV download
             const csvContent = filteredUsers.map(user => `${user.name},${user.contact},${user.totalAmount}`).join('\n');
             const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
