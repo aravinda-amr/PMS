@@ -30,7 +30,12 @@ const Reorder = () =>{
         ) ?? []; // Ensure filtered is always an array
         setFilteredItems(filtered);
        
-            setIsLoading(false);
+         // Set a delay before setting isLoading to false
+        const timer = setTimeout(() => {
+        setIsLoading(false);
+        }, 1000); // Delay of 1000 milliseconds (1 second)
+
+         return () => clearTimeout(timer);
         
     }, [searchTerm, reorders]);
 
@@ -52,11 +57,6 @@ const Reorder = () =>{
           </div> 
           </div>
 
-
-           
-             {/* {reorders && reorders.map((reorders)=>
-                <ReorderDetails key={reorders._id} reorder={reorders} /> //passing the workout as a prop to the WorkoutDetails component
-             )} */}
              {isLoading ? (
         <div className="flex justify-center items-center h-screen ml-64">
           <CircularProgress />

@@ -24,13 +24,17 @@ export const Expired =() => {
     }, [])
 
     useEffect(() => {
-        // Filter items based on search term whenever searchTerm changes
+       // Filter items based on search term whenever searchTerm changes
         const filtered = abtexpire?.filter(
             (item) => item.drugName.toLowerCase().includes(searchTerm.toLowerCase())
         ) ?? []; // Ensure filtered is always an array
+    
         setFilteredItems(filtered);
     }, [searchTerm, abtexpire]);
 
+    
+
+    
 
     return(
         <div className="ml-64">
