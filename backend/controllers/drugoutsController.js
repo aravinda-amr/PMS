@@ -209,16 +209,16 @@ const insertBatchesForDrugName = async (req, res) => {
 // Get a drug name and its related batches
 const getDrugNameAndBatches = async (req, res) => {
     try {
-        const drugNameId = req.params.id;
+        const drugName = req.params.drugName;
 
-        // Find the drug name by ID
-        const drugName = await MedicineName.findById(drugNameId);
-        if (!drugName) {
+        // Find the drug name by name
+        const medicineName = await MedicineName.findOne({ drugName });
+        if (!medicineName) {
             return res.status(404).json({ message: 'Drug name not found' });
         }
 
         // Find the first batch entered related to the drug name
-        const firstBatch = await Drug.findOne({ drugName: drugNameId }).sort({ createdAt: 1 });
+        const firstBatch = await Drug.findOne({ drugName: medicineName._id }).sort({ createdAt: 1 });
 
         if (!firstBatch) {
             return res.status(404).json({ message: 'No batches found for this drug' });
@@ -227,7 +227,7 @@ const getDrugNameAndBatches = async (req, res) => {
         // Extract dates from the first batch
         const dates = [firstBatch.createdAt];
 
-        res.status(200).json({ drugName, firstBatch, dates });
+        res.status(200).json({ medicineName, firstBatch, dates });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
