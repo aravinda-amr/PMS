@@ -17,8 +17,8 @@ const ExpiredDetials = ({expire})=>{
                  <tr>
                    <td className="coupon-table-th border border-gray-300 px-4 py-2">{expire.drugName}</td>
                    <td className="coupon-table-th border border-gray-300 px-4 py-2">{expire.batchNumber}</td>
-                   <td className="coupon-table-th border border-gray-300 px-4 py-2">{expire.manufactureDate}</td>        
-                   <td className="coupon-table-th border border-gray-300 px-4 py-2">{expire.expireDate}</td>
+                   <td className="coupon-table-th border border-gray-300 px-4 py-2">{new Date(expire.manufactureDate).toLocaleDateString()}</td>
+                   <td className="coupon-table-th border border-gray-300 px-4 py-2">{new Date(expire.expireDate).toLocaleDateString()}</td>
                    <td className="coupon-table-th border border-gray-300 px-4 py-2">{expire.quantity}</td>
                  </tr>
        
