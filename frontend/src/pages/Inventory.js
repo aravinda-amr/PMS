@@ -6,6 +6,7 @@
     import InventorySearch from '../components/Inventorysearch';
     import BatchUpdateForm from '../components/BatchUpdateForm'; 
     import TextField from '@mui/material/TextField';
+    import CircularProgress from '@mui/material/CircularProgress';
 
 
     const Inventory = () => {
@@ -59,7 +60,11 @@
         };
 
         if (loading) {
-            return <p>Loading...</p>;
+            return (
+                <div className="flex justify-center items-center h-screen">
+                    <CircularProgress />
+                </div>
+            );
         }
 
         if (error) {
