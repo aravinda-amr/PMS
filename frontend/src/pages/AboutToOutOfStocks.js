@@ -41,7 +41,7 @@ export const AboutToOutOfStock = () => {
        
         <div className="flex items-center">
             <TextField
-              label="Search users..."
+              label="Search Drugs..."
               variant="outlined"
               size="small"
               value={searchTerm}

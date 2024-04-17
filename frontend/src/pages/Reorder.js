@@ -39,9 +39,10 @@ const Reorder = () =>{
              <div className="flex justify-between items-center bg-gray-100 rounded-lg p-4 mb-4"> 
             <h1 className="text-2xl font-semibold text-gray-800 ml-64">Reorder Drugs</h1>
        
+        
         <div className="flex items-center">
             <TextField
-              label="Search users..."
+              label="Search Drugs..."
               variant="outlined"
               size="small"
               value={searchTerm}
@@ -50,6 +51,8 @@ const Reorder = () =>{
             />
           </div> 
           </div>
+
+
            
              {/* {reorders && reorders.map((reorders)=>
                 <ReorderDetails key={reorders._id} reorder={reorders} /> //passing the workout as a prop to the WorkoutDetails component
