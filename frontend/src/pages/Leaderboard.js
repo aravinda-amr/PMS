@@ -4,11 +4,13 @@ import TextField from '@mui/material/TextField';
 
 //components
 import LeaderboardDetails from '../components/LeaderboardDetails';
+import CircularProgress from '@mui/material/CircularProgress';
 
 export const Leaderboard =() => {
     const [leader, setLeader] = useState(null) ;
     const [searchTerm, setSearchTerm] = useState("");
     const [filteredItems, setFilteredItems] = useState([]); 
+    const [loading, setLoading] = useState(true);
 
 
     
@@ -18,11 +20,18 @@ export const Leaderboard =() => {
             const json = await response.json(); //converting the response to json
             if(response.ok){ //if the response is okay
                 setLeader(json) //dispatching the action to the reducer 
+                const timer = setTimeout(() => {
+                    setLoading(false);
+                }, 1000); // Delay of 1000 milliseconds (1 second)
+            
+                return () => clearTimeout(timer);
                 //dispatching the action to the reducer
             }
         }
         fetchLeaderboard();
     }, []);
+
+    
 
     useEffect(() => {
         const filtered = leader?.filter(
@@ -54,9 +63,14 @@ export const Leaderboard =() => {
                 </div> 
         </div>  
 
+        {loading ? (
+                <div className="flex justify-center items-center">
+                    <CircularProgress />
+                </div>
+            ) :
 
       
-        {filteredItems.length > 0 ? (
+            filteredItems.length > 0 ? (
                 filteredItems.map((item) => (
                     // Ensure item is not undefined before rendering StaffRewardDetails
                     item && <LeaderboardDetails key={item._id} leaderboard={item} />
