@@ -5,10 +5,10 @@
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.11.4",
-    "@emotion/styled": "^11.11.0",
+    "@emotion/styled": "^11.11.5",
     "@jridgewell/sourcemap-codec": "^1.4.15",
     "@mui/icons-material": "^5.15.14",
-    "@mui/material": "^5.15.14",
+    "@mui/material": "^5.15.15",
     "@rollup/plugin-terser": "^0.4.4",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",

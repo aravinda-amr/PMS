@@ -7,9 +7,12 @@ import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
-// import * as XLSX from 'xlsx';
+
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
+import SendIcon from '@mui/icons-material/Send';
+import EmailModal from './email.js'; 
+
 
 
 //components
@@ -21,6 +24,13 @@ const Reorder = () => {
   const [filteredItems, setFilteredItems] = useState([]); // State to hold filtered items
   const [isLoading, setIsLoading] = useState(true);
   const [openDialog, setOpenDialog] = useState(false);
+
+  const [emailModalOpen, setEmailModalOpen] = useState(false);
+
+  const handleEmailModalClose = () => {
+     setEmailModalOpen(false);
+  }
+
   useEffect(() => {
     const fetchReorder = async () => {
       setIsLoading(true);
@@ -49,62 +59,82 @@ const Reorder = () => {
 
   }, [searchTerm, reorders]);
 
+  const handleEmailModalSubmit = async (emailDetails) => {
+    try {
+      const response = await fetch('/api/email/send-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(emailDetails),
+      });
+
+      if (response.ok) {
+        alert('Email sent successfully');
+      } else {
+        alert('Failed to send email');
+      }
+    } catch (error) {
+      console.error('Error sending email:', error);
+      alert('Failed to send email');
+    }
+ };
+
 
   const generatePDF = () => {
     // Initialize jsPDF instance
     const pdf = new jsPDF();
-   
+
     // Define headers and body data
     const headers = [
-       { header: 'SupplierEmail', dataKey: 'supplierEmail' },
-       { header: 'DrugName', dataKey: 'drugName' },
-       { header: 'Quantity', dataKey: 'quantity' },
-       { header: 'Reorder Level', dataKey: 'reorderLevel' },
-       { header: 'Status', dataKey: 'status' },
+      { header: 'SupplierEmail', dataKey: 'supplierEmail' },
+      { header: 'DrugName', dataKey: 'drugName' },
+      { header: 'Quantity', dataKey: 'quantity' },
+      { header: 'Reorder Level', dataKey: 'reorderLevel' },
+      { header: 'Status', dataKey: 'status' },
     ];
-   
+
     // Convert your filteredItems to the format expected by autoTable
     const body = filteredItems.map(item => ({
-       supplierEmail: item.supplierEmail,
-       drugName: item.drugName,
-       quantity: item.totalquantity, // Ensure this is correctly formatted
-       reorderLevel: item.reorderLevel,
-       status: item.status,
+      supplierEmail: item.supplierEmail,
+      drugName: item.drugName,
+      quantity: item.totalquantity, // Ensure this is correctly formatted
+      reorderLevel: item.reorderLevel,
+      status: item.status,
     }));
-   
+
     // Call autoTable function on the pdf instance
     pdf.autoTable({
-       head: [headers.map(h => h.header)],
-       body: body.map(row => Object.values(row)),
-       columnStyles: {
-         0: { cellWidth: 'wrap' },
-         1: { cellWidth: 'wrap' },
-         2: { cellWidth: 'wrap' }, // Adjusted width for Quantity column
-         3: { cellWidth: 'wrap' },
-         4: { cellWidth: 'wrap' },
-       },
-       headStyles: {
-         fillColor: [0, 0, 0],
-         textColor: [255, 255, 255],
-         fontStyle: 'bold',
-         fontSize: 10,
-         halign: 'center',
-       },
-       bodyStyles: {
-         fontSize: 10,
-         textColor: [0, 0, 0],
-         cellPadding: { top: 1, right: 5, bottom: 1, left: 2 },
-         rowPageBreak: 'avoid',
-       },
-       margin: { top: 10, left: 13 },
+      head: [headers.map(h => h.header)],
+      body: body.map(row => Object.values(row)),
+      columnStyles: {
+        0: { cellWidth: 'wrap' },
+        1: { cellWidth: 'wrap' },
+        2: { cellWidth: 'wrap' }, // Adjusted width for Quantity column
+        3: { cellWidth: 'wrap' },
+        4: { cellWidth: 'wrap' },
+      },
+      headStyles: {
+        fillColor: [0, 0, 0],
+        textColor: [255, 255, 255],
+        fontStyle: 'bold',
+        fontSize: 10,
+        halign: 'center',
+      },
+      bodyStyles: {
+        fontSize: 10,
+        textColor: [0, 0, 0],
+        cellPadding: { top: 1, right: 5, bottom: 1, left: 2 },
+        rowPageBreak: 'avoid',
+      },
+      margin: { top: 10, left: 13 },
     });
-   
+
     // Save the PDF
     pdf.save('reorder_report.pdf');
-  };
-  
-   
 
+    setOpenDialog(false);
+  };
 
   return (
     <div className="ml-64" id="reorder-content">
@@ -125,6 +155,31 @@ const Reorder = () => {
       <div className="flex justify-start items-center mb-4">
         <ReorderForm className="mr-4" />
         <div className="ml-auto pr-4"> {/* Added margin to the right and left for positioning */}
+
+<Button
+        variant="outlined"
+        size="small"
+        onClick={() => setEmailModalOpen(true)}
+        className="text-white px-4 py-1 rounded-lg font-semibold cursor-pointer hover:transition-all"
+        sx={{
+          backgroundColor: '#00BFFF', // Sets the background color to light blue
+          color: 'white', // Sets the text color to white
+          '&:hover': {
+            backgroundColor: 'blue', // Adjust hover color as needed
+          },
+          marginRight: '10px', // Adds space from the right side of the button
+        }}
+      >
+        Send Email
+      </Button>
+      <EmailModal
+        open={emailModalOpen}
+        handleClose={handleEmailModalClose}
+        handleSubmit={handleEmailModalSubmit}
+      />
+
+
+
           <Button
             variant="outlined"
             size="small"
@@ -150,7 +205,7 @@ const Reorder = () => {
         </div>
       ) : (
         <div>
-         
+
           {filteredItems.length > 0 ? (
             filteredItems.map((item) => (
               <ReorderDetails key={item._id} reorder={item} />
