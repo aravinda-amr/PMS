@@ -1,7 +1,7 @@
 import express from 'express';
 
 // Controller Functions
-import { loginUser, signupUser,getUsers,createCoupon,getCoupons,deleteCoupon, updateCoupon, getBills, calculateTotalAmount } from '../controllers/userController.js';
+import { loginUser, signupUser,getUsers,createCoupon,getCoupons,deleteCoupon, updateCoupon, getBills, calculateTotalAmount, signupManager } from '../controllers/userController.js';
 
 const router = express.Router();
 
@@ -10,6 +10,9 @@ router.post('/login', loginUser)
 
 // signup route
 router.post('/signup', signupUser)
+
+// signup manager route
+router.post('/signupManager', signupManager)
 
 //get all users
 router.get('/', getUsers)
