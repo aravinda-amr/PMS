@@ -31,6 +31,9 @@ module.exports = {
       width: {
         'custom': '32rem',
       },
+      screens: {
+        'xl': '1920px',
+      },
     },
   },
   plugins: [

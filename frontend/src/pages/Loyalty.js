@@ -7,6 +7,11 @@ import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
+import jsPDF from 'jspdf';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+import InputLabel from '@mui/material/InputLabel';
+import FormControl from '@mui/material/FormControl';
 
 const Loyalty = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -86,19 +91,28 @@ const Loyalty = () => {
     setOpenDialog(true); // Open the dialog instead of downloading immediately
   };
 
+  const generatePDF = (users) => {
+    const doc = new jsPDF();
+    doc.autoTable({
+      head: [['Name', 'Contact', 'Total Amount']],
+      body: users.map(user => [user.name, user.contact, user.totalAmount]),
+    });
+    return doc;
+  };
+
 
   return (
 
-    <div className="container mx-auto px-4 py-8 ml-auto">
+    <div className="px-4 py-8 ml-auto">
       <div className="flex justify-between items-center bg-gray-100 rounded-lg p-4 mb-4">
         <h1 className="text-2xl font-semibold text-gray-800 ml-64">Loyalty Program</h1>
         <div className="flex items-center">
           <h4 className="text-lg font-medium text-gray-600 mr-2">
-            {isFiltered ? `User purchases over 100 within the last ${months} months` : `User purchases within last ${months} months`}
+            {isFiltered ? `User purchases over 100,000 within the last ${months} months` : `User purchases within last ${months} months`}
           </h4>
         </div>
         <div className="flex items-center">
-          <div className="flex items-center">
+          <div className="flex items-center space-x-4" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             <TextField
               label="Search users..."
               variant="outlined"
@@ -107,114 +121,130 @@ const Loyalty = () => {
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full px-4 py-2 rounded-md border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:ring-opacity-50 text-gray-700"
             />
-
           </div>
-
         </div>
       </div>
       <div className="p-4 ml-64 flex space-x-4 justify-between">
-        <div className="flex items-center space-x-4">
-          <Button
-            variant="outlined"
-            size="small"
-            onClick={handleFetchClick}
-            className="ml-4 h-10 flex-shrink-0"
-          >
-            {isFiltered ? "All Users" : "Total > 100"}
-          </Button>
-          <input
-            type="number"
-            name="customAmount"
-            placeholder="Custom amount"
-            className="ml-4 h-10 px-3 py-2 border border-dark-blue-2 rounded-md text-gray-700"
-            value={customTotalAmount}
-            onChange={(e) => setCustomTotalAmount(e.target.value ? Number(e.target.value) : "")}
-          />
-
+        <div className="flex items-center justify-between w-full">
+          <div className="flex items-center space-x-4">
+            <Button
+              variant="outlined"
+              size="small"
+              onClick={handleFetchClick}
+              className="ml-4 h-10 flex-shrink-0 w-36"
+            >
+              {isFiltered ? "All Users" : "Total > 100,000"}
+            </Button>
+            <TextField
+              type="number"
+              label="Custom amount"
+              variant="outlined"
+              size="small"
+              value={customTotalAmount}
+              onChange={(e) => setCustomTotalAmount(e.target.value ? Number(e.target.value) : "")}
+              className="ml-4 h-10 px-3 py-2 border border-dark-blue-2 rounded-md text-gray-700 w-38"
+            />
+          </div>
+          <div className="flex items-center space-x-4">
+            <FormControl variant="outlined" className="h-10 px-3 py-2">
+              <InputLabel id="months-label" className="appearance-none">Months</InputLabel>
+              <Select
+                labelId="months-label"
+                id="months"
+                className=" h-10 px-3 py-2 w-24"
+                value={months}
+                onChange={(e) => setMonths(e.target.value ? Number(e.target.value) : 6)}
+                label="Months"
+              >
+                <MenuItem value={6}>6</MenuItem>
+                <MenuItem value={12}>12</MenuItem>
+                <MenuItem value={24}>24</MenuItem>
+              </Select>
+            </FormControl>
+            <Button
+              variant="outlined"
+              size="small"
+              onClick={downloadCSV}
+              className="h-10 flex-shrink-0"
+            >
+              Download
+            </Button>
+          </div>
         </div>
-        <div className="flex items-center space-x-4">
-          <label className="text-gray-600">Months:</label>
-          <input
-            type="number"
-            name="Months"
-            placeholder="Months"
-            className="w-14 h-10 px-3 py-2 border border-dark-blue-2 rounded-md text-gray-700"
-            value={months}
-            onChange={(e) => setMonths(e.target.value ? Number(e.target.value) : 6)}
-          />
 
-          <Button
-            variant="outlined"
-            size="small"
-            onClick={downloadCSV}
-            className="h-10 flex-shrink-0"
-          >
-            Download CSV
-          </Button>
-        </div>
-      </div>
 
-      <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
-        <DialogTitle>Download CSV</DialogTitle>
-        <DialogContent>
-          <table className="w-full">
-            <thead>
-              <tr>
-                <th className="px-4">Name</th>
-                <th className="px-4">Contact</th>
-                <th className="px-4">Total Amount</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredUsers.map((user, index) => (
-                <tr key={index}>
-                  <td className="px-4 py-2">{user.name}</td>
-                  <td className="px-4 py-2">{user.contact}</td>
-                  <td className="px-4 py-2">{user.totalAmount}</td>
+        <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
+          <DialogTitle>Download</DialogTitle>
+          <DialogContent>
+            <label htmlFor="fileFormat">Select File Format:</label>
+            <select id="fileFormat" className="ml-2">
+              <option value="csv">CSV</option>
+              <option value="pdf">PDF</option>
+            </select>
+            <table className="w-full">
+              <thead>
+                <tr>
+                  <th className="px-4">Name</th>
+                  <th className="px-4">Contact</th>
+                  <th className="px-4">Total Amount</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </DialogContent>
+              </thead>
+              <tbody>
+                {filteredUsers.map((user, index) => (
+                  <tr key={index}>
+                    <td className="px-4 py-2">{user.name}</td>
+                    <td className="px-4 py-2">{user.contact}</td>
+                    <td className="px-4 py-2">{user.totalAmount}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </DialogContent>
 
-        <DialogActions>
-          <Button onClick={() => setOpenDialog(false)}>Cancel</Button>
-          <Button onClick={() => {
-            let fileName;
-            if (isFiltered) {
-              // When isFiltered is true, use customTotalAmount if set, otherwise default to 100
-              fileName = customTotalAmount ? `customers_over_${customTotalAmount}.csv` : 'customers_over_100.csv';
-            } else {
-              // When isFiltered is false, include all users, but still differentiate by customTotalAmount if set
-              fileName = customTotalAmount ? `customers_over_${customTotalAmount}.csv` : 'all_customers.csv';
-            }
-            // Proceed with the CSV download
-            const csvContent = filteredUsers.map(user => `${user.name},${user.contact},${user.totalAmount}`).join('\n');
-            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = fileName; // Use the determined file name
-            link.click();
-            link.remove();
-            setOpenDialog(false);
-          }}>Download</Button>
-        </DialogActions>
-      </Dialog>
+          <DialogActions>
+            <Button onClick={() => setOpenDialog(false)}>Cancel</Button>
+            <Button onClick={() => {
+              const fileFormat = document.getElementById('fileFormat').value;
+              let fileName;
+              if (isFiltered) {
+                fileName = customTotalAmount ? `customers_over_${customTotalAmount}.${fileFormat}` : `customers_over_100.${fileFormat}`;
+              } else {
+                fileName = customTotalAmount ? `customers_over_${customTotalAmount}.${fileFormat}` : `all_customers.${fileFormat}`;
+              }
 
+              if (fileFormat === 'csv') {
+                const csvContent = filteredUsers.map(user => `${user.name},${user.contact},${user.totalAmount}`).join('\n');
+                const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = fileName;
+                link.click();
+                link.remove();
+              } else if (fileFormat === 'pdf') {
+                const doc = generatePDF(filteredUsers);
+                doc.save(fileName);
+              }
+              setOpenDialog(false);
+            }}>Download</Button>
+          </DialogActions>
+        </Dialog>
 
+      </div>
       {isLoading ? (
         <div className="flex justify-center items-center h-screen ml-64">
           <CircularProgress />
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 ml-64">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 ml-64">
           {filteredUsers &&
             filteredUsers.map((user) => (
               <UserDetails key={user._id} user={user} months={6} />
             ))}
         </div>
       )}
+
+
 
 
     </div>

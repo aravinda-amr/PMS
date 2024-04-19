@@ -41,6 +41,23 @@ export const signupUser = async (req, res) => {
   }
 }
 
+// signup manager
+export const signupManager = async (req, res) => {
+  const { email, password, name, contact, role } = req.body; // Include role in destructuring
+ 
+  try {
+     const user = await User.signup(email, password, name, contact, role); // Pass the role to the signup method
+ 
+     //create a token
+     const token = createTokens(user._id);
+ 
+     res.status(200).json({ email, token });
+  } catch (error) {
+     res.status(400).json({ message: error.message });
+  }
+ }
+ 
+
 //get all users
 export const getUsers = async (req, res) => {
   const users = await User.find({}).sort({ createdAt: -1 });

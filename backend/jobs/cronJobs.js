@@ -1,7 +1,4 @@
-// jobs/cronJobs.js
-
 import cron from 'node-cron';
-import mongoose from 'mongoose';
 import User from '../models/userModel.js';
 
 
