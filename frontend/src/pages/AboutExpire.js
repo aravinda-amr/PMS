@@ -24,17 +24,23 @@ export const Expired =() => {
     }, [])
 
     useEffect(() => {
-       // Filter items based on search term whenever searchTerm changes
-        const filtered = abtexpire?.filter(
-            (item) => item.drugName.toLowerCase().includes(searchTerm.toLowerCase())
-        ) ?? []; // Ensure filtered is always an array
-    
-        setFilteredItems(filtered);
+        const filterItems = async () => {
+            // Wait for abouttooutofstock to be set before filtering
+            if (!abtexpire) return;
+            
+            const filtered = await Promise.all(abtexpire.map(async (item) => {
+                const response = await fetch(`/api/abtexpired/medicine/${item.drugName}`);
+                const data = await response.json();
+                return { ...item, drugName: data.drugName };
+            }));
+            
+            // Now filter based on the updated drugName
+            const filteredResults = filtered.filter((item) => item.drugName.toLowerCase().includes(searchTerm.toLowerCase()));
+            setFilteredItems(filteredResults);
+        };
+
+        filterItems();
     }, [searchTerm, abtexpire]);
-
-    
-
-    
 
     return(
         <div className="ml-64">

@@ -1,9 +1,40 @@
+import React, { useState, useEffect } from 'react';
+import CircularProgress from '@mui/material/CircularProgress';
+
 
 const AboutExpireDetials = ({expire})=>{
  
+  const [drugName, setDrugName] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchDrugName = async () => {
+      setIsLoading(true);
+      try {
+        const response = await fetch(`/api/abtexpired/medicine/${expire.drugName}`);
+        if (response.ok) {
+          const data = await response.json();
+          setDrugName(data.drugName);
+        } else {
+          console.error('Failed to fetch drug name');
+        }
+      } catch (error) {
+        console.error('Error fetching drug name:', error);
+      }
+      setIsLoading(false);
+    };
+
+    fetchDrugName();
+  }, [expire.drugName]);
+
 
         return (
           <div className="overflow-x-auto" style={{  marginTop:'30px' }}>
+             {isLoading ? (
+        <div className="flex justify-center items-center h-40">
+          <CircularProgress />
+        </div>
+      ) : (
             <table className="coupon-table w-full bg-dark-blue-2 text-white border-collapse">
               <thead className="coupon-table-thead bg-dark-blue text-white">
                 <tr className="coupon-table-tr">
@@ -25,6 +56,7 @@ const AboutExpireDetials = ({expire})=>{
               
               </tbody>
             </table>
+      )}
           </div>
        );
 

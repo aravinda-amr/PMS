@@ -1,5 +1,4 @@
 
-
 import { useEffect, useState } from 'react';
 import AboutToOutOfStockDetials from '../components/AboutToOutOfStockDetials';
 import TextField from '@mui/material/TextField';
@@ -27,11 +26,22 @@ export const AboutToOutOfStock = () => {
     }, []);
 
     useEffect(() => {
-        // Filter items based on search term whenever searchTerm changes
-        const filtered = abouttooutofstock?.filter(
-            (item) => item.drugName.toLowerCase().includes(searchTerm.toLowerCase())
-        ) ?? []; // Ensure filtered is always an array
-        setFilteredItems(filtered);
+        const filterItems = async () => {
+            // Wait for abouttooutofstock to be set before filtering
+            if (!abouttooutofstock) return;
+            
+            const filtered = await Promise.all(abouttooutofstock.map(async (item) => {
+                const response = await fetch(`/api/abtoutofstock/medicine/${item.drugName}`);
+                const data = await response.json();
+                return { ...item, drugName: data.drugName };
+            }));
+            
+            // Now filter based on the updated drugName
+            const filteredResults = filtered.filter((item) => item.drugName.toLowerCase().includes(searchTerm.toLowerCase()));
+            setFilteredItems(filteredResults);
+        };
+
+        filterItems();
     }, [searchTerm, abouttooutofstock]);
 
     return (
@@ -58,6 +68,7 @@ export const AboutToOutOfStock = () => {
                 filteredItems.length > 0 ? (
                     filteredItems.map((item) => (
                         <AboutToOutOfStockDetials key={item._id} abtoutof={item} />
+
                     ))
                 ) : (
                     <p>No Drug Found</p>
