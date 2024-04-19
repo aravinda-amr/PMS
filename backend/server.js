@@ -24,6 +24,8 @@ import abtoutofstocksRoutes from './routes/abtoutofstocks.js';
 import billing from './routes/billing.js';
 import staffReward from './routes/staffReward.js';
 import leaderboard from './routes/leaderboard.js';
+import email from './routes/sendEmail.js'
+
 
 //import all pres
 import allPres from './routes/ShowPres.js';
@@ -42,6 +44,8 @@ app.use((req, res, next) => {
     console.log(req.path, req.method)
     next()
 })
+
+
 
 //routes
 app.use('/api/user', userRoutes)
@@ -73,6 +77,8 @@ app.use('/api/leaderboard', leaderboard)
 app.use('/api/salesreport', salesreportsRoutes )
 
 app.use('/api/allPres', allPres)
+
+app.use('/api/email', email)
 
 //connect to the database
 mongoose.connect(process.env.MONGO_URI)
