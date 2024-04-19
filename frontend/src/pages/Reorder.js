@@ -7,7 +7,10 @@ import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
-import * as XLSX from 'xlsx';
+// import * as XLSX from 'xlsx';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
+
 
 //components
 import ReorderDetails from '../components/ReorderDetails'
@@ -46,67 +49,118 @@ const Reorder = () => {
 
   }, [searchTerm, reorders]);
 
-  const generateExcel = () => {
-    const ws = XLSX.utils.json_to_sheet(filteredItems);
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "Reorder Details");
-    XLSX.writeFile(wb, "reorder_details.xlsx");
+
+  const generatePDF = () => {
+    // Initialize jsPDF instance
+    const pdf = new jsPDF();
+   
+    // Define headers and body data
+    const headers = [
+       { header: 'SupplierEmail', dataKey: 'supplierEmail' },
+       { header: 'DrugName', dataKey: 'drugName' },
+       { header: 'Quantity', dataKey: 'quantity' },
+       { header: 'Reorder Level', dataKey: 'reorderLevel' },
+       { header: 'Status', dataKey: 'status' },
+    ];
+   
+    // Convert your filteredItems to the format expected by autoTable
+    const body = filteredItems.map(item => ({
+       supplierEmail: item.supplierEmail,
+       drugName: item.drugName,
+       quantity: item.totalquantity, // Ensure this is correctly formatted
+       reorderLevel: item.reorderLevel,
+       status: item.status,
+    }));
+   
+    // Call autoTable function on the pdf instance
+    pdf.autoTable({
+       head: [headers.map(h => h.header)],
+       body: body.map(row => Object.values(row)),
+       columnStyles: {
+         0: { cellWidth: 'wrap' },
+         1: { cellWidth: 'wrap' },
+         2: { cellWidth: 'wrap' }, // Adjusted width for Quantity column
+         3: { cellWidth: 'wrap' },
+         4: { cellWidth: 'wrap' },
+       },
+       headStyles: {
+         fillColor: [0, 0, 0],
+         textColor: [255, 255, 255],
+         fontStyle: 'bold',
+         fontSize: 10,
+         halign: 'center',
+       },
+       bodyStyles: {
+         fontSize: 10,
+         textColor: [0, 0, 0],
+         cellPadding: { top: 1, right: 5, bottom: 1, left: 2 },
+         rowPageBreak: 'avoid',
+       },
+       margin: { top: 10, left: 13 },
+    });
+   
+    // Save the PDF
+    pdf.save('reorder_report.pdf');
   };
+  
+   
 
 
   return (
-    <div className="ml-64">
-  <div className="flex justify-between items-center bg-gray-100 rounded-lg p-4 mb-4">
-  <h1 className="text-2xl font-semibold text-gray-800 flex-grow text-center">Reorder Drugs</h1> {/* Added flex-grow and text-center */}
+    <div className="ml-64" id="reorder-content">
+      <div className="flex justify-between items-center bg-gray-100 rounded-lg p-4 mb-4">
+        <h1 className="text-2xl font-semibold text-gray-800 flex-grow text-center">Reorder Drugs</h1> {/* Added flex-grow and text-center */}
 
-    <div className="flex items-center">
-      <TextField
-        label="Search Drugs..."
-        variant="outlined"
-        size="small"
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        className="w-full px-4 py-2 rounded-md border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:ring-opacity-50 text-gray-700"
-      />
-    </div>
-  </div>
-  <div className="flex justify-start items-center mb-4">
-    <ReorderForm className="mr-4" />
-    <div className="ml-auto pr-4"> {/* Added margin to the right and left for positioning */}
-      <Button
-        variant="outlined"
-        size="small"
-        onClick={() => setOpenDialog(true)}
-        className="bg-blue-500 hover: bg-signup1 text-white px-4 py-1 rounded-lg font-jakarta font-semibold cursor-pointer hover:transition-all"
-      >
-        Download Report
-      </Button>
-    </div>
-  </div>
+        <div className="flex items-center">
+          <TextField
+            label="Search Drugs..."
+            variant="outlined"
+            size="small"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full px-4 py-2 rounded-md border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:ring-opacity-50 text-gray-700"
+          />
+        </div>
+      </div>
+      <div className="flex justify-start items-center mb-4">
+        <ReorderForm className="mr-4" />
+        <div className="ml-auto pr-4"> {/* Added margin to the right and left for positioning */}
+          <Button
+            variant="outlined"
+            size="small"
+            onClick={() => setOpenDialog(true)}
+            className="bg-blue-500 hover: bg-signup1 text-white px-4 py-1 rounded-lg font-jakarta font-semibold cursor-pointer hover:transition-all"
+          >
+            Download Report
+          </Button>
+        </div>
+      </div>
 
-  <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
-    <DialogTitle>Download Report</DialogTitle>
-    <DialogActions>
-      <Button onClick={() => setOpenDialog(false)}>Cancel</Button>
-      <Button onClick={generateExcel}>Download</Button>
-    </DialogActions>
-  </Dialog>
-  {isLoading ? (
-    <div className="flex justify-center items-center h-screen">
-      <CircularProgress />
-    </div>
-  ) : (
-    <div>
-      {filteredItems.length > 0 ? (
-        filteredItems.map((item) => (
-          <ReorderDetails key={item._id} reorder={item} />
-        ))
+      <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
+        <DialogTitle>Download Report</DialogTitle>
+        <DialogActions>
+          <Button onClick={() => setOpenDialog(false)}>Cancel</Button>
+          <Button onClick={generatePDF}>Download</Button>
+        </DialogActions>
+      </Dialog>
+
+      {isLoading ? (
+        <div className="flex justify-center items-center h-screen">
+          <CircularProgress />
+        </div>
       ) : (
-        <p className="text-center text-gray-500">No Drug Found</p>
+        <div>
+         
+          {filteredItems.length > 0 ? (
+            filteredItems.map((item) => (
+              <ReorderDetails key={item._id} reorder={item} />
+            ))
+          ) : (
+            <p className="text-center text-gray-500">No Drug Found</p>
+          )}
+        </div>
       )}
     </div>
-  )}
-</div>
 
 
   )
