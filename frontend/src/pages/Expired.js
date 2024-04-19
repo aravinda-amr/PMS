@@ -25,11 +25,22 @@ export const Expired =() => {
     }, [])
 
     useEffect(() => {
-        // Filter items based on search term whenever searchTerm changes
-        const filtered = expire?.filter(
-            (item) => item.drugName.toLowerCase().includes(searchTerm.toLowerCase())
-        ) ?? []; // Ensure filtered is always an array
-        setFilteredItems(filtered);
+        const filterItems = async () => {
+            // Wait for abouttooutofstock to be set before filtering
+            if (!expire) return;
+            
+            const filtered = await Promise.all(expire.map(async (item) => {
+                const response = await fetch(`/api/expired/medicine/${item.drugName}`);
+                const data = await response.json();
+                return { ...item, drugName: data.drugName };
+            }));
+            
+            // Now filter based on the updated drugName
+            const filteredResults = filtered.filter((item) => item.drugName.toLowerCase().includes(searchTerm.toLowerCase()));
+            setFilteredItems(filteredResults);
+        };
+
+        filterItems();
     }, [searchTerm, expire]);
 
     return(

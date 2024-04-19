@@ -24,11 +24,22 @@ export const OutOfStock = () => {
     }, []);
 
     useEffect(() => {
-        // Filter items based on search term whenever searchTerm changes
-        const filtered = outofstock?.filter(
-            (item) => item.drugName.toLowerCase().includes(searchTerm.toLowerCase())
-        ) ?? []; // Ensure filtered is always an array
-        setFilteredItems(filtered);
+        const filterItems = async () => {
+            // Wait for abouttooutofstock to be set before filtering
+            if (!outofstock) return;
+            
+            const filtered = await Promise.all(outofstock.map(async (item) => {
+                const response = await fetch(`/api/outofstock/medicine/${item.drugName}`);
+                const data = await response.json();
+                return { ...item, drugName: data.drugName };
+            }));
+            
+            // Now filter based on the updated drugName
+            const filteredResults = filtered.filter((item) => item.drugName.toLowerCase().includes(searchTerm.toLowerCase()));
+            setFilteredItems(filteredResults);
+        };
+
+        filterItems();
     }, [searchTerm, outofstock]);
 
     return (
