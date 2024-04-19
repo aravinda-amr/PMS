@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect } from "react";
 import CouponTable from "./CouponTable";
 import CouponForm from "./CouponForm";
-import { Typography } from '@mui/material'; // Import Material-UI components
+import { Typography } from '@mui/material';
 
 const UserDetails = ({ user }) => {
   const [showCouponTable, setShowCouponTable] = useState(false);
@@ -12,7 +12,7 @@ const UserDetails = ({ user }) => {
   const [selectedCoupon, setSelectedCoupon] = useState(null);
 
   const fetchCoupons = useMemo(() => async () => {
-    setIsLoadingCoupons(true); // Set loading state to true
+    setIsLoadingCoupons(true);
     try {
       const response = await fetch(`/api/user/${user._id}/coupons`);
       const coupons = await response.json();
@@ -20,10 +20,9 @@ const UserDetails = ({ user }) => {
     } catch (error) {
       console.error('Error fetching coupons:', error);
     } finally {
-      setIsLoadingCoupons(false); // Set loading state to false
+      setIsLoadingCoupons(false);
     }
-  }, [user._id]); // Depend on user._id to refetch if it changes
-
+  }, [user._id]);
 
   useEffect(() => {
     fetchCoupons();
@@ -32,9 +31,9 @@ const UserDetails = ({ user }) => {
   const handleAddCouponClick = () => {
     setShowCouponForm(!showCouponForm);
     if (!showCouponForm) {
-      resetForm(); // Reset the form fields
-      setShowCouponTable(true); // Ensure the table is shown when the form is shown
-      if (!coupons.length) { // Fetch coupons only if they are not already loaded
+      resetForm();
+      setShowCouponTable(true);
+      if (!coupons.length) {
         fetchCoupons();
       }
     }
@@ -42,7 +41,7 @@ const UserDetails = ({ user }) => {
 
   const handleViewButtonClick = () => {
     setShowCouponTable(!showCouponTable);
-    if (!showCouponTable && !coupons.length) { // Fetch coupons only if they are not already loaded
+    if (!showCouponTable && !coupons.length) {
       fetchCoupons();
     }
   };
@@ -52,7 +51,6 @@ const UserDetails = ({ user }) => {
     setSelectedCoupon(coupon);
     setIsEditing(true);
     setShowCouponForm(true);
-
   };
 
   const handleDeleteCoupon = async (couponId) => {
@@ -66,7 +64,7 @@ const UserDetails = ({ user }) => {
       }
 
       setCoupons(coupons.filter(coupon => coupon.id !== couponId));
-      await fetchCoupons(); // Fetch coupons after deleting a coupon
+      await fetchCoupons();
     } catch (error) {
       console.error('Error deleting coupon:', error);
     }
@@ -79,7 +77,7 @@ const UserDetails = ({ user }) => {
 
 
   return (
-    <div className="bg-gray-100 rounded-lg p-4 mb-4 flex flex-col">
+    <div className=" rounded-lg p-4 mb-4 flex flex-col">
       <div className="bg-dark-blue-2 flex justify-between items-center px-4 py-2 rounded-t-lg">
         <div className="flex items-center">
           <Typography variant="h6" component="h2" className="text-white mr-2">
