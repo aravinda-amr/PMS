@@ -100,6 +100,9 @@ const ReorderDetials = ({reorder})=>{
                                 <button type="button" onClick={togglePopup} className="btn bg-login1 hover:bg-login2 hover:text-white mr-2 px-4 py-1 rounded-lg font-jakarta font-semibold cursor-pointer hover:transition-all">
                                     Cancel
                                 </button>
+                                <button type="button" onClick={togglePopup} className="btn bg-login1 hover:bg-login2 hover:text-white mr-2 px-4 py-1 rounded-lg font-jakarta font-semibold cursor-pointer hover:transition-all">
+                                    NEW
+                                </button>
                             </div>
                         
                         </form>
