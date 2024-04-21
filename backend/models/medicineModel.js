@@ -12,6 +12,10 @@ const medicinenameSchema = new Schema({
     totalquantity: {
         type: Number,
         required: true
+    },
+    totalPrice: {
+        type: Number,
+        default: 0 
     }
 
 }, { timestamps: true });
