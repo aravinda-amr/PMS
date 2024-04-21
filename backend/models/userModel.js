@@ -32,11 +32,6 @@ const couponSchema = new Schema({
    
 
 const userSchema = new Schema({
-    role: {
-        type: String,
-        enum: ['admin', 'manager', 'customer'], 
-        default: 'user'
-    },
     email: {
         type: String,
         required: true,
@@ -54,7 +49,12 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
-    coupons: [couponSchema]
+    coupons: [couponSchema],
+    role: {
+        type: String,
+        enum: ['admin', 'manager', 'customer'], 
+        default: 'customer'
+    }
 })
 
 //static signUp method
