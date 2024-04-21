@@ -8,6 +8,7 @@ import {
     getAllDrugNamesAndBatches,
     getDrugNamesearch,
     getDrugNamesWithPrice,
+    updateTotalPrice
            } from '../controllers/drugoutsController.js';
 
 
@@ -32,6 +33,9 @@ router.get('/drugnames/:drugName/batches', getDrugNameAndBatches);
 router.get('/drugnames/:id/search', getDrugNamesearch);
 // Get all drug names with price
 router.get('/drugnames/withprice', getDrugNamesWithPrice);
+
+// Update total price for drug names
+router.patch('/drugnames/updateTotalPrice/:id', updateTotalPrice);
 
 
 

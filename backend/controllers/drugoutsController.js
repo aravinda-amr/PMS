@@ -291,6 +291,28 @@ const getDrugNamesWithPrice = async (req, res) => {
     }
 };
 
+// Update total price for a specific medicine by ID
+const updateTotalPrice =async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { totalPrice } = req.body;
+
+        const medicineName = await MedicineName.findByIdAndUpdate(
+            id,
+            { totalPrice },
+            { new: true }
+        );
+
+        if (!medicineName) {
+            return res.status(404).json({ message: 'Medicine not found' });
+        }
+
+        res.status(200).json(medicineName);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
 
 
 export {  
@@ -305,6 +327,8 @@ export {
     getDrugNameAndBatches,
     getAllDrugNamesAndBatches,
     getDrugNamesearch,
-    getDrugNamesWithPrice
+    getDrugNamesWithPrice,
+    updateTotalPrice
+
 };
 
