@@ -14,7 +14,7 @@ router.patch('/:id', updateLeaderboard);
 router.delete('/:id', deleteLeaderboard);
 
 // Routes for cash prize
-router.patch('/:id/addCashPrize', addCashPrize);
+router.post('/:id/addCashPrize', addCashPrize);
 router.get('/:id/getCashPrize', getCashPrize);
 router.delete('/:id/deleteCashPrize', deleteCashPrize);
 router.patch('/:id/updateCashPrize', updateCashPrize);

@@ -118,6 +118,15 @@ export const createLeaderboardEntry = async (data) => {
     }
 };
 
+(async () => {
+    try {
+        const LeaderboardData = await calculateLeaderboardData();
+        await createLeaderboardEntry(LeaderboardData);
+    } catch (error) {
+        console.error("Error:", error);
+    }
+})();
+
 
 
 
