@@ -3,7 +3,9 @@ import {     getBills,
             getBill, 
             createBill, 
             deleteMedicineFromBill, 
-            updateBill,} from '../controllers/billingController.js';
+            updateBill,
+            retrieveDiscountForUser,
+            } from '../controllers/billingController.js';
         
 
 const router = express.Router();
@@ -24,7 +26,22 @@ router.delete('/:invoiceID/:medicineIndex', deleteMedicineFromBill)
 //Update a bill
 router.patch('/:id', updateBill)
 
+//Retrieve discount for user
+router.get('/discount/:customerID', async (req, res) => {
+    const { customerID } = req.params;
 
+    try {
+        // Retrieve the discount for the user
+        const discount = await retrieveDiscountForUser(customerID);
+
+        // Send the discount as a response
+        res.status(200).json({ discount });
+    } catch (error) {
+        // Handle errors
+        console.error('Error retrieving discount for user:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
 
 
 export default router;

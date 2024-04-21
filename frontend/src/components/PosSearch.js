@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 
 const POSSearch = ({ handleAddToBill }) => {
@@ -27,7 +28,6 @@ const POSSearch = ({ handleAddToBill }) => {
     };
 
     const handleAdd = (selectedDrug) => {
-        
         if (!selectedDrug) {
             setError('Please select a drug');
             return;
@@ -42,35 +42,51 @@ const POSSearch = ({ handleAddToBill }) => {
     };
 
     const filteredDrugs = drugs.filter(drug =>
-        drug?.drugName?.toLowerCase().includes(searchTerm.toLowerCase())
+        drug?.drugName?.toLowerCase().startsWith(searchTerm.toLowerCase())
     );
 
     return (
-        <div>
-            <h1>POS Search</h1>
+        <div className="p-4">
             
             <input
                 type="text"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 placeholder="Search for medicine"
+                className="bg-white focus:outline-none focus:shadow-outline border border-gray-300 rounded-lg py-2 px-4 block w-full appearance-none leading-normal mb-4"
             />
             
-            {error && <div style={{ color: 'red' }}>{error}</div>}
+            {error && <div className="text-red-500 mb-4">{error}</div>}
 
             {searchTerm && (
-            <div>
-                {filteredDrugs.map((drug, index) => (
-                    <div key={index}>
-                        <span>{drug.drugName}</span>
-                        <span>Price: {drug.price}</span>
-                        <button onClick={() => handleAdd(drug.drugName)}>Add</button>
-                    </div>
-                ))}
-            </div>
+                <div>
+                    {filteredDrugs.map((drug, index) => (
+                        <div key={index} className="flex items-center justify-between py-2">
+                            <div>
+                                <p className="text-lg font-semibold text-blue-500 mb-1">{drug.drugName} | Price: {drug.price}</p>
+                            </div>
+                            <button 
+                                onClick={() => handleAdd(drug.drugName)} 
+                                className="bg-login1 hover:bg-login2 text-black hover:text-white px-4 py-2 rounded-md font-jakarta font-bold"
+                            >
+                                Add
+                            </button>
+                        </div>
+                    ))}
+                </div>
             )}
         </div>
     );
 };
 
 export default POSSearch;
+
+
+
+
+
+
+
+
+
+
