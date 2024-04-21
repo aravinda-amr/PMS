@@ -12,6 +12,7 @@ import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
+import { format } from 'date-fns';
 
 const Loyalty = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -38,10 +39,10 @@ const Loyalty = () => {
             return { ...user, totalAmount: totalData.length > 0 ? totalData[0].totalAmount : 0 };
           })
         );
-        // Filter users to only include those with totalAmount > 100
+        // Filter users to only include those with totalAmount > 100000
         const filteredUsers = usersWithTotal.filter(user => user.totalAmount > 100);
         setUsers(usersWithTotal); // Store all users
-        setFilteredUsers(filteredUsers); // Initially, show users with totalAmount > 100
+        setFilteredUsers(filteredUsers); // Initially, show users with totalAmount > 100000
       } catch (error) {
         console.error(error);
       } finally {
@@ -66,7 +67,7 @@ const Loyalty = () => {
     let filtered;
     if (isFiltered) {
       // If filtered, only include users with totalAmount > customTotalAmount
-      filtered = users.filter(user => user.totalAmount > customTotalAmount && (
+      filtered = users.filter(user => user.totalAmount > (customTotalAmount || 100) && (
         user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         user.contact.includes(searchTerm)
       ));
@@ -75,7 +76,7 @@ const Loyalty = () => {
       // If customTotalAmount is set, filter users with totalAmount > customTotalAmount
       // Otherwise, include all users
       filtered = users.filter(user => (
-        !customTotalAmount || user.totalAmount > customTotalAmount
+        !customTotalAmount || (customTotalAmount && user.totalAmount > customTotalAmount)
       ) && (
           user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
           user.contact.includes(searchTerm)
@@ -84,21 +85,89 @@ const Loyalty = () => {
     setFilteredUsers(filtered);
   }, [searchTerm, users, isFiltered, customTotalAmount]); // Add customTotalAmount to the dependency array
 
-
+  /*const assignCoupons = async () => {
+    try {
+       // Iterate through the filtered users
+       for (const user of filteredUsers) {
+         // Check if the user has no coupons
+         if (user.coupons && user.coupons.length === 0) {
+           // Define the default coupon data
+           const twoWeeksFromToday = new Date();
+           twoWeeksFromToday.setDate(twoWeeksFromToday.getDate() + 14);
+           const couponData = {
+             expire: format(twoWeeksFromToday, 'yyyy-MM-dd'),
+             discount: 1,
+             used: false,
+             couponCode: 123, // Assuming generateCouponCode is accessible here
+           };
+   
+           // If conditions are met, assign a coupon to the user
+           const response = await fetch(`/api/user/${user._id}/coupons`, {
+             method: 'POST',
+             headers: {
+               'Content-Type': 'application/json',
+             },
+             body: JSON.stringify(couponData),
+           });
+   
+           if (!response.ok) {
+             throw new Error('Failed to assign coupon');
+           }
+   
+           // Optionally, you can update the local state to reflect the changes
+           // For example, update the user object with the newly assigned coupon
+   
+           // Break the loop after assigning the first coupon
+           break;
+         }
+       }
+   
+       // After assigning coupons to all filtered users, you can update the UI or perform any other actions
+    } catch (error) {
+       console.error('Error assigning coupons:', error);
+    }
+   };
+   
+   
+  
+  // Call the assignCoupons function after filtering the users
+  useEffect(() => {
+    // Filter users and then assign coupons
+    assignCoupons();
+  }, [filteredUsers]);*/
+  
 
 
   const downloadCSV = () => {
     setOpenDialog(true); // Open the dialog instead of downloading immediately
   };
 
-  const generatePDF = (users) => {
+  const generatePDF = (users, heading, months) => {
     const doc = new jsPDF();
+    // Calculate the center position for the heading
+    const textWidth = doc.getStringUnitWidth(heading) * doc.internal.getFontSize() / doc.internal.scaleFactor;
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const xOffset = (pageWidth - textWidth) / 2;
+
+    // Append the time period to the heading
+    const headingWithTimePeriod = `${heading} (Last ${months} months)`;
+
+    // Add the heading to the PDF, centered
+    doc.text(headingWithTimePeriod, xOffset, 10, { align: 'center' });
+
+    // Add a line break for spacing
+    doc.text('', 0, 20);
+
+    // Add the table with user details
     doc.autoTable({
       head: [['Name', 'Contact', 'Total Amount']],
       body: users.map(user => [user.name, user.contact, user.totalAmount]),
     });
+
     return doc;
   };
+
+
 
 
   return (
@@ -178,8 +247,8 @@ const Loyalty = () => {
           <DialogContent>
             <label htmlFor="fileFormat">Select File Format:</label>
             <select id="fileFormat" className="ml-2">
-              <option value="csv">CSV</option>
               <option value="pdf">PDF</option>
+              <option value="csv">CSV</option>
             </select>
             <table className="w-full">
               <thead>
@@ -213,7 +282,10 @@ const Loyalty = () => {
               }
 
               if (fileFormat === 'csv') {
-                const csvContent = filteredUsers.map(user => `${user.name},${user.contact},${user.totalAmount}`).join('\n');
+                // Define the heading
+                const heading = `Name,Contact,Total Amount\n`;
+                // Prepend the heading to the CSV content
+                const csvContent = heading + filteredUsers.map(user => `${user.name},${user.contact},${user.totalAmount}`).join('\n');
                 const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
                 const url = URL.createObjectURL(blob);
                 const link = document.createElement('a');
@@ -222,7 +294,13 @@ const Loyalty = () => {
                 link.click();
                 link.remove();
               } else if (fileFormat === 'pdf') {
-                const doc = generatePDF(filteredUsers);
+                let heading = '';
+                if (isFiltered) {
+                  heading = customTotalAmount ? `Customers Over Rs.${customTotalAmount}` : `Customers over Rs.100,000`;
+                } else {
+                  heading = customTotalAmount ? `Customers Over Rs.${customTotalAmount}` : 'All Customers';
+                }
+                const doc = generatePDF(filteredUsers, heading, months);
                 doc.save(fileName);
               }
               setOpenDialog(false);
