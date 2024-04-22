@@ -126,7 +126,7 @@ const Inventory = () => {
 //updating a batch in the inventory
     const updateBatch = async (batchId, newData) => {
         try {
-            const response = await fetch(`/api/drugouts/batches/${batchId}`, {
+            const response = await fetch(`/api/drugouts/batches/${batchId}`,{
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
