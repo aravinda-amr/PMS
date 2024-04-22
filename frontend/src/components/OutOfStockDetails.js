@@ -5,29 +5,16 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 
 const OutOfStockDetials = ({ outof }) => {
-  const [drugName, setDrugName] = useState('');
+
   const [isLoading, setIsLoading] = useState(true);
-
   useEffect(() => {
-    const fetchDrugName = async () => {
-      setIsLoading(true);
-      try {
-        const response = await fetch(`/api/outofstock/medicine/${outof.drugName}`);
-        if (response.ok) {
-          const data = await response.json();
-          setDrugName(data.drugName);
-        } else {
-          console.error('Failed to fetch drug name');
-        }
-      } catch (error) {
-        console.error('Error fetching drug name:', error);
-      }
+    // Simulate a loading delay of 1 second
+    const timer = setTimeout(() => {
       setIsLoading(false);
-    };
-
-    fetchDrugName();
-  }, [outof.drugName]);
-
+    }, 1000); // 1000 milliseconds = 1 second
+    return () => clearTimeout(timer);
+  }, []);
+  
   return (
     <div className="overflow-x-auto" style={{ marginTop: '20px' }}>
       {isLoading ? (
@@ -41,15 +28,14 @@ const OutOfStockDetials = ({ outof }) => {
       <TableHead className="bg-dark-blue text-white">
         <TableRow>
           <TableCell sx={{ color: 'white', fontSize: '1.2rem' }}>Drug Name</TableCell>
-          <TableCell sx={{ color: 'white', fontSize: '1.2rem' }}>Batch Number</TableCell>
-          <TableCell sx={{ color: 'white', fontSize: '1.2rem' }}>Quantity</TableCell>
+
+          <TableCell sx={{ color: 'white', fontSize: '1.2rem' }}>Total Quantity</TableCell>
         </TableRow>
       </TableHead>
       <TableBody>
         <TableRow>
           <TableCell >{outof.drugName}</TableCell>
-          <TableCell >{outof.batchNumber}</TableCell>
-          <TableCell >{outof.quantity}</TableCell>
+          <TableCell >{outof.totalquantity}</TableCell>
         </TableRow>
       </TableBody>
     </Table>

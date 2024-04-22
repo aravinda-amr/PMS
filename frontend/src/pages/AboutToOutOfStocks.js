@@ -6,10 +6,12 @@ import CircularProgress from '@mui/material/CircularProgress';
 import SearchIcon from '@mui/icons-material/Search';
 
 export const AboutToOutOfStock = () => {
-    const [abouttooutofstock, setabouttooutofstock] = useState(null);
+    const [abouttooutofstock, setabouttooutofstock] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
     const [filteredItems, setFilteredItems] = useState([]); // State to hold filtered items
     const [isLoading, setIsLoading] = useState(true); 
+    // const [abouttooutofstock, setAboutToOutOfStock] = useState([]);
+
 
 
     useEffect(() => {
@@ -25,25 +27,32 @@ export const AboutToOutOfStock = () => {
         fetchOutOfStock();
     }, []);
 
+
     useEffect(() => {
-        const filterItems = async () => {
-            // Wait for abouttooutofstock to be set before filtering
-            if (!abouttooutofstock) return;
-            
-            const filtered = await Promise.all(abouttooutofstock.map(async (item) => {
-                const response = await fetch(`/api/abtoutofstock/medicine/${item.drugName}`);
-                const data = await response.json();
-                return { ...item, drugName: data.drugName };
-            }));
-            
-            // Now filter based on the updated drugName
-            const filteredResults = filtered.filter((item) => item.drugName.toLowerCase().includes(searchTerm.toLowerCase()));
-            setFilteredItems(filteredResults);
-        };
-
-        filterItems();
+        const filteredResults = abouttooutofstock.filter(item =>
+            item.drugName.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+        setFilteredItems(filteredResults);
     }, [searchTerm, abouttooutofstock]);
+    // useEffect(() => {
+    //     const filterItems = async () => {
+    //         // Wait for abouttooutofstock to be set before filtering
+    //         if (!abouttooutofstock) return;
+            
+    //         const filtered = await Promise.all(abouttooutofstock.map(async (item) => {
+    //             const response = await fetch(`/api/abtoutofstock/medicine/${item.drugName}`);
+    //             const data = await response.json();
+    //             return { ...item, drugName: data.drugName };
+    //         }));
+            
+    //         // Now filter based on the updated drugName
+    //         const filteredResults = filtered.filter((item) => item.drugName.toLowerCase().includes(searchTerm.toLowerCase()));
+    //         setFilteredItems(filteredResults);
+    //     };
 
+    //     filterItems();
+    // }, [searchTerm, abouttooutofstock]);
+ 
     return (
         <div className="ml-64">
                 <div className="flex justify-between items-center bg-gray-100 rounded-lg p-4 mb-4"> 

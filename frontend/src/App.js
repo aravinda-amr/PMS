@@ -107,6 +107,7 @@ function App() {
                 path="/salesreport"
                 element={<SalesReport/>}
             />
+            
 
           </Routes>
         </div>
