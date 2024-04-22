@@ -86,7 +86,7 @@ const deleteBatch = async (req, res) => {
         }
 
         // Recalculate total quantity for the drug
-        const totalQuantity = await Drug.aggregate([
+        const totalQuantityResult = await Drug.aggregate([
             {
                 $match: { drugName: batch.drugName }
             },
@@ -98,19 +98,24 @@ const deleteBatch = async (req, res) => {
             }
         ]);
 
-        // Update totalquantity in MedicineName schema
+        // If there are no batches left for the drug, set total quantity to 0
+        const totalQuantity = totalQuantityResult.length > 0 ? totalQuantityResult[0].total : 0;
+
+        // Update total quantity in MedicineName schema
         // Use the ObjectId of drugName to find the corresponding MedicineName document
         await MedicineName.findByIdAndUpdate(
             batch.drugName, // Use the ObjectId of drugName
-            { totalquantity: totalQuantity[0].total },
+            { totalquantity: totalQuantity },
             { new: true }
         );
-          //delete batch
+
+        // Send response
         res.status(200).json({ message: 'Batch deleted successfully' });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
 };
+
 //delete batch end here
 
 
