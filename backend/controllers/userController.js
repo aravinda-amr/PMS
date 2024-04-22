@@ -57,7 +57,6 @@ export const signupManager = async (req, res) => {
   }
  }
  
-
 //get all users
 export const getUsers = async (req, res) => {
   const users = await User.find({}).sort({ createdAt: -1 });
