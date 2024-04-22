@@ -8,7 +8,7 @@ export const OutOfStock = () => {
     const [outofstock, setoutofstock] = useState(null);
     const [searchTerm, setSearchTerm] = useState("");
     const [filteredItems, setFilteredItems] = useState([]); // State to hold filtered items
-    const [isLoading, setIsLoading] = useState(true); 
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const fetchOutOfStock = async () => {
@@ -24,44 +24,38 @@ export const OutOfStock = () => {
     }, []);
 
     useEffect(() => {
-        const filterItems = async () => {
-            // Wait for abouttooutofstock to be set before filtering
+        const filterItems = () => {
+            // Wait for outofstock to be set before filtering
             if (!outofstock) return;
-            
-            const filtered = await Promise.all(outofstock.map(async (item) => {
-                const response = await fetch(`/api/outofstock/medicine/${item.drugName}`);
-                const data = await response.json();
-                return { ...item, drugName: data.drugName };
-            }));
-            
-            // Now filter based on the updated drugName
-            const filteredResults = filtered.filter((item) => item.drugName.toLowerCase().includes(searchTerm.toLowerCase()));
+
+            const filteredResults = outofstock.filter(item =>
+                item.drugName.toLowerCase().includes(searchTerm.toLowerCase())
+            );
             setFilteredItems(filteredResults);
         };
 
         filterItems();
     }, [searchTerm, outofstock]);
-
     return (
         <div className="ml-64">
-             <div className="flex justify-between items-center bg-gray-100 rounded-lg p-4 mb-4"> 
-            <h1 className="text-2xl font-semibold text-gray-800 ">Out Of Stock</h1>
-       
-        <div className="flex items-center">
-            <TextField
-              label="Search Drugs..."
-              variant="outlined"
-              size="small"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              InputProps={{
-                endAdornment: <SearchIcon />,
-              }}
-              className="w-full px-4 py-2 rounded-md border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:ring-opacity-50 text-gray-700 field"
-            />
-          </div> 
-          </div>
-          {isLoading ? (
+            <div className="flex justify-between items-center bg-gray-100 rounded-lg p-4 mb-4">
+                <h1 className="text-2xl font-semibold text-gray-800 ">Out Of Stock</h1>
+
+                <div className="flex items-center">
+                    <TextField
+                        label="Search Drugs..."
+                        variant="outlined"
+                        size="small"
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        InputProps={{
+                            endAdornment: <SearchIcon />,
+                        }}
+                        className="w-full px-4 py-2 rounded-md border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:ring-opacity-50 text-gray-700 field"
+                    />
+                </div>
+            </div>
+            {isLoading ? (
                 <div className="flex justify-center items-center h-40">
                     <CircularProgress />
                 </div>
@@ -72,14 +66,14 @@ export const OutOfStock = () => {
                     ))
                 ) : (
                     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '30vh', fontSize: '24pt' }}>
-                    <p>No Drug Found</p>
-                   </div>
-                   
+                        <p>No Drug Found</p>
+                    </div>
+
 
                 )
             )}
-            </div>
-      
+        </div>
+
     );
 };
 

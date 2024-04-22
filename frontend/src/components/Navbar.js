@@ -13,6 +13,13 @@ import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
 import SalesHistoryIcon from '@mui/icons-material/History';
 import NewSaleIcon from '@mui/icons-material/AddShoppingCart';
 import MedicationOutlinedIcon from '@mui/icons-material/MedicationOutlined';
+import HandshakeIcon from '@mui/icons-material/Handshake';
+import LeaderboardIcon from '@mui/icons-material/Leaderboard';
+import ProductionQuantityLimitsIcon from '@mui/icons-material/ProductionQuantityLimits';
+import RemoveShoppingCartIcon from '@mui/icons-material/RemoveShoppingCart';
+import SummarizeIcon from '@mui/icons-material/Summarize';
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import InventoryIcon from '@mui/icons-material/Inventory';
 
 const Navbar = () => {
     const { logout } = useLogout();
@@ -44,7 +51,7 @@ const Navbar = () => {
         </Link>
         <Link to="/inventory">
             <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
-                <RemoveCircleIcon/>
+                <InventoryIcon />
                 <h1 className='ps-1 my-auto'>Inventory</h1>
             </div>
         </Link>
@@ -80,38 +87,42 @@ const Navbar = () => {
         </Link>
         <Link to="/staffReward">
             <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
-                <MedicationOutlinedIcon/>
+                <HandshakeIcon />
                 <h1 className='ps-1 my-auto'>Handled order Details</h1>
             </div>
         </Link>
 
         <Link to="/leaderboard">
             <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
-                <MedicationOutlinedIcon/>
+                <LeaderboardIcon/>
                 <h1 className='ps-1 my-auto'>Staff Leaderboard</h1>
             </div>
         </Link>
 
 
-
-
-
         <Link to="/outofstock">
             <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
-                <MedicationOutlinedIcon/>
+                <RemoveShoppingCartIcon/>
+                
                 <h1 className='ps-1 my-auto'>OutOfStock</h1>
             </div>
         </Link>
         <Link to="/abtoutofstock">
             <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
-                <MedicationOutlinedIcon/>
+                <ProductionQuantityLimitsIcon/>
                 <h1 className='ps-1 my-auto'>AboutToOutOfStock</h1>
             </div>
         </Link>
         <Link to="/salesreport">
             <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
-                <RemoveCircleIcon/>
+                <SummarizeIcon/>
                 <h1 className='ps-1 my-auto'>SalesReport</h1>
+            </div>
+        </Link>
+        <Link to="/leaves">
+            <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
+                <CalendarTodayIcon/>
+                <h1 className='ps-1 my-auto'>Leaves</h1>
             </div>
         </Link>
 
