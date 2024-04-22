@@ -21,6 +21,63 @@ const calculateSubTotal = (medicines) => {
     return subTotal.toFixed(2); // Ensure two decimal places are always displayed
 };
 
+// Function to retrieve discount for user based on access number
+const retrieveDiscountForUser = async (customerID, invoiceDate) => {
+    try {
+        // Retrieve the user based on the customerID
+        const user = await User.findOne({ contact: customerID });
+
+        if (user && user.coupons.length > 0) {
+            // Sort coupons based on the access number and expiry date
+            const sortedCoupons = user.coupons.sort((a, b) => {
+                // First, compare by access number
+                if (a.accessNumber !== b.accessNumber) {
+                    return a.accessNumber - b.accessNumber;
+                }
+                // If access numbers are equal, compare by expiry date
+                return new Date(a.expire) - new Date(b.expire);
+            });
+
+            // Find the first available coupon that is not used and not expired
+            const validCoupon = sortedCoupons.find(coupon => {
+
+            if (new Date(coupon.expire).getTime() === new Date(invoiceDate).getTime()) {
+                return false; // Exclude if expiration date is the same as invoice date
+            }
+            return !coupon.used && new Date(coupon.expire) >= new Date();
+            });
+            // If a valid coupon is found, return its discount
+            if (validCoupon) {
+                return validCoupon.discount;
+            }
+        }
+
+        // Return 0 if no valid discount found
+        return 0;
+    } catch (error) {
+        // Handle errors
+        console.error('Error retrieving discount for user:', error);
+        throw new Error('Failed to retrieve discount for user');
+    }
+};
+
+
+// Function to calculate the discount amount based on the subtotal and discount percentage
+const calculateDiscountAmount = (subTotal, discount) => {
+    // Parse the discount percent as a number, defaulting to 0 if it's null
+    const parsedDiscount = discount !== null ? parseFloat(discount) : 0;
+
+    //Check if discount is a valid number
+    if(isNaN(parsedDiscount)){
+        throw new Error('Invalid discount');
+    }
+
+    // Calculate the discount amount
+    const discountAmount = subTotal * (parsedDiscount/ 100);
+    return discountAmount.toFixed(2); // Ensure two decimal places are always displayed 
+};
+
+
 //Function to calculate grand total for the bill
 const calculateGrandTotal = (subTotal, discount) => {
     // Parse the discount as a number, or default to 0 if it's null
@@ -39,6 +96,9 @@ const calculateGrandTotal = (subTotal, discount) => {
 const isValidPhoneNumber = (phoneNumber) => {
     return /^\d{10}$/.test(phoneNumber);
 };
+
+
+
 
 //get all bills
 const getBills = async (req, res)=> {
@@ -139,7 +199,7 @@ const getBill = async(req, res) => {
 
 //create a new bill
 const createBill = async (req, res) => {
-    const { pharmacistID, customerID, invoiceDate, medicines, discount } = req.body;
+    const { pharmacistID, customerID, invoiceDate, medicines} = req.body;
 
     // generate a new objectID for the invoiceID
     const invoiceID = new Types.ObjectId();
@@ -150,8 +210,15 @@ const createBill = async (req, res) => {
     }
 
     try {
+       
+        // Retrieve discount for the user
+        const discount = await retrieveDiscountForUser(customerID);
+
         // Fetch the unit price for each medicine and include it in the bill
         const medicinesWithPrice = [];
+        let subTotal = 0;
+
+
 
         for (const medicine of medicines) {
             const medicineInfo = await MedicineName.findOne({ drugName: medicine.drugName }).lean();
@@ -174,10 +241,11 @@ const createBill = async (req, res) => {
                 price: drug.price,
                 calculateItemTotal: calculateItemTotal(medicine)
             };
+            subTotal += parseFloat(medicineWithPrice.calculateItemTotal);
             medicinesWithPrice.push(medicineWithPrice);
         }
 
-        
+       
 
         // Create a new bill document in the database
         const bill = await Bill.create({
@@ -186,17 +254,28 @@ const createBill = async (req, res) => {
             customerID,
             invoiceDate,
             medicines: Array.isArray(medicinesWithPrice) ? medicinesWithPrice : [], // Ensure that medicines is an array
+            discount: discount,
         });
 
-        // Calculate subtotal and grand total for the bill
-        const subTotal = calculateSubTotal(bill.medicines);
-        const grandTotal = calculateGrandTotal(subTotal, discount || 0);
+        
+        // Update coupon status to "used" if discount is applied
+        if (discount > 0) {
+            // Find the user to update the coupon status
+            const user = await User.findOne({ contact: customerID });
+            if (user) {
+                const validCoupon = user.coupons.find(coupon => !coupon.used && new Date(coupon.expire) >= new Date());
+                if (validCoupon) {
+                    validCoupon.used = true;
+                    await user.save(); // Save the user to update the coupon status
+                }
+            }
+        }
 
-        // Update the bill with calculated subtotal and grand total
-        bill.calculateSubTotal = subTotal;
-        bill.discount = discount;
-        bill.grandTotal = grandTotal;
+        
 
+         // Calculate discount amount based on subtotal
+         const discountAmount = calculateDiscountAmount(subTotal, discount);
+        
         // Save the updated bill
         await bill.save();
 
@@ -211,9 +290,10 @@ const createBill = async (req, res) => {
                 price: medicine.price,
                 calculateItemTotal: medicine.calculateItemTotal
             })),
-            subTotal: subTotal,
-            discount: bill.discount || 0,
-            grandTotal: grandTotal
+            subTotal: subTotal.toFixed(2), // Ensure two decimal places are always displayed
+            discount: discount, // Include the calculated discount amount
+            discountAmount: discountAmount, // Ensure two decimal places are always displayed
+            grandTotal: (subTotal - discountAmount).toFixed(2) // Calculate grand total and ensure two decimal places are always displayed
         };
 
         // Remove _id from the response
@@ -355,5 +435,6 @@ export{
     createBill,
     deleteMedicineFromBill,
     updateBill,
+    retrieveDiscountForUser,
    
 }
