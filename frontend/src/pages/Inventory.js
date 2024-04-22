@@ -9,6 +9,7 @@ import TextField from '@mui/material/TextField';
 import CircularProgress from '@mui/material/CircularProgress';
 import  BarChart from '../components/BarChart';
 import TotalPriceTable from '../components/TotalPriceTable';
+import logo from '../images/logo.png';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 
@@ -211,56 +212,84 @@ const Inventory = () => {
 
 
              //generating a pdf of the inventory
-             const generatePDF = () => {
+           
+            const generatePDF = () => {
                 const doc = new jsPDF();
-                doc.setFontSize(20); 
-                doc.text("Inventory Report", 14, 10,);
-                let y = 20;// Initial Y position of the report contentSet the initial y-coordinate for the content
+                doc.setFont('helvetica', 'bold');
+                doc.setFontSize(24);
+            
+                // Add logo at the center of the PDF
+                const logoImg = new Image();
+                logoImg.src = logo;
+            
+                // Calculate the x-coordinate to place the logo at the center
+                const logoWidth = 40; // Adjust the width of the logo image as needed
+                const pageWidth = doc.internal.pageSize.getWidth();
+                const x = (pageWidth - logoWidth) / 2;
+            
+                doc.addImage(logoImg, 'PNG', x, 10, logoWidth, logoWidth * (40 / 40));
+            
+                // Display "Inventory Report" text under the logo
+                doc.setFontSize(18);
+                doc.text("Inventory Report", pageWidth / 2, 60, { align: 'center' });
+            
+                let y = 80; // Starting y-coordinate for drug names
             
                 filteredMedicines.forEach(medicine => {
-                    doc.setFontSize(14);
+                    doc.setFontSize(18);
+                    y += 10;
                     doc.text(`Drug Name: ${medicine.drugName.drugName}`, 14, y);
-                    y += 10;// Add space between lines
+                    y += 8;
+                    doc.setFontSize(14);
                     doc.text(`Total Quantity: ${medicine.drugName.totalquantity}`, 14, y);
-                    y += 10;// Add space between lines Move to the next line
             
-                    // Define the table headers
                     const headers = [['Batch Number', 'Manufacture Date', 'Expire Date', 'Quantity', 'Price']];
+                    const rows = medicine.batches.map(batch => [
+                        batch.batchNumber,
+                        new Date(batch.manufactureDate).toLocaleDateString(),
+                        new Date(batch.expireDate).toLocaleDateString(),
+                        batch.quantity,
+                        batch.price
+                    ]);
             
-                    // Map batch details to table rows
-                    const rows = medicine.batches.map(batch => {
-                        return [batch.batchNumber, new Date(batch.manufactureDate).toLocaleDateString(), new Date(batch.expireDate).toLocaleDateString(), batch.quantity, batch.price];
-                    });
-            
-                    // Set up the table
+                    y += 10;
                     doc.autoTable({
-                        startY: y,// Start Y position of the table
+                        startY: y,
                         head: headers,
                         body: rows,
-                        theme: 'grid',
+                        theme: 'striped',
                         columnStyles: {
-                            0: { cellWidth: 40 },// Set width of Batch Number column
-                            1: { cellWidth: 40 },
-                            2: { cellWidth: 40 },
-                            3: { cellWidth: 25 },
-                            4: { cellWidth: 25 }
+                            0: { cellWidth: 30 },
+                            1: { cellWidth: 35 },
+                            2: { cellWidth: 35 },
+                            3: { cellWidth: 20 },
+                            4: { cellWidth: 20 }
                         },
                         styles: {
-                            fontSize: 10,
-                            overflow: 'linebreak', // To handle text wrapping
-                            columnWidth: 'wrap'
+                            fontSize: 12,
+                            overflow: 'linebreak'
                         }
                     });
             
-                    // Add space between medicine entries
                     y = doc.autoTable.previous.finalY + 10;
                 });
             
+                const pageCount = doc.internal.getNumberOfPages();
+                for (let i = 1; i <= pageCount; i++) {
+                    doc.setPage(i);
+                    doc.setFontSize(10);
+                    doc.text(190, 10, `Page ${i} of ${pageCount}`, null, null, 'right');
+                }
+            
+                const date = new Date().toLocaleDateString();
+                const time = new Date().toLocaleTimeString();
+                doc.setFontSize(10);
+                doc.text(`Generated on: ${date} at ${time}`, 14, doc.internal.pageSize.height - 10);
+            
                 doc.save("inventory_report.pdf");
             };
-            //generating a pdf of the inventory end here
 
-            
+            //generating a pdf of the inventory end here
 
 
             
