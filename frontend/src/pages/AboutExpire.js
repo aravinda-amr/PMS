@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import AboutExpireDetials from '../components/AboutExpireDetails';
 import TextField from '@mui/material/TextField';
 import CircularProgress from '@mui/material/CircularProgress';
+import SearchIcon from '@mui/icons-material/Search';
 
 export const Expired =() => {
     const [abtexpire, setabtexpire] = useState(null) 
@@ -45,7 +46,7 @@ export const Expired =() => {
     return(
         <div className="ml-64">
                <div className="flex justify-between items-center bg-gray-100 rounded-lg p-4 mb-4"> 
-            <h1 className="text-2xl font-semibold text-gray-800 ml-64">About To Expired Drugs</h1>
+            <h1 className="text-2xl font-semibold text-gray-800 ">About To Expired Drugs</h1>
        
         <div className="flex items-center">
             <TextField
@@ -54,6 +55,9 @@ export const Expired =() => {
               size="small"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
+              InputProps={{
+                endAdornment: <SearchIcon />,
+              }}
               className="w-full px-4 py-2 rounded-md border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:ring-opacity-50 text-gray-700 field"
             />
           </div> 

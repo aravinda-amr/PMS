@@ -15,7 +15,6 @@ import medicineNameRoutes from './routes/medicinenames.js';
 import salesreportsRoutes from './routes/comment.js'
 
 
-
 /*import handledRoutes from './routes/handled.js';*/
 import expiredRoutes from './routes/expired.js';
 import abtexpiredRoutes from './routes/abtexpired.js';
