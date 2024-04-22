@@ -7,10 +7,11 @@ import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
-
+import SearchIcon from '@mui/icons-material/Search';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
-import SendIcon from '@mui/icons-material/Send';
+
+import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import EmailModal from './email.js'; 
 
 
@@ -148,7 +149,11 @@ const Reorder = () => {
             size="small"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
+            InputProps={{
+              endAdornment: <SearchIcon />,
+            }}
             className="w-full px-4 py-2 rounded-md border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:ring-opacity-50 text-gray-700"
+            
           />
         </div>
       </div>
@@ -170,7 +175,9 @@ const Reorder = () => {
           marginRight: '10px', // Adds space from the right side of the button
         }}
       >
+       
         Send Email
+       <MailOutlineIcon sx={{ marginLeft: '5px' }} /> {/* Adds an icon to the button */}
       </Button>
       <EmailModal
         open={emailModalOpen}

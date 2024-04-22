@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 
 const AboutToOutOfStockDetials = ({ abtoutof }) => {
   const [drugName, setDrugName] = useState('');
@@ -33,22 +34,26 @@ const AboutToOutOfStockDetials = ({ abtoutof }) => {
           <CircularProgress />
         </div>
       ) : (
-        <table className="coupon-table w-full bg-dark-blue-2 text-white border-collapse">
-          <thead className="coupon-table-thead bg-dark-blue text-white">
-            <tr className="coupon-table-tr">
-              <th className="coupon-table-th border border-gray-300 px-4 py-2">Drug Name</th>
-              <th className="coupon-table-th border border-gray-300 px-4 py-2">Batch Number</th>
-              <th className="coupon-table-th border border-gray-300 px-4 py-2">Quantity</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-            <td className="coupon-table-td border border-gray-300 px-4 py-2">{abtoutof.drugName}</td>
-              <td className="coupon-table-td border border-gray-300 px-4 py-2">{abtoutof.batchNumber}</td>
-              <td className="coupon-table-td border border-gray-300 px-4 py-2">{abtoutof.quantity}</td>
-            </tr>
-          </tbody>
-        </table>
+        <div className="mx-4">
+          <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+      <TableHead className="bg-dark-blue text-white">
+        <TableRow>
+          <TableCell sx={{ color: 'white', fontSize: '1.2rem' }}>Drug Name</TableCell>
+          <TableCell sx={{ color: 'white', fontSize: '1.2rem' }}>Batch Number</TableCell>
+          <TableCell sx={{ color: 'white', fontSize: '1.2rem' }}>Quantity</TableCell>
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        <TableRow>
+          <TableCell >{abtoutof.drugName}</TableCell>
+          <TableCell >{abtoutof.batchNumber}</TableCell>
+          <TableCell >{abtoutof.quantity}</TableCell>
+        </TableRow>
+      </TableBody>
+    </Table>
+    </TableContainer>
+        </div>
       )}
     </div>
   );

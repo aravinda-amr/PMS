@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 
 const ExpiredDetials = ({expire})=>{
 
@@ -35,28 +36,31 @@ const ExpiredDetials = ({expire})=>{
           <CircularProgress />
         </div>
       ) : (
-           <table className="coupon-table w-full bg-dark-blue-2 text-white border-collapse">
-             <thead className="coupon-table-thead bg-dark-blue text-white">
-               <tr className="coupon-table-tr">
-                 <th className="coupon-table-th border border-gray-300 px-4 py-2">DrugName</th>
-                 <th className="coupon-table-th border border-gray-300 px-4 py-2">Batch Number</th>
-                 <th className="coupon-table-th border border-gray-300 px-4 py-2">Manufacture Date</th>
-                 <th className="coupon-table-th border border-gray-300 px-4 py-2">Expire Date</th>
-                 <th className="coupon-table-th border border-gray-300 px-4 py-2">Quantity</th>
-               </tr>
-             </thead>
-             <tbody>
-         
-                 <tr>
-                   <td className="coupon-table-th border border-gray-300 px-4 py-2">{expire.drugName}</td>
-                   <td className="coupon-table-th border border-gray-300 px-4 py-2">{expire.batchNumber}</td>
-                   <td className="coupon-table-th border border-gray-300 px-4 py-2">{new Date(expire.manufactureDate).toLocaleDateString()}</td>
-                   <td className="coupon-table-th border border-gray-300 px-4 py-2">{new Date(expire.expireDate).toLocaleDateString()}</td>
-                   <td className="coupon-table-th border border-gray-300 px-4 py-2">{expire.quantity}</td>
-                 </tr>
-       
-             </tbody>
-           </table>
+        <div className="mx-4">
+            <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+      <TableHead className="bg-dark-blue text-white">
+        <TableRow>
+          <TableCell sx={{ color: 'white', fontSize: '1.2rem' }}>DrugName</TableCell>
+          <TableCell sx={{ color: 'white', fontSize: '1.2rem' }}>Batch Number</TableCell>
+          <TableCell sx={{ color: 'white', fontSize: '1.2rem' }}>Manufacture Date</TableCell>
+          <TableCell sx={{ color: 'white', fontSize: '1.2rem' }}>Expire Date</TableCell>
+          <TableCell sx={{ color: 'white', fontSize: '1.2rem' }}>Quantity</TableCell>
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        <TableRow>
+          <TableCell className="coupon-table-th">{expire.drugName}</TableCell>
+          <TableCell className="coupon-table-th">{expire.batchNumber}</TableCell>
+          <TableCell className="coupon-table-th">{new Date(expire.manufactureDate).toLocaleDateString()}</TableCell>
+          <TableCell className="coupon-table-th">{new Date(expire.expireDate).toLocaleDateString()}</TableCell>
+          <TableCell className="coupon-table-th">{expire.quantity}</TableCell>
+        </TableRow>
+      </TableBody>
+    </Table>
+    </TableContainer>
+       </div>
+
       )}
          </div>
       );

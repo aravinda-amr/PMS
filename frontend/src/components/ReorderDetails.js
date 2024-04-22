@@ -8,7 +8,6 @@ const ReorderDetials = ({reorder})=>{
      const [showPopup, setShowPopup] = useState(false);
      const [reorderLevel, setReorderLevel] = useState(reorder.reorderLevel);
 
-
      const handleClick = async()=>{
         const response = await fetch('/api/reorder/'+ reorder._id, { 
              method:'DELETE'
@@ -70,7 +69,13 @@ const ReorderDetials = ({reorder})=>{
                 <td className="coupon-table-th border border-gray-300 px-4 py-2">{reorder.drugName}</td>
                 <td className="coupon-table-th border border-gray-300 px-4 py-2">{reorder.totalquantity}</td>        
                 <td className="coupon-table-th border border-gray-300 px-4 py-2">{reorder.reorderLevel}</td>
-                <td className="coupon-table-th border border-gray-300 px-4 py-2" style={{ color: reorder.status ? 'red' : 'green' }}>{reorder.status ? 'Yes' : 'No'}</td>
+                <td className="coupon-table-th border border-gray-300 px-4 py-2" style={{ color: reorder.status ? 'red' : 'green' }}>
+ {reorder.status ? 
+    <span style={{ backgroundColor: '#FFCCCB', padding: '2px 4px', borderRadius: '4px' }}>Yes</span> : 
+    <span style={{ backgroundColor: 'lightgreen', padding: '2px 4px', borderRadius: '4px' }}>No</span>}
+</td>
+
+
                 <td className="border border-gray-300 px-4 py-2">
                  <button className="btn bg-login1 hover:bg-login2 hover:text-white mr-2 px-4 py-1 rounded-lg font-jakarta font-semibold cursor-pointer hover:transition-all" onClick ={handleClick}>Delete</button>
                  <button className="btn bg-signup1 hover:bg-signup2 hover:text-white mr-2 px-4 py-1 rounded-lg font-jakarta font-semibold cursor-pointer hover:transition-all" onClick={handleUpdate}>Edit</button>
@@ -100,11 +105,7 @@ const ReorderDetials = ({reorder})=>{
                                 <button type="button" onClick={togglePopup} className="btn bg-login1 hover:bg-login2 hover:text-white mr-2 px-4 py-1 rounded-lg font-jakarta font-semibold cursor-pointer hover:transition-all">
                                     Cancel
                                 </button>
-                                <button type="button" onClick={togglePopup} className="btn bg-login1 hover:bg-login2 hover:text-white mr-2 px-4 py-1 rounded-lg font-jakarta font-semibold cursor-pointer hover:transition-all">
-                                    NEW
-                                </button>
                             </div>
-                        
                         </form>
                     </div>
                 </div>
