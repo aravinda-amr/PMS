@@ -1,10 +1,12 @@
 import express from 'express';
 
-import { getPres } from '../controllers/getAllPres.js';
+import { getPres, deletePres } from '../controllers/getAllPres.js';
 
 const router = express.Router();
 
 //get all prescriptions
 router.get('/', getPres)
+
+router.delete('/:id', deletePres)
 
 export default router;
