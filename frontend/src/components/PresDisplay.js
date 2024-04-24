@@ -44,10 +44,10 @@ const PresDisplay = ({ prescription }) => {
                             </div>
 
                             <div className="flex">
-                                <div className="w-1/2 pr-2 overflow-hidden">
+                                <div className="w-1/3 pr-2 overflow-hidden">
                                     <img src={prescription.prescriptionImg} alt="prescription" className="w-full" />
                                 </div>
-                                <div className="w-1/2 pl-2 overflow-hidden">
+                                <div className="w-2/3 pl-2 overflow-hidden">
                                     <QuotationForm />
                                 </div>
                             </div>
