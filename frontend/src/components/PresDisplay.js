@@ -8,12 +8,10 @@ import formatDistanceToNow from 'date-fns/formatDistanceToNow'
 
 const PresDisplay = ({ prescription }) => {
     const { dispatch } = usePrescriptionContext();
-    const [showForm, setShowForm] = useState(false);
-    const [showModal, setShowModal] = useState(false)
+    const [showModal, setShowModal] = useState(false);
     
     const handleQuotation = () => {
-        setShowForm(prevState => !prevState); // Toggle the state of showForm
-        setShowModal(true); // Always show the modal when the button is clicked
+        setShowModal(true); // Show the modal when the button is clicked
     };    
 
     const handleCloseModal = () => {
@@ -28,22 +26,32 @@ const PresDisplay = ({ prescription }) => {
             <h3>Substitutes</h3>
             <p>{prescription.substitutes}</p>
 
-            {/* <h3>Prescription Image</h3> */}
-            {/* <img src={prescription.prescriptionImg} alt="prescription" width={100} height={60}/> */}
-
             <h3>Created At</h3>
-            {/* <p>{prescription.createdAt}</p> */}
             <p>{formatDistanceToNow(new Date(prescription.createdAt), {addSuffix : true})}</p>
 
             <button onClick={handleQuotation}>Add Quotation</button>
             
-            {showForm && <QuotationForm />}
-
             {showModal && (
-                <div className="modal">
-                    <div className="modal-content">
-                        <span className="close" onClick={handleCloseModal}>&times;</span>
-                        <img src={prescription.prescriptionImg} alt="prescription" width={400} height={240}/>
+                <div className="fixed inset-0 flex items-center justify-center">
+                    <div className="modal-overlay absolute w-full h-full bg-gray-900 opacity-50"></div>
+
+                    <div className="modal-container bg-white md:max-w-3xl mx-auto rounded shadow-lg z-50">
+
+                        <div className="modal-content py-50 text-left px-6">
+                            <div className="flex justify-between items-center pb-3">
+                                <p className="text-2xl font-bold">Add Quotation</p>
+                                <button onClick={handleCloseModal} className="bg-login1 hover:bg-login2 text-white font-bold px-4 py-1 rounded-lg font-jakarta cursor-pointer hover:transition-all">Close</button>
+                            </div>
+
+                            <div className="flex">
+                                <div className="w-1/2 pr-2 overflow-hidden">
+                                    <img src={prescription.prescriptionImg} alt="prescription" className="w-full" />
+                                </div>
+                                <div className="w-1/2 pl-2 overflow-hidden">
+                                    <QuotationForm />
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             )}
