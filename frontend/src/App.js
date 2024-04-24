@@ -23,6 +23,8 @@ import Inventory from './pages/Inventory';
 import SalesReport from './pages/SR'
 import './index.css';
 
+import Quotations from './pages/Quotations.js';
+
 
 
 function App() {
@@ -106,6 +108,11 @@ function App() {
             <Route
                 path="/salesreport"
                 element={<SalesReport/>}
+            />
+
+            <Route
+                path="/quotations"
+                element={<Quotations/>}
             />
             
 
