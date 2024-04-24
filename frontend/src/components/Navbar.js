@@ -85,6 +85,12 @@ const Navbar = () => {
                 <h1 className='ps-1 my-auto'>Prescriptions</h1>
             </div>
         </Link>
+        <Link to="/quotations">
+            <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
+                <MedicationOutlinedIcon/>
+                <h1 className='ps-1 my-auto'>Quotations</h1>
+            </div>
+        </Link>
         <Link to="/staffReward">
             <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
                 <HandshakeIcon />
