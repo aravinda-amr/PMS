@@ -42,6 +42,11 @@ const QuotationForm = () => {
         }
     };
 
+    const sendQuotation = () => {
+        // Here you can send the medicines data to your backend or perform any desired action
+        console.log('Sending quotation with medicines:', medicines);
+    };
+
     return (
         <div className="max-w-custom mx-auto p-6 bg-white shadow-md rounded-lg">
             <h3 className="text-2xl font-semibold mb-4 text-gray-800">Create Quotation</h3>
@@ -90,7 +95,7 @@ const QuotationForm = () => {
                 <h4 className="text-lg font-semibold mb-2 text-gray-800">Subtotal: LKR{subTotal.toFixed(2)}</h4>
             </div>
             {subTotal > 0 && (
-                <button className="bg-login1 hover:bg-login2 text-white font-bold px-4 py-1 rounded-lg font-jakarta cursor-pointer hover:transition-all">Send Quotation</button>
+                <button onClick={sendQuotation} className="bg-login1 hover:bg-login2 text-white font-bold px-4 py-1 rounded-lg font-jakarta cursor-pointer hover:transition-all">Send Quotation</button>
             )}
         </div>
     );
