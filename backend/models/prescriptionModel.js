@@ -2,6 +2,23 @@ import mongoose from 'mongoose';
 
 const Schema = mongoose.Schema;
 
+const quotationSchema = new Schema({
+    prescriptionID: {
+        type: String,
+        required: true
+    },
+    medicines: [{
+        drugName: String, 
+        purchaseQuantity: Number,
+        price: Number,
+        calculateItemTotal: Number
+    }],
+    subTotal: {
+        type: Number,
+        required: true
+    },
+});
+
 const prescriptionSchema = new Schema({
     note: {
         type: String
@@ -19,7 +36,8 @@ const prescriptionSchema = new Schema({
         type: String,
         required: true
     
-    }
+    },
+    quotation: [quotationSchema]
 }, { timestamps: true });
 
 export default mongoose.model('Prescriptions', prescriptionSchema)
