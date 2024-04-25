@@ -42,10 +42,34 @@ const QuotationForm = () => {
         }
     };
 
-    const sendQuotation = () => {
-        // Here you can send the medicines data to your backend or perform any desired action
-        console.log('Sending quotation with medicines:', medicines);
-    };
+    const sendQuotation = async () => {
+
+        console.log('Sending quotation:', medicines, 'sub', subTotal);
+
+        try {
+          const response = await fetch(`/api/allPres/${prescriptionID}/quotation`, {
+            method: 'PATCH',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              prescriptionID,
+              medicines,
+              subTotal,
+            }),
+          });
+    
+          if (!response.ok) {
+            throw new Error('Failed to create quotation');
+          }
+    
+          const data = await response.json();
+          console.log('Quotation created:', data);
+          // Reset form or navigate to another page
+        } catch (error) {
+          console.error('Error creating quotation:', error);
+        }
+      };
 
     return (
         <div className="max-w-custom mx-auto p-6 bg-white shadow-md rounded-lg">
