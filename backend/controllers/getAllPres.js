@@ -26,4 +26,24 @@ const deletePres = async (req, res) => {
     res.status(200).json(prescription);
 }
 
-export { getPres, deletePres };
+//create quotation
+const createQuotation = async (req, res) => {
+    const { id } = req.params;
+    const { prescriptionID, medicines, subTotal } = req.body;
+  
+    try {
+      const prescription = await Prescriptions.findById(id);
+      if (!prescription) {
+        return res.status(404).json({ error: 'No such prescription' });
+      }
+  
+      prescription.quotation.push({ prescriptionID, medicines, subTotal });
+      await prescription.save();
+  
+      res.status(200).json(prescription.quotation);
+    } catch (error) {
+      res.status(400).json({ error: error.message });
+    }
+  };
+
+export { getPres, deletePres, createQuotation };
