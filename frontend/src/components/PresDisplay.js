@@ -48,7 +48,7 @@ const PresDisplay = ({ prescription }) => {
                                     <img src={prescription.prescriptionImg} alt="prescription" className="w-full" />
                                 </div>
                                 <div className="w-2/3 pl-2 overflow-hidden">
-                                    <QuotationForm />
+                                    <QuotationForm id={prescription._id}/>
                                 </div>
                             </div>
                         </div>
