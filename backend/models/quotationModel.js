@@ -1,20 +1,23 @@
-import mongoose from 'mongoose';
+// import mongoose from 'mongoose';
 
-const Schema = mongoose.Schema;
+// const Schema = mongoose.Schema;
 
-const quotationSchema = new Schema({
-    prescriptionId: {
-        type: Schema.Types.ObjectId,
-        required: true
-    },
-    medicines: [{
-        type: Schema.Types.ObjectId,
-        required: true
-    }],
-    totalPrice: {
-        type: Number,
-        required: true
-    }
-}, { timestamps: true });
+// const quotationSchema = new Schema({
+//     prescriptionId: {
+//         type: Schema.Types.ObjectId,
+//         required: true
+//     },
+//     medicines: [{
+//         type: Schema.Types.ObjectId,
+//         required: true
+//     }],
+//     totalPrice: {
+//         type: Number,
+//         required: true
+//     }
+// }, { timestamps: true });
 
-export default mongoose.model('Quotations', quotationSchema);
+// export default mongoose.model('Quotations', quotationSchema);
+
+
+//this file is not in use. quotations are also inside of the prescription model.
