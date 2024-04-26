@@ -11,6 +11,6 @@ router.delete('/:id', deletePres)
 
 //quotations route
 
-router.patch('/:id/quotation', createQuotation)
+router.post('/:id/quotation', createQuotation)
 
 export default router;

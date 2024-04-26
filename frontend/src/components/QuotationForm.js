@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { FaTrash } from 'react-icons/fa';
 import POSSearch from './PosSearch';
 
-const QuotationForm = () => {
-    const [prescriptionID, setPrescriptionID] = useState('');
+const QuotationForm = ({id}) => {
+    // const [prescriptionID, setPrescriptionID] = useState('');
     const [medicines, setMedicines] = useState([]);
     const [subTotal, setSubTotal] = useState(0);
 
@@ -47,13 +47,12 @@ const QuotationForm = () => {
         console.log('Sending quotation:', medicines, 'sub', subTotal);
 
         try {
-          const response = await fetch(`/api/allPres/${prescriptionID}/quotation`, {
-            method: 'PATCH',
+          const response = await fetch(`/api/allPres/${id}/quotation`, {
+            method: 'POST',
             headers: {
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-              prescriptionID,
               medicines,
               subTotal,
             }),

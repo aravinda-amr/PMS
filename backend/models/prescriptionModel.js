@@ -3,10 +3,6 @@ import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 const quotationSchema = new Schema({
-    prescriptionID: {
-        type: String,
-        required: true
-    },
     medicines: [{
         drugName: String, 
         purchaseQuantity: Number,
