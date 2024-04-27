@@ -46,4 +46,23 @@ const createQuotation = async (req, res) => {
     }
   };
 
-export { getPres, deletePres, createQuotation };
+//get all quotations
+const getQuotations = async (req, res) => {
+  const { id } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({ error: 'No such prescription' });
+  }
+
+  const prescription = await Prescriptions.findById(id);
+
+  if (!prescription) {
+    return res.status(400).json({ error: 'No such prescription' });
+  }
+
+  const quotations = prescription.quotation; // Filter if needed for specific logic
+
+  res.status(200).json(quotations);
+};
+
+export { getPres, deletePres, createQuotation, getQuotations };
