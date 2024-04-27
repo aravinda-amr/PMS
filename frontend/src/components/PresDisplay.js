@@ -28,8 +28,10 @@ const PresDisplay = ({ prescription }) => {
 
             <h3>Created At</h3>
             <p>{formatDistanceToNow(new Date(prescription.createdAt), {addSuffix : true})}</p>
-
-            <button onClick={handleQuotation}>Add Quotation</button>
+            {prescription.quotation.length === 0 && (
+                <button onClick={handleQuotation}>Add Quotation</button>
+            )}
+            
             
             {showModal && (
                 <div className="fixed inset-0 flex items-center justify-center">

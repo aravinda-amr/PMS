@@ -6,6 +6,8 @@ const QuotationForm = ({id}) => {
     // const [prescriptionID, setPrescriptionID] = useState('');
     const [medicines, setMedicines] = useState([]);
     const [subTotal, setSubTotal] = useState(0);
+    const [quotationSent, setQuotationSent] = useState(false);
+    const [successMessage, setSuccessMessage] = useState('');
 
     useEffect(() => {
         // Calculate subtotal whenever medicines or their quantities change
@@ -70,7 +72,8 @@ const QuotationForm = ({id}) => {
     
           const data = await response.json();
           console.log('Quotation created:', data);
-          // Reset form or navigate to another page
+          setQuotationSent(true);
+          setSuccessMessage('Quotation sent successfully');
         } catch (error) {
           console.error('Error creating quotation:', error);
         }
@@ -123,9 +126,16 @@ const QuotationForm = ({id}) => {
             <div>
                 <h4 className="text-lg font-semibold mb-2 text-gray-800">Subtotal: LKR{subTotal.toFixed(2)}</h4>
             </div>
-            {subTotal > 0 && (
-                <button onClick={sendQuotation} className="bg-login1 hover:bg-login2 text-white font-bold px-4 py-1 rounded-lg font-jakarta cursor-pointer hover:transition-all">Send Quotation</button>
-            )}
+            {quotationSent ? ( <div className="text-green-600">{successMessage}</div> ) : (
+                subTotal > 0 && (
+                    <button
+                        onClick={sendQuotation}
+                        className="bg-login1 hover:bg-login2 text-white font-bold px-4 py-1 rounded-lg font-jakarta cursor-pointer hover:transition-all"
+                    >
+                        Send Quotation
+                    </button>
+        )
+      )}
         </div>
     );
 };
