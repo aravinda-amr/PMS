@@ -65,4 +65,38 @@ const getQuotations = async (req, res) => {
   res.status(200).json(quotations);
 };
 
-export { getPres, deletePres, createQuotation, getQuotations };
+// Approve prescription
+const approvePrescription = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+      const prescription = await Prescriptions.findByIdAndUpdate(id, { status: "approved" }, { new: true });
+
+      if (!prescription) {
+          return res.status(404).json({ error: 'No such prescription' });
+      }
+
+      res.status(200).json(prescription);
+  } catch (error) {
+      res.status(500).json({ error: error.message });
+  }
+};
+
+// Reject prescription
+const rejectPrescription = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+      const prescription = await Prescriptions.findByIdAndUpdate(id, { status: "rejected" }, { new: true });
+
+      if (!prescription) {
+          return res.status(404).json({ error: 'No such prescription' });
+      }
+
+      res.status(200).json(prescription);
+  } catch (error) {
+      res.status(500).json({ error: error.message });
+  }
+};
+
+export { getPres, deletePres, createQuotation, getQuotations, rejectPrescription, approvePrescription};

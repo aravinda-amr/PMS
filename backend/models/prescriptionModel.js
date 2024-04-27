@@ -33,7 +33,11 @@ const prescriptionSchema = new Schema({
         required: true
     
     },
-    quotation: [quotationSchema]
+    quotation: [quotationSchema],
+    status: {
+        type: String,
+        default: "pending"
+    }
 }, { timestamps: true });
 
 export default mongoose.model('Prescriptions', prescriptionSchema)

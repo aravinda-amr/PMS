@@ -81,15 +81,23 @@ const PrescriptionDetails = ({ prescription }) => {
                     <p>No quotations available for this prescription.</p>
                     ) : (
                     quotations.map((quotation, index) => (
-                    <ViewQuotation key={index} quotation={quotation} />
+                    <ViewQuotation key={index} quotation={quotation} presID={prescription._id} />
                   ))
                 )}
               </div>
                
             )}
 
-            <button onClick={handleClick}>Delete</button>
-            <button onClick={handleUpdate}>Update</button>
+            {/* Hide the delete and update buttons if the view quotation button is visible */}
+            {!showModal && prescription.quotation.length === 0 && (
+                <div>
+                    <button onClick={handleClick}>Delete</button>
+                    <button onClick={handleUpdate}>Update</button>
+                </div>
+            )}
+
+            {/* <button onClick={handleClick}>Delete</button>
+            <button onClick={handleUpdate}>Update</button> */}
         </div>
     );
 };
