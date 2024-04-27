@@ -46,13 +46,14 @@ const handleSubmit = async (e) => {
 
 
   return (
-    <div className="overflow-x-auto" style={{ marginBottom: '20px', marginTop:'20px' }}>
-      <h4>{comments.title}</h4>
+    <div className="bg-dark-blue-2 p-4 rounded-lg shadow-md" style={{ marginBottom: '20px', marginTop:'20px', marginLeft:'30px', color: 'white' }}>
+
+      <h4><strong>Verified By : </strong>{comments.title}</h4>
       <p><strong>Date : </strong>{new Date(comments.day).toLocaleDateString()}</p>
       <p><strong>Special Notes: </strong>{comments.note}</p>
       <p>{formatDistanceToNow(new Date(comments.createdAt),{addSuffix: true})}</p>
-      <button className="btn bg-login1 hover:bg-login2 hover:text-white mr-2 px-4 py-1 rounded-lg font-jakarta font-semibold cursor-pointer hover:transition-all" onClick ={handleClick}>Delete</button>
-      <button className="btn bg-signup1 hover:bg-signup2 hover:text-white mr-2 px-4 py-1 rounded-lg font-jakarta font-semibold cursor-pointer hover:transition-all" onClick={handleUpdate}>Edit</button>
+      <button className="btn bg-login1 hover:bg-login2 hover:text-white mr-2 px-4 py-1 rounded-lg font-jakarta font-semibold cursor-pointer hover:transition-all" style={{color: 'black' }} onClick ={handleClick}>Delete</button>
+      <button className="btn bg-signup1 hover:bg-signup2 hover:text-white mr-2 px-4 py-1 rounded-lg font-jakarta font-semibold cursor-pointer hover:transition-all" style={{color: 'black' }} onClick={handleUpdate}>Edit</button>
       {showPopup && (
         <div className="fixed z-10 inset-0 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
           <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
