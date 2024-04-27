@@ -54,6 +54,7 @@ const SalesReport = () => {
 
   return (
     <div className="ml-64">
+        <div className="flex justify-between items-center bg-gray-100 rounded-lg p-4 mb-4">
       <h1 className="text-2xl font-semibold text-gray-800 ">Sales Report</h1>
 
       <TextField
@@ -64,8 +65,11 @@ const SalesReport = () => {
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
       />
+      </div>
 
+      <div className="flex justify-start items-center mb-4">
       <CommentForm />
+      </div>
       {filteredItems.map((comment) => (
         <CommentDetails key={comment._id} comments={comment} />
       ))}
