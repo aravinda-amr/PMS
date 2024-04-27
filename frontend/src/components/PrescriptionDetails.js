@@ -88,8 +88,16 @@ const PrescriptionDetails = ({ prescription }) => {
                
             )}
 
-            <button onClick={handleClick}>Delete</button>
-            <button onClick={handleUpdate}>Update</button>
+            {/* Hide the delete and update buttons if the view quotation button is visible */}
+            {!showModal && prescription.quotation.length === 0 && (
+                <div>
+                    <button onClick={handleClick}>Delete</button>
+                    <button onClick={handleUpdate}>Update</button>
+                </div>
+            )}
+
+            {/* <button onClick={handleClick}>Delete</button>
+            <button onClick={handleUpdate}>Update</button> */}
         </div>
     );
 };
