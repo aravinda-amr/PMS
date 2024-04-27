@@ -16,6 +16,14 @@ const ReorderForm = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        
+        // Check if reorder level is greater than zero
+        if (reorderLevel <= 0) {
+            setError("Reorder level must be greater than zero.");
+            setShowCheckmark(false);
+            return; // Exit the function if reorder level is invalid
+        }
+        
         const reorder = { supplierEmail, drugName, reorderLevel };
         const response = await fetch('/api/reorder', {
             method: 'POST',
@@ -39,6 +47,7 @@ const ReorderForm = () => {
             setShowCheckmark(true);
         }
     };
+    
 
     const togglePopup = () => {
         setShowPopup(!showPopup);

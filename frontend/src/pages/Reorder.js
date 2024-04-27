@@ -61,25 +61,42 @@ const Reorder = () => {
   }, [searchTerm, reorders]);
 
   const handleEmailModalSubmit = async (emailDetails) => {
-    try {
-      const response = await fetch('/api/email/send-email', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(emailDetails),
-      });
-
-      if (response.ok) {
-        alert('Email sent successfully');
+    // Destructure the emailDetails object to get the email entered by the user
+    const { to } = emailDetails;
+  
+    // Check if filteredItems is empty or not
+    if (filteredItems.length > 0) {
+      // Get the supplierEmail of the first item in filteredItems array
+      const firstSupplierEmail = filteredItems[0].supplierEmail;
+  
+      // Check if the entered email matches the supplierEmail
+      if (to === firstSupplierEmail) {
+        try {
+          const response = await fetch('/api/email/send-email', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(emailDetails),
+          });
+  
+          if (response.ok) {
+            alert('Email sent successfully');
+          } else {
+            alert('Failed to send email');
+          }
+        } catch (error) {
+          console.error('Error sending email:', error);
+          alert('Failed to send email');
+        }
       } else {
-        alert('Failed to send email');
+        alert('Supplier email does not match. Please enter the correct supplier email.');
       }
-    } catch (error) {
-      console.error('Error sending email:', error);
-      alert('Failed to send email');
+    } else {
+      alert('No reorder items found. Unable to send email.');
     }
- };
+  };
+  
 
 
   const generatePDF = () => {
