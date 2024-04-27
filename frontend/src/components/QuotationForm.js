@@ -46,6 +46,12 @@ const QuotationForm = ({id}) => {
 
         console.log('Sending quotation:', medicines, 'sub', subTotal);
 
+        // Calculate calculateItemTotal for each medicine
+        const medicinesWithTotal = medicines.map(medicine => ({
+        ...medicine,
+        calculateItemTotal: medicine.price * medicine.purchaseQuantity
+    }));
+
         try {
           const response = await fetch(`/api/allPres/${id}/quotation`, {
             method: 'POST',
@@ -53,7 +59,7 @@ const QuotationForm = ({id}) => {
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-              medicines,
+              medicines: medicinesWithTotal,
               subTotal,
             }),
           });
