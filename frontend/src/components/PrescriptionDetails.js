@@ -76,6 +76,7 @@ const PrescriptionDetails = ({ prescription }) => {
             {showModal && (
                 <div>
                     <h3>Quotations for Prescription</h3>
+                    <button onClick={handleCloseModal} className="bg-login1 hover:bg-login2 text-white font-bold px-4 py-1 rounded-lg font-jakarta cursor-pointer hover:transition-all">Close</button>
                     {quotations.length === 0 ? (
                     <p>No quotations available for this prescription.</p>
                     ) : (
