@@ -81,7 +81,7 @@ const PrescriptionDetails = ({ prescription }) => {
                     <p>No quotations available for this prescription.</p>
                     ) : (
                     quotations.map((quotation, index) => (
-                    <ViewQuotation key={index} quotation={quotation} />
+                    <ViewQuotation key={index} quotation={quotation} presID={prescription._id} />
                   ))
                 )}
               </div>
