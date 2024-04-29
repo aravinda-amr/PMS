@@ -22,7 +22,7 @@ const billingSchema = new Schema({
         price: Number,
         calculateItemTotal: Number
     }],
-    calculateSubTotal: Number,
+    subTotal: Number,
     discount: {
         type: Number,
         default: 0
