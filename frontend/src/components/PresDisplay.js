@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { usePrescriptionContext } from "../hooks/usePrescription";
+import { Typography } from '@mui/material'
+
 
 import QuotationForm from "./QuotationForm";
 
@@ -19,24 +21,33 @@ const PresDisplay = ({ prescription }) => {
     };
 
     return (
-        <div>
-            <h3>Prescription Note</h3>
-            <p>{prescription.note}</p>
+        <div className="bg-dark-blue-2 grid grid-cols-5 items-center px-4 py-2 rounded-lg my-4 mx-4">
+            <div className="flex items-center">
+                    <Typography variant="h5" component="h4" className="text-white mr-2">
+                        {prescription.note}
+                    </Typography>
+            </div>
 
-            <h3>Substitutes</h3>
-            <p>{prescription.substitutes}</p>
+                    <Typography className="text-white font-light px-4 py-2">
+                        { prescription.substitutes ? "Substitutes Accepted" : "Substitutes Rejected" }
+                    </Typography>
 
-            <h3>Created At</h3>
-            <p>{formatDistanceToNow(new Date(prescription.createdAt), {addSuffix : true})}</p>
+                    <Typography  className="text-white font-medium px-4 py-2">
+                        {formatDistanceToNow(new Date(prescription.createdAt), {addSuffix : true})}
+                    </Typography>
+
+                    <Typography className={`text-white font-medium px-4 py-2 ${prescription.status === 'approved' ? 'text-green-500' : 'text-red-500'}`}>
+                        {prescription.status.charAt(0).toUpperCase() + prescription.status.slice(1)}
+                    </Typography>
+
             {prescription.quotation.length === 0 && (
-                <button onClick={handleQuotation}>Add Quotation</button>
+                <button onClick={handleQuotation} className="bg-login1 hover:bg-login2 text-white font-bold px-4 py-1 
+                rounded-lg font-jakarta cursor-pointer hover:transition-all">Add Quotation</button>
             )}
             
             
             {showModal && (
                 <div className="fixed inset-0 flex items-center justify-center">
-                    <div className="modal-overlay absolute w-full h-full bg-gray-900 opacity-50"></div>
-
                     <div className="modal-container bg-white md:max-w-3xl mx-auto rounded shadow-lg z-50">
 
                         <div className="modal-content py-50 text-left px-6">
@@ -45,11 +56,11 @@ const PresDisplay = ({ prescription }) => {
                                 <button onClick={handleCloseModal} className="bg-login1 hover:bg-login2 text-white font-bold px-4 py-1 rounded-lg font-jakarta cursor-pointer hover:transition-all">Close</button>
                             </div>
 
-                            <div className="flex">
-                                <div className="w-1/3 pr-2 overflow-hidden">
+                            <div className="">
+                                <div className="w-1/3 pr-2">
                                     <img src={prescription.prescriptionImg} alt="prescription" className="w-full" />
                                 </div>
-                                <div className="w-2/3 pl-2 overflow-hidden">
+                                <div className="w-full pl-2">
                                     <QuotationForm id={prescription._id}/>
                                 </div>
                             </div>
