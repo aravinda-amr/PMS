@@ -25,6 +25,7 @@ module.exports = {
 
       'update':'#C0D6E8',
       'updateH':'#8BAACF',
+      'success':'#115D33'
 
     },
     fontFamily: {

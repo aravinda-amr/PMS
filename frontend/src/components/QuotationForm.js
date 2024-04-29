@@ -126,7 +126,7 @@ const QuotationForm = ({id}) => {
             <div>
                 <h4 className="text-lg font-semibold mb-2 text-gray-800">Subtotal: LKR{subTotal.toFixed(2)}</h4>
             </div>
-            {quotationSent ? ( <div className="text-green-600">{successMessage}</div> ) : (
+            {quotationSent ? ( <div className="text-success">{successMessage}</div> ) : (
                 subTotal > 0 && (
                     <button
                         onClick={sendQuotation}
