@@ -23,7 +23,7 @@ const Quotations = () => {
     
     return (
         <div className="ml-64">
-        <h2>Prescriptions</h2>
+        <h2>Adding Quotations</h2>
         <div className="prescription_list">
             {prescriptions &&
             prescriptions.map((prescription) => (

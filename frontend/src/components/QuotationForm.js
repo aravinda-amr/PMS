@@ -80,7 +80,7 @@ const QuotationForm = ({id}) => {
       };
 
     return (
-        <div className="max-w-custom mx-auto p-6 bg-white shadow-md rounded-lg">
+        <div className="w-full p-6 bg-white shadow-md rounded-lg">
             <h3 className="text-2xl font-semibold mb-4 text-gray-800">Create Quotation</h3>
             <POSSearch handleAddToBill={handleAddToBill} />
 
