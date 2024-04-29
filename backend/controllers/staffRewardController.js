@@ -104,34 +104,3 @@ export const createStaffReward = async (data) => {
 
 
 
-
-// Controller to update a staff reward by pharmacistID
-export const updateStaffReward = async (req, res) => {
-    try {
-        const updatedStaffReward = await StaffReward.findOneAndUpdate(
-            { pharmacistID: req.params.pharmacistID },
-            req.body,
-            { new: true }
-        );
-        if (!updatedStaffReward) {
-            return res.status(404).json({ message: 'Staff reward not found' });
-        }
-        res.json(updatedStaffReward);
-    } catch (err) {
-        res.status(400).json({ message: err.message });
-    }
-};
-
-// Controller to delete a staff reward by pharmacistID
-export const deleteStaffReward = async (req, res) => {
-    try {
-        const result = await StaffReward.deleteOne({ pharmacistID: req.params.pharmacistID });
-        if (result.deletedCount === 0) {
-            return res.status(404).json({ message: 'Staff reward not found' });
-        }
-        res.json({ message: 'Staff reward deleted' });
-    } catch (err) {
-        res.status(500).json({ message: err.message });
-    }
-};
-

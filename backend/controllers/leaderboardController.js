@@ -12,8 +12,8 @@ const calculateLeaderboardData = async () => {
                     pharmacists: {
                         $push: {
                             pharmacistID: "$pharmacistID",
-                            invoiceCount: { $toInt: "$invoiceCount" },
-                            totalCashAmount: { $toDouble: "$totalCashAmount" }
+                            invoiceCount: { $convert: { input: "$invoiceCount", to: "int" } },
+                            totalCashAmount: { $convert: { input: "$totalCashAmount", to: "double" } }
                         }
                     }
                 }
@@ -56,7 +56,6 @@ const calculateLeaderboardData = async () => {
                 }
             }
         ]);
-
         return leaderboardData || []; // Ensure an array is returned
     } catch (error) {
         console.error("Error calculating leaderboard data:", error);
@@ -130,37 +129,9 @@ export const createLeaderboardEntry = async (data) => {
 
 
 
-// Controller to update a leaderboard by pharmacistID
-export const updateLeaderboard = async (req, res) => {
-    try {
-        const updateLeaderboard = await leaderboard.findOneAndUpdate(
-            { pharmacistID: req.params.pharmacistID },
-            req.body,
-            { new: true }
-        );
-        if (!updateLeaderboard) {
-            return res.status(404).json({ message: 'Staff reward not found' });
-        }
-        res.json(updateLeaderboard);
-    } catch (err) {
-        res.status(400).json({ message: err.message });
-    }
-};
 
 
 
-// Controller to delete a leaderboard by pharmacistID
-export const deleteLeaderboard = async (req, res) => {
-    try {
-        const result = await leaderboard.deleteOne({ pharmacistID: req.params.pharmacistID });
-        if (result.deletedCount === 0) {
-            return res.status(404).json({ message: 'leaderboard not found' });
-        }
-        res.json({ message: 'leaderboard deleted' });
-    } catch (err) {
-        res.status(500).json({ message: err.message });
-    }
-};
 
 
 
