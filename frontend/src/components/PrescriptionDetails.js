@@ -56,6 +56,7 @@ const PrescriptionDetails = ({ prescription }) => {
 
     return (
         <div>
+            
             <div className="bg-dark-blue-2 grid grid-cols-5 items-center px-4 py-2 rounded-lg my-4 mx-4">
                 
                 <div className="flex items-center">
