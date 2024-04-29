@@ -38,17 +38,28 @@ const ViewQuotation = ({ quotation, presID }) => {
 
 
     return (
-        <div>
-            <h3>Quotation Details</h3>
-            <div>
-                <h4>Medicines</h4>
-                <ul>
-                    {quotation.medicines.map((medicine) => (
-                        <li>
-                            <strong>{medicine.drugName}</strong> - Quantity: {medicine.purchaseQuantity}, Price: {medicine.price}, Total: {medicine.calculateItemTotal}
-                        </li>
-                    ))}
-                </ul>
+        <div className=" ml-8 mr-8 medicine  border-gray-300 rounded-lg px-8 py-6 mb-8 bg-update" >
+            <div className="overflow-x-auto">
+                        <table className="w-full">
+                            <thread>
+                                <tr className="bg-gray-200 w-full">
+                                    <th className="py-2 px-4 text-center text-lg w-1/4">Drug Name</th>
+                                    <th className="py-2 px-4 text-center text-lg w-1/4">Quantity</th>
+                                    <th className="py-2 px-4 text-center text-lg w-1/4">Price</th>
+                                    <th className="py-2 px-4 text-center text-lg w-1/4">Total</th>
+                                </tr>
+                            </thread>
+                            <tbody>
+                            {quotation.medicines.map((medicine) => (
+                                <tr key={medicine.drugName}>
+                                    <td className="py-2 px-4 text-center text-lg w-1/4">{medicine.drugName}</td>
+                                    <td className="py-2 px-4 text-center text-lg w-1/4">{medicine.purchaseQuantity}</td>
+                                    <td className="py-2 px-4 text-center text-lg w-1/4">{medicine.price}</td>
+                                    <td className="py-2 px-4 text-center text-lg w-1/4">{medicine.calculateItemTotal}</td>
+                                </tr>
+                            ))}
+                            </tbody>
+                        </table>
             </div>
             <div>
                 <h4>Subtotal</h4>
@@ -56,8 +67,10 @@ const ViewQuotation = ({ quotation, presID }) => {
             </div>
             {!isActionTaken && (
                 <div>
-                    <button onClick={handleApprove}>Approve</button>
-                    <button onClick={handleReject}>Reject</button>
+                    <button onClick={handleApprove} className="bg-login1 hover:bg-login2 text-white font-bold px-4 py-1 
+                                rounded-lg font-jakarta cursor-pointer hover:transition-all">Approve</button>
+                    <button onClick={handleReject} className="bg-delete hover:bg-deleteH text-white font-bold px-4 py-1 
+                                rounded-lg font-jakarta cursor-pointer hover:transition-all" >Reject</button>
                 </div>
             )}
         </div>

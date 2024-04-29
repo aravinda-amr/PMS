@@ -38,7 +38,7 @@ const Navbar = () => {
         <header>
 
 
-<div className="fixed flex flex-col top-0 left-0 w-64 bg-dark-blue h-full text-white mr-2 px-4 py-1 font-jakarta">
+<div className="fixed flex flex-col top-0 left-0 w-64 bg-dark-blue h-full text-white mr-2 px-4 py-1 font-jakarta overflow-y-scroll">
     
     <img src={logo} alt="Logo" className='w-44 py-8 mx-auto'/>
     

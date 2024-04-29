@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { storage } from '../firebase';
-import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import { getDownloadURL, ref, uploadBytes, uploadBytesResumable } from 'firebase/storage';
 import { v4 } from 'uuid'
 import { useAuthContext } from '../hooks/useAuthContext';
 import { usePrescriptionContext } from '../hooks/usePrescription';
@@ -14,6 +14,7 @@ const PrescriptionUpload = () => {
     const [substitutes, setSubstitutes] = useState('');
     const [imageUpload, setImageUpload] = useState('');
     const [image, setImage] = useState('');
+    const [uploadProgress, setUploadProgress] = useState(0);
 
     const uploadImage = async (e) => {
         e.preventDefault();
@@ -22,15 +23,35 @@ const PrescriptionUpload = () => {
         if ( imageUpload === null ) return;
 
         const imageRef = ref(storage, `PMS/${imageUpload.name + v4()}`);
+        const uploadTask = uploadBytesResumable(imageRef, imageUpload);
 
-        //upload the file to the firebase storage
-        await uploadBytes(imageRef, imageUpload).then((snapshot) => {
-            getDownloadURL(snapshot.ref).then((url) => {
-                //getting the url of the uloaded image
-                console.log(url);
-                setImage(url);
-            })
-        })
+        uploadTask.on('state_changed',
+            (snapshot) => {
+                // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+                const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                setUploadProgress(progress);
+            },
+            (error) => {
+                console.error(error);
+            },
+            () => {
+                // Upload completed successfully, now we can get the download URL
+                getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+                    // Getting the URL of the uploaded image
+                    console.log(url);
+                    setImage(url);
+                });
+            }
+        );
+
+        // //upload the file to the firebase storage
+        // await uploadBytes(imageRef, imageUpload).then((snapshot) => {
+        //     getDownloadURL(snapshot.ref).then((url) => {
+        //         //getting the url of the uloaded image
+        //         console.log(url);
+        //         setImage(url);
+        //     })
+        // })
     }
 
     const handleSubmit = async (e) => {
@@ -60,8 +81,9 @@ const PrescriptionUpload = () => {
         }
     }
 
+
     return (
-        <form className="max-w-lg mx-auto">
+        <form className="max-w-lg mx-auto border rounded-md border-gray-300 p-6">
             <h3 className='text-2xl font-bold mb-4'>Add a New Prescription</h3>
         <div className='mb-4'>
             <label className='block text-sm font-medium text-gray-700' for="note">Add a Note</label><br/>
@@ -106,8 +128,9 @@ const PrescriptionUpload = () => {
         </div>
             
         <div>
-            <button onClick={uploadImage} className='px-2 py-2 rounded-2xl font-black cursor-pointer hover:bg-blue-button hover:text-white hover:shadow-lg'>Upload</button>
-            <button onClick={handleSubmit} className='px-2 py-2 rounded-2xl font-black cursor-pointer hover:bg-blue-button hover:text-white hover:shadow-lg'>Submit</button>
+            <button onClick={uploadImage} className='px-2 py-2 rounded-2xl font-black cursor-pointer bg-update hover:bg-blue-button hover:text-white hover:shadow-lg'>Upload</button>
+            <progress value={uploadProgress} max="100" className="w-full mt-4"></progress>
+            <button onClick={handleSubmit} className='px-2 py-2 rounded-2xl font-black cursor-pointer bg-update hover:bg-blue-button hover:text-white hover:shadow-lg'>Submit</button>
         </div>
             
         </form>

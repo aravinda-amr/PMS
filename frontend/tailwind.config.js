@@ -20,6 +20,12 @@ module.exports = {
       'login2':'#1E4822',
       'login3':'#52B75B',
 
+      'delete':'#A0153E',
+      'deleteH':'#D24545',
+
+      'update':'#C0D6E8',
+      'updateH':'#8BAACF',
+
     },
     fontFamily: {
       jakarta: ["Plus Jakarta Sans", 'sans-serif'],

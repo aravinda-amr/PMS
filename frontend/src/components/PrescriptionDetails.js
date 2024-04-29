@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { usePrescriptionContext } from "../hooks/usePrescription";
+import { Typography } from '@mui/material'
 
 import ViewQuotation from "./ViewQuotation";
 
@@ -55,27 +56,44 @@ const PrescriptionDetails = ({ prescription }) => {
 
     return (
         <div>
-            <h3>Prescription Note</h3>
-            <p>{prescription.note}</p>
+            <div className="bg-dark-blue-2 grid grid-cols-5 items-center px-4 py-2 rounded-lg my-4 mx-4">
+                
+                <div className="flex items-center">
+                    <Typography variant="h5" component="h4" className="text-white mr-2">
+                        {prescription.note}
+                    </Typography>
+                </div>
 
-            <h3>Substitutes</h3>
-            <p>{prescription.substitutes}</p>
+                    <Typography className="text-white font-light px-4 py-2">
+                        { prescription.substitutes ? "Substitutes Accepted" : "Substitutes Rejected" }
+                    </Typography>
+                    
+                    <Typography  className="text-white font-medium px-4 py-2">
+                        {formatDistanceToNow(new Date(prescription.createdAt), {addSuffix : true})}
+                    </Typography>
 
-            <h3>Prescription Image</h3>
-            <img src={prescription.prescriptionImg} alt="prescription" width={100} height={60}/>
+                    <img src={prescription.prescriptionImg} alt="prescription" width={100} height={60}/>
 
-            <h3>Created At</h3>
-            {/* <p>{prescription.createdAt}</p> */}
-            <p>{formatDistanceToNow(new Date(prescription.createdAt), {addSuffix : true})}</p>
+                    {prescription.quotation.length > 0 && (
+                        <button onClick={handleQuotation} className="bg-login1 hover:bg-login2 text-white font-bold px-4 py-1 
+                                rounded-lg font-jakarta cursor-pointer hover:transition-all">
+                            View Quotation
+                        </button>
+                    )}
 
-            {prescription.quotation.length > 0 && (
-                <button onClick={handleQuotation}>View Quotation</button>
+                    {!showModal && prescription.quotation.length === 0 && (
+                        <div>
+                            <button onClick={handleClick} className="bg-delete hover:bg-deleteH text-white font-bold px-4 py-1 
+                                rounded-lg font-jakarta cursor-pointer hover:transition-all">Delete</button>
+                            <button onClick={handleUpdate} className="bg-update hover:bg-updateH text-white font-bold px-4 py-1 
+                                rounded-lg font-jakarta cursor-pointer hover:transition-all">Update</button>
+                        </div>
             )}
-
+                    
+        </div>
 
             {showModal && (
                 <div>
-                    <h3>Quotations for Prescription</h3>
                     <button onClick={handleCloseModal} className="bg-login1 hover:bg-login2 text-white font-bold px-4 py-1 rounded-lg font-jakarta cursor-pointer hover:transition-all">Close</button>
                     {quotations.length === 0 ? (
                     <p>No quotations available for this prescription.</p>
@@ -87,17 +105,7 @@ const PrescriptionDetails = ({ prescription }) => {
               </div>
                
             )}
-
-            {/* Hide the delete and update buttons if the view quotation button is visible */}
-            {!showModal && prescription.quotation.length === 0 && (
-                <div>
-                    <button onClick={handleClick}>Delete</button>
-                    <button onClick={handleUpdate}>Update</button>
-                </div>
-            )}
-
-            {/* <button onClick={handleClick}>Delete</button>
-            <button onClick={handleUpdate}>Update</button> */}
+            
         </div>
     );
 };
