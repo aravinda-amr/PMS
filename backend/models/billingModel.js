@@ -23,10 +23,7 @@ const billingSchema = new Schema({
         calculateItemTotal: Number
     }],
     subTotal: Number,
-    discount: {
-        type: Number,
-        default: 0
-    },
+    discountAmount: Number, 
     couponCode: String,
     grandTotal: Number
 }, { timestamps: true });

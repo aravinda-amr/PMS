@@ -77,20 +77,24 @@ const calculateDiscountAmount = (subTotal, discount) => {
     return discountAmount.toFixed(2); // Ensure two decimal places are always displayed 
 };
 
+// Function to calculate grand total for the bill
+const calculateGrandTotal = (subTotal, discountAmount) => {
+       // Parse the subTotal and discountAmount as numbers
+    const parsedSubTotal = parseFloat(subTotal);
+    const parsedDiscountAmount = parseFloat(discountAmount);
 
-//Function to calculate grand total for the bill
-const calculateGrandTotal = (subTotal, discount) => {
-    // Parse the discount as a number, or default to 0 if it's null
-    const parsedDiscount = discount !== null ? parseFloat(discount) : 0;
 
-    //Check if discount is a valid number
-    if(isNaN(parsedDiscount)){
-        throw new Error('Invalid discount');
-    }
-    //Subtract discount from the subtotal to get the grand total
-    const grandTotal = subTotal - discount;
-    return grandTotal.toFixed(2); // Ensure two decimal places are always displayed 
+   // Check if subTotal and discountAmount are valid numbers
+   if (isNaN(parsedSubTotal) || isNaN(parsedDiscountAmount)) {
+    throw new Error('Invalid subTotal or discountAmount');
+}
+
+    // Subtract discountAmount from subTotal to get the grand total
+    const grandTotal = parsedSubTotal - parsedDiscountAmount;
+
+    return grandTotal.toFixed(2); // Ensure two decimal places are always displayed
 };
+
 
 //Validate phone number (10 digits)
 const isValidPhoneNumber = (phoneNumber) => {
@@ -109,7 +113,7 @@ const getBills = async (req, res)=> {
         
             //constructing the response object with _id renamed to invoiceID and excluding _id from medicines
             const response = bills.map(bill => {
-                const {_id, pharmacistID,customerID, invoiceDate, medicines, discount } = bill;
+                const {_id, pharmacistID,customerID, invoiceDate, medicines, discountAmount } = bill;
 
                 const transformedMedicines = medicines.map((medicine, index) => ({
                     index: index + 1, // Add auto-generated index for each medicine
@@ -121,7 +125,7 @@ const getBills = async (req, res)=> {
                         const subTotal = calculateSubTotal(transformedMedicines);
 
                         //Calculate grand total for the bill
-                        const grandTotal = calculateGrandTotal(subTotal, discount || 0);
+                        const grandTotal = calculateGrandTotal(subTotal, discountAmount || 0);
 
                 return {
                         invoiceID: _id, // Rename _id to invoiceID
@@ -130,7 +134,7 @@ const getBills = async (req, res)=> {
                         invoiceDate,
                         medicines: transformedMedicines,
                         subTotal: subTotal, // Ensure two decimal places are always displayed
-                        discount: discount || 0, //Include discount if it exists
+                        discount: discountAmount || 0, //Include discount if it exists
                         grandTotal: grandTotal 
 
                     };
@@ -168,7 +172,7 @@ const getBill = async(req, res) => {
     const subTotal = calculateSubTotal(medicines);
 
     //Calculate grand total for the bill
-    const grandTotal = calculateGrandTotal(subTotal, bill.discount || 0);
+    const grandTotal = calculateGrandTotal(subTotal, bill.discountAmount || 0);
 
     // Construct the response object with _id renamed to invoiceID and excluding _id from medicines
     const response ={
@@ -178,7 +182,7 @@ const getBill = async(req, res) => {
         invoiceDate: bill.invoiceDate,
         medicines: medicines,
         subTotal: subTotal,
-        discount: bill.discount || 0, // Include discount if it exists
+        discountAmount: bill.discountAmount || 0, // Include discount if it exists
         grandTotal: grandTotal
 
     };
@@ -247,7 +251,7 @@ const createBill = async (req, res) => {
 
        
         // Calculate grand total for the bill
-        const grandTotal = calculateGrandTotal(subTotal, discount);
+        const grandTotal = calculateGrandTotal(subTotal, discountAmount);
 
         // Create a new bill document in the database
         const bill = await Bill.create({
@@ -256,9 +260,9 @@ const createBill = async (req, res) => {
             customerID,
             invoiceDate,
             medicines: Array.isArray(medicinesWithPrice) ? medicinesWithPrice : [], // Ensure that medicines is an array
-            discount: discount,
+            discountAmount: discountAmount,
             subTotal: subTotal.toFixed(2), 
-            grandTotal:grandTotal,
+            grandTotal:grandTotal
 
         });
 
@@ -290,9 +294,9 @@ const createBill = async (req, res) => {
                 price: medicine.price,
                 calculateItemTotal: medicine.calculateItemTotal
             })),
-            subTotal: subTotal.toFixed(2), // Ensure two decimal places are always displayed
-            discountAmount: discountAmount, // Ensure two decimal places are always displayed
-            grandTotal: (subTotal - discountAmount).toFixed(2) // Calculate grand total and ensure two decimal places are always displayed
+            subTotal: subTotal.toFixed(2), 
+            discountAmount: discountAmount,
+            grandTotal: grandTotal
         };
 
         // Remove _id from the response
@@ -407,7 +411,7 @@ const updateBill = async(req, res) => {
     const discount = existingBill.discount || 0;
 
     //Update grand total for the bill
-    existingBill.grandTotal = calculateGrandTotal(existingBill.SubTotal, discount);
+    existingBill.grandTotal = calculateGrandTotal(existingBill.subTotal, discountAmount);
 
     //Save the updated bill
     await existingBill.save();
