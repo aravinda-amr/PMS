@@ -24,7 +24,7 @@ const Prescription = () => {
     
     return (
         <div className="ml-64">
-        <h2>Prescriptions</h2>
+        <p>Prescriptions</p>
         <div className="prescription_list">
             {prescriptions &&
             prescriptions.map((prescription) => (
