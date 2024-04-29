@@ -97,9 +97,6 @@ const isValidPhoneNumber = (phoneNumber) => {
     return /^\d{10}$/.test(phoneNumber);
 };
 
-
-
-
 //get all bills
 const getBills = async (req, res)=> {
 
@@ -245,7 +242,12 @@ const createBill = async (req, res) => {
             medicinesWithPrice.push(medicineWithPrice);
         }
 
+        // Calculate discount amount based on subtotal
+        const discountAmount = calculateDiscountAmount(subTotal, discount);
+
        
+        // Calculate grand total for the bill
+        const grandTotal = calculateGrandTotal(subTotal, discount);
 
         // Create a new bill document in the database
         const bill = await Bill.create({
@@ -255,9 +257,15 @@ const createBill = async (req, res) => {
             invoiceDate,
             medicines: Array.isArray(medicinesWithPrice) ? medicinesWithPrice : [], // Ensure that medicines is an array
             discount: discount,
+            subTotal: subTotal.toFixed(2), 
+            grandTotal:grandTotal,
+
         });
 
         
+        // Save the updated bill
+        await bill.save();
+
         // Update coupon status to "used" if discount is applied
         if (discount > 0) {
             // Find the user to update the coupon status
@@ -271,14 +279,6 @@ const createBill = async (req, res) => {
             }
         }
 
-        
-
-         // Calculate discount amount based on subtotal
-         const discountAmount = calculateDiscountAmount(subTotal, discount);
-        
-        // Save the updated bill
-        await bill.save();
-
         const response = {
             invoiceID: bill._id,
             pharmacistID,
@@ -291,7 +291,6 @@ const createBill = async (req, res) => {
                 calculateItemTotal: medicine.calculateItemTotal
             })),
             subTotal: subTotal.toFixed(2), // Ensure two decimal places are always displayed
-            discount: discount, // Include the calculated discount amount
             discountAmount: discountAmount, // Ensure two decimal places are always displayed
             grandTotal: (subTotal - discountAmount).toFixed(2) // Calculate grand total and ensure two decimal places are always displayed
         };
@@ -402,13 +401,13 @@ const updateBill = async(req, res) => {
 }
 
     //update the bill with the calculated subtotal 
-    existingBill.calculateSubTotal = calculateSubTotal(existingBill.medicines);
+    existingBill.subTotal = calculateSubTotal(existingBill.medicines);
 
     //Retrive the discount from the existing bill
     const discount = existingBill.discount || 0;
 
     //Update grand total for the bill
-    existingBill.grandTotal = calculateGrandTotal(existingBill.calculateSubTotal, discount);
+    existingBill.grandTotal = calculateGrandTotal(existingBill.SubTotal, discount);
 
     //Save the updated bill
     await existingBill.save();
