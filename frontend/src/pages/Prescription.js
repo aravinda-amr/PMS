@@ -37,8 +37,8 @@ const Prescription = () => {
     
     return (
         <div className="ml-64">
-             <div className="grid items-center bg-gray-100 rounded-lg p-4 mb-4">
-        <h1 className="text-2xl font-semibold text-gray-800 flex-grow">Prescriptions</h1> {/* Added flex-grow and text-center */}
+            <div className="grid items-center bg-gray-100 rounded-lg p-4 mb-4">
+            <h1 className="text-2xl font-semibold text-gray-800 flex-grow">Prescriptions</h1> {/* Added flex-grow and text-center */}
 
         <div className="flex items-center my-4">
           <TextField
