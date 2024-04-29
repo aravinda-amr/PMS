@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useBillContext } from '../hooks/useBillContext';
 import { FaTrash } from 'react-icons/fa';
 import POSSearch from './PosSearch';
 import BillTemplate from './BillTemplate';
-//import html2pdf from 'html2pdf.js';
+import html2pdf from 'html2pdf.js';
 
 const BillForm = () => {
     const { dispatch } = useBillContext();
@@ -11,17 +11,22 @@ const BillForm = () => {
     const [pharmacistID, setPharmacistID] = useState('');
     const [invoiceDate, setInvoiceDate] = useState('');
     const [medicines, setMedicines] = useState([]);
-    const [generatedInvoiceID, setGeneratedInvoiceID] = useState(null);
+    const [generatedInvoiceID, setGeneratedInvoiceID] = useState();
     const [discountAmount, setDiscountAmount] = useState(0);
     const [subTotal, setSubTotal] = useState(0);
     const [grandTotal, setGrandTotal] = useState(0);
     const [showBillPopup, setShowBillPopup] = useState(false);
     const [error, setError] = useState('');
     
+    useEffect(() => {
+        // Calculate subtotal whenever medicines or their quantities change
+        const total = medicines.reduce((acc, curr) => acc + (curr.price * curr.purchaseQuantity), 0);
+        setSubTotal(total);
+    }, [medicines]);
 
     const handleAddToBill = (drug) => {
         const existingMedicineIndex = medicines.findIndex(item => item.drugName === drug.drugName);
-
+    
         if (existingMedicineIndex !== -1) {
             const updatedMedicines = [...medicines];
             updatedMedicines[existingMedicineIndex].purchaseQuantity += 1;
@@ -44,7 +49,20 @@ const BillForm = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-       
+
+        const pharmacistIDRegex = /^AP\d{3}$/; // Regular expression to match "AP" followed by 3 digits
+        if (!pharmacistIDRegex.test(pharmacistID)) {
+            setError('Pharmacist ID should start with "AP" followed by 3 digits.');
+            return;
+        }
+    
+        // Validate customerID format (10 digits)
+        const customerIDRegex = /^\d{10}$/;
+        if (!customerIDRegex.test(customerID)) {
+            setError('Customer ID should be a 10-digit phone number.');
+            return;
+        }
+    
         const bill = {
             customerID,
             pharmacistID,
@@ -123,36 +141,50 @@ const BillForm = () => {
             setMedicines(updatedMedicines);
         }
     };
-
+    
     const handlePrintBillTemplate = () => {
         const printContents = document.getElementById('bill-content').innerHTML;
-        const originalContents = document.body.innerHTML;
-        document.body.innerHTML = printContents;
-        window.print();
-        document.body.innerHTML = originalContents;
-
+        const printWindow = window.open('', '_blank', 'height=600,width=800');
+        
+        printWindow.document.write('<html><head><title>Print</title>');
+        printWindow.document.write('<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">');
+        printWindow.document.write('</head><body>');
+        printWindow.document.write('<div class="max-w-custom mx-auto p-6 bg-white shadow-md rounded-lg">');
+        printWindow.document.write(printContents);
+        printWindow.document.write('</div>');
+        printWindow.document.write('</body></html>');
+        
+        printWindow.document.close();
+        printWindow.print();
+        
+        // Close the print window after 3 seconds even if print is canceled
+        setTimeout(() => {
+            printWindow.close();
+        }, 3000);
     };
+    
+    
+    
 
-    const handleDownload = () => {
-       /* const content = document.getElementById('bill-content').innerHTML;
+const handleDownload = () => {
+        const content = document.getElementById('bill-content').innerHTML;
         const containerStyle = 'border: 2px; padding: 20px;';
-       const options = {
+        const options = {
             filename: `invoice_${generatedInvoiceID}.pdf`, 
             image: { type: 'jpeg', quality: 0.98 },
             html2canvas: { scale: 2 },
             jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
         };
 
-        const printableContent = `<div style="${containerStyle}">${content}</div>`;*/
+        const printableContent = `<div style="${containerStyle}">${content}</div>`;
     
-       // html2pdf().from(printableContent).set(options).save();
+        html2pdf().from(printableContent).set(options).save();
     };
 
-   
     const handleCloseBillPopup = () => {
         setShowBillPopup(false);
     };
-
+ 
     return (
         <div className="max-w-custom mx-auto p-6 bg-white shadow-md rounded-lg">
             <h3 className="text-2xl font-semibold mb-4 text-gray-800">Add a new Sale</h3>
@@ -218,7 +250,7 @@ const BillForm = () => {
                                 <tr key={index}>
                                     <td className="border px-4 py-2">{index + 1}</td>
                                     <td className="border px-4 py-2">{medicine.drugName}</td>
-                                    <td className="border px-4 py-2">{medicine.price}</td>
+                                    <td className="border px-4 py-2">{medicine.price.toFixed(2)}</td>
                                     <td className="border px-4 py-2">
                                         <input
                                             type="number"
@@ -239,11 +271,12 @@ const BillForm = () => {
                         </tbody>
                     </table>
                 </div>
+                <div>
+                    <h4 className="text-lg font-semibold mb-2 text-gray-800">Subtotal: LKR{subTotal.toFixed(2)}</h4>
+                </div>
                 <button type="submit" className="bg-login1 hover:bg-login2 text-black font-bold px-4 py-1 rounded-lg font-jakarta cursor-pointer hover:transition-all">Checkout</button>
             </form>
-            <div>
-                <h4 className="text-lg font-semibold mb-2 text-gray-800">Subtotal: LKR{subTotal.toFixed(2)}</h4>
-            </div>
+            
             <div>
                 <h4 className="text-lg font-semibold mb-2 text-gray-800">Discount Amount: LKR{discountAmount.toFixed(2)}</h4>
             </div>
