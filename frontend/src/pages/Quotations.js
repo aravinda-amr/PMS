@@ -1,38 +1,42 @@
 import { useEffect } from "react";
 import { usePrescriptionContext } from "../hooks/usePrescription";
-// import { useAuthContext } from '../hooks/useAuthContext';
-
-//importing the components
 import PresDisplay from "../components/PresDisplay";
+import CircularProgress from '@mui/material/CircularProgress'; // Material-UI component for loading spinner
 
 const Quotations = () => {
     const { prescriptions, dispatch } = usePrescriptionContext();
-    // const { user } = useAuthContext();
     
     useEffect(() => {
         const fetchPrescriptions = async () => {
-        const response = await fetch("/api/allPres");
-        const json = await response.json();
-        console.log(json);
-        if (response.ok) {
-            dispatch({ type: "SET_PRESCRIPTIONS", payload: json });
-        }
+            try {
+                const response = await fetch("/api/allPres");
+                if (!response.ok) throw new Error("Failed to fetch prescriptions");
+                const json = await response.json();
+                dispatch({ type: "SET_PRESCRIPTIONS", payload: json });
+            } catch (error) {
+                console.error(error);
+            }
         };
         fetchPrescriptions();
     }, [dispatch]);
     
     return (
         <div className="ml-64">
-        <h2>Prescriptions</h2>
-        <div className="prescription_list">
-            {prescriptions &&
-            prescriptions.map((prescription) => (
-                <PresDisplay
-                key={prescription._id}
-                prescription={prescription}
-                />
-            ))}
-        </div>
+            <h2 className="text-2xl font-semibold mb-4">Prescriptions</h2>
+            {prescriptions ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                    {prescriptions.map((prescription) => (
+                        <PresDisplay
+                            key={prescription._id}
+                            prescription={prescription}
+                        />
+                    ))}
+                </div>
+            ) : (
+                <div className="flex justify-center items-center h-screen">
+                    <CircularProgress />
+                </div>
+            )}
         </div>
     );
 }
