@@ -23,11 +23,12 @@ const couponSchema = new Schema({
         required: true,
         unique: true
     },
-    used: {
-        type: Boolean,
-        default: false
+    status: { // Changed from 'used' to 'status'
+        type: String,
+        enum: ['Expired', 'Used', 'Active'], // Specify the possible values
+        default: 'Active' // Default status
     }
-   });
+});
    
    
 
