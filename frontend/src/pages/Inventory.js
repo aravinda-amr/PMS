@@ -291,11 +291,6 @@ const Inventory = () => {
 
             //generating a pdf of the inventory end here
 
-
-            
-
-
-
     return (
         <div className="ml-64">
             

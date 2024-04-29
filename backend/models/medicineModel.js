@@ -7,7 +7,8 @@ const Schema = mongoose.Schema// create schema
 const medicinenameSchema = new Schema({
     drugName: {
         type: String,
-        required: true
+        required: true,
+        unique: true 
     },
     totalquantity: {
         type: Number,
