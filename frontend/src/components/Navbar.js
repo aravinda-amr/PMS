@@ -159,8 +159,8 @@ const Navbar = () => {
 <nav className="flex justify-end bg-dark-blue-2 h-10 items-end text-sm">
     {user &&(
     <div>
-        <span>{user.email}</span>
-        <button onClick={handleClick}>Logout</button>
+        <span className='text-xl mx-4 text-white'>{user.email}</span>
+        <button onClick={handleClick} className='bg-update hover:bg-login2 hover:text-white mr-2 px-4 py-1 rounded-lg font-jakarta font-semibold cursor-pointer hover:transition-all'>Logout</button>
     </div>
     )}
     
