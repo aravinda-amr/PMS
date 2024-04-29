@@ -52,7 +52,7 @@ const userSchema = new Schema({
     coupons: [couponSchema],
     role: {
         type: String,
-        enum: ['admin', 'manager', 'customer'], 
+        enum: ['admin', 'pharmacist', 'customer'], 
         default: 'customer'
     }
 })

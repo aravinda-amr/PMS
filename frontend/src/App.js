@@ -51,7 +51,7 @@ function App() {
             />
             <Route 
               path="/reorder"
-              element={<Reorder/>}
+              element={user.role === 'pharmacist' ? <Reorder/> : <Navigate to="/" />}
             />
             <Route 
               path="/loyalty"
