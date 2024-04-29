@@ -10,6 +10,7 @@
             quantity: initialData.quantity || '',
             price: initialData.price ||''
         });
+        const [error, setError] = useState('');
         const [loading, setLoading] = useState(false); 
 
         const handleChange = (e) => {
@@ -23,6 +24,45 @@
         const handleSubmit = (e) => {
             e.preventDefault();
             setLoading(true);
+            
+
+            const manufactureDateObj = new Date(newData.manufactureDate);
+            const expireDateObj = new Date(newData.expireDate);
+            const currentDate = new Date();
+            currentDate.setHours(0, 0, 0, 0);
+    
+            if (expireDateObj < manufactureDateObj) {
+                setError('Expiration date must not be earlier than manufacture date.');
+                setLoading(false);
+                return;
+            }
+    
+            if (expireDateObj <= currentDate) {
+                setError('Expiration date must not be the current date or earlier.');
+                setLoading(false);
+                return;
+            }
+    
+            if (manufactureDateObj > currentDate) {
+                setError("Manufacture date cannot be later than today's date.");
+                setLoading(false);
+                return;
+            }
+    
+            if (newData.quantity <= 0) {
+                setError("Quantity must be greater than 0.");
+                setLoading(false);
+                return;
+            }
+    
+            const priceWithTwoDecimals = parseFloat(newData.price).toFixed(2);
+            if (isNaN(priceWithTwoDecimals) || priceWithTwoDecimals !== newData.price) {
+                setError("Price should be entered with 2 decimal places.");
+                setLoading(false);
+                return;
+            }
+
+
             setTimeout(async () => {
                 await onUpdate(batchId, newData);
                 setLoading(false);
@@ -58,6 +98,7 @@
                     style={{ fontSize: '18px' }}/>
                     </label>
 
+                    {error && <p className="text-red-500 text-sm">{error}</p>}
 
                     {loading ? (
                         <div className="flex justify-center">
