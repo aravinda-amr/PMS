@@ -80,27 +80,33 @@ const BillForm = () => {
 
                 //Reduce quantity from the first batch in the drug schema/drugnames/:id/batches
             // Reduce quantity for each medicine in the list
-                for (const medicine of medicines) {
-                    const responseBatch = await fetch(`/api/medicinenames/drugnames/${medicine.drugName}/batches`);
-                    if (responseBatch.ok) {
-                        const batchData = await responseBatch.json();
-                        if (batchData && batchData.firstBatch) {
-                            const firstBatch = batchData.firstBatch;
-                            const updatedQuantity = firstBatch.quantity - medicine.purchaseQuantity;
-                            await fetch(`/api/drugouts/batches/${firstBatch._id}`, {
-                                method: 'PATCH',
-                                body: JSON.stringify({ quantity: updatedQuantity }),
-                                headers: {
-                                    'Content-Type': 'application/json'
-                                }
-                            });
-                            console.log(`Quantity updated for ${medicine.drugName}`);
+            for (const medicine of medicines) {
+                const responseBatch = await fetch(`/api/medicinenames/drugnames/${medicine.drugName}/batches`);
+                if (responseBatch.ok) {
+                    const batchData = await responseBatch.json();
+                    if (batchData && batchData.batches && batchData.batches.length > 0) {
+                        let remainingQuantity = medicine.purchaseQuantity;
+                        for (const batch of batchData.batches) {
+                            if (remainingQuantity > 0) {
+                                const updatedQuantity = Math.max(0, batch.quantity - remainingQuantity);
+                                remainingQuantity -= batch.quantity;
+                                await fetch(`/api/drugouts/batches/${batch._id}`, {
+                                    method: 'PATCH',
+                                    body: JSON.stringify({ quantity: updatedQuantity }),
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    }
+                                });
+                                console.log(`Quantity updated for ${medicine.drugName}`);
+                            } else {
+                                break;
+                            }
                         }
-                    } else {
-                        console.error(`Failed to fetch or update batch data for ${medicine.drugName}`);
                     }
                 }
             }
+            }
+
 
         } catch (error) {
             console.error('Error:', error);

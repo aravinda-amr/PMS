@@ -10,7 +10,9 @@ const drugSchema = new Schema({
     },
     batchNumber:{   
         type:String,
-        required:true
+        required:true,
+        unique: true ,
+        
     },   
     manufactureDate:{
         type:Date,

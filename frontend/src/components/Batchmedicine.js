@@ -39,9 +39,57 @@ const Batchmedicine = ({ onSuccess , onUpdateDrugs}) => {
         event.preventDefault();
         setLoading(true);
 
+        
+    const selectedDrugObject = drugs.find(drug => drug.drugName._id === selectedDrug);
+    const drugNameFirstTwoLetters = selectedDrugObject.drugName.drugName.substring(0, 2);
+    const newBatchNumber = `${drugNameFirstTwoLetters}-${batchNumber}`;
+
+    // Convert manufactureDate and expireDate to Date objects
+    const manufactureDateObj = new Date(manufactureDate);
+    const expireDateObj = new Date(expireDate);
+
+    // Get the current date
+    const currentDate = new Date();
+    currentDate.setHours(0, 0, 0, 0);
+
+    // Check if the expireDate is not earlier than the manufactureDate
+    if (expireDateObj < manufactureDateObj) {
+        setError('Expiration date must not be earlier than manufacture date.');
+        setLoading(false);
+        return;
+    }
+
+    // Check if the expireDate is not the current date
+    if (expireDateObj <= currentDate) {
+        setError('Expiration date must not be the current date or earlier.');
+        setLoading(false);
+        return;
+    }
+
+    if (manufactureDateObj > currentDate) {
+        setError("Manufacture date cannot be later than today's date.");
+        setLoading(false);
+        return;
+    }
+
+    if (quantity <= 0) {
+        setError("Quantity must be greater than 0.");
+        setLoading(false);
+        return;
+    }
+
+    // Check if price is entered with 2 decimal places
+    const priceWithTwoDecimals = parseFloat(price).toFixed(2);
+    if (isNaN(priceWithTwoDecimals) || priceWithTwoDecimals !== price) {
+        setError("Price should be entered with 2 decimal places.");
+        setLoading(false);
+        return;
+    }
+
+
         const newBatch = {
             drugId: selectedDrug,
-            batchNumber,
+            batchNumber: newBatchNumber,
             manufactureDate,
             expireDate,
             quantity,
@@ -94,6 +142,7 @@ const Batchmedicine = ({ onSuccess , onUpdateDrugs}) => {
         } catch (error) { // Catch any errors and update the error state
             setError(error.message);
             console.error('Error adding batch:', error);
+            alert('Please enter details correctly to add a new batch.');
         }finally {
             setLoading(false); // Stop loading
         }
@@ -110,7 +159,7 @@ const Batchmedicine = ({ onSuccess , onUpdateDrugs}) => {
         <button className="btn bg-login1 hover:bg-login2 hover:text-white mr-2 px-4 py-1 rounded-lg font-jakarta font-semibold cursor-pointer hover:transition-all" onClick={() => setShowPopup(true)}>Add Batch</button>
         {showPopup && (
             <div className="fixed top-40 left-0 w-full h-full flex items-start justify-center bg-gray-800 bg-opacity-75">
-                <div className="bg-white p-8 rounded-lg w-96 relative" style={{ width: '40vw', height: '70vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', position: 'relative' }}>
+                <div className="bg-white p-8 rounded-xl w-96 relative border-4 border-black" style={{ width: '40vw', height: '70vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', position: 'relative' }}>
                    
 
         <form className="space-y-4 flex-grow" onSubmit={handleSubmit} style={{ overflow: 'auto', textAlign: 'center' }}>
