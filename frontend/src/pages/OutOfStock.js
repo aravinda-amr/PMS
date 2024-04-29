@@ -22,7 +22,7 @@ export const OutOfStock = () => {
         };
         fetchOutOfStock();
     }, []);
-
+    
     useEffect(() => {
         const filterItems = () => {
             // Wait for outofstock to be set before filtering
@@ -36,6 +36,7 @@ export const OutOfStock = () => {
 
         filterItems();
     }, [searchTerm, outofstock]);
+    
     return (
         <div className="ml-64">
             <div className="flex justify-between items-center bg-gray-100 rounded-lg p-4 mb-4">
