@@ -134,7 +134,7 @@ const getBills = async (req, res)=> {
                         invoiceDate,
                         medicines: transformedMedicines,
                         subTotal: subTotal, // Ensure two decimal places are always displayed
-                        discount: discountAmount || 0, //Include discount if it exists
+                        discountAmount: discountAmount || 0, //Include discount if it exists
                         grandTotal: grandTotal 
 
                     };

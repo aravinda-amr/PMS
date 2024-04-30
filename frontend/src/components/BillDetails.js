@@ -6,7 +6,19 @@ const BillDetails = ({ bill, isAdmin, onDeleteMedicine }) => {
 
     const handleDeleteMedicine = async (index) => {
         try {
-            onDeleteMedicine(bill.invoiceID, index);
+            // Send a DELETE request to your backend API
+            const response = await fetch(`/api/billing/${bill.invoiceID}/${index}`, {
+                method: 'DELETE',
+            });
+
+            if (response.ok) {
+                // If the deletion is successful, update the bill list in the frontend
+                onDeleteMedicine(index);
+                window.location.reload();
+
+            } else {
+                console.error('Error deleting medicine:', response.statusText);
+            }
         } catch (error) {
             console.error('Error deleting medicine:', error);
         }
@@ -15,6 +27,10 @@ const BillDetails = ({ bill, isAdmin, onDeleteMedicine }) => {
     const handleEditClick = () => {
         setActiveEditBillId(bill.invoiceID);
     };
+
+    // Check if discountAmount is not included and set it to 0.00
+    const discountAmount = bill.discountAmount ? (typeof bill.discountAmount === 'object' ? parseFloat(bill.discountAmount.$numberDecimal).toFixed(2) : parseFloat(bill.discountAmount).toFixed(2)) : "0.00";
+
 
     return (
         <tr className="bg-blue-200 text-dark-blue">
@@ -52,7 +68,7 @@ const BillDetails = ({ bill, isAdmin, onDeleteMedicine }) => {
                 </table>
             </td>
             <td className="border px-4 py-2">{bill.subTotal}</td>
-            <td className="border px-4 py-2">{bill.discountAmount}</td> {/* Ensure that discountAmount is rendered here */}
+            <td className="border px-4 py-2">{discountAmount}</td>
             <td className="border px-4 py-2">{bill.grandTotal}</td>
             <td className="border px-4 py-2">
                 {isAdmin && (
