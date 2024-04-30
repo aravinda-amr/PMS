@@ -17,15 +17,14 @@ export const Leaderboard =() => {
     useEffect(() => {
         const fetchLeaderboard = async()=>{
             const response = await fetch('/api/leaderboard') //fetching data from the backend and storing it in response
-            const json = await response.json(); //converting the response to json
-            if(response.ok){ //if the response is okay
-                setLeader(json) //dispatching the action to the reducer 
+            const json = await response.json(); 
+            if(response.ok){ 
+                setLeader(json) 
                 const timer = setTimeout(() => {
                     setLoading(false);
                 }, 1000); // Delay of 1000 milliseconds (1 second)
             
                 return () => clearTimeout(timer);
-                //dispatching the action to the reducer
             }
         }
         fetchLeaderboard();
@@ -72,7 +71,6 @@ export const Leaderboard =() => {
       
             filteredItems.length > 0 ? (
                 filteredItems.map((item) => (
-                    // Ensure item is not undefined before rendering StaffRewardDetails
                     item && <LeaderboardDetails key={item._id} leaderboard={item} />
                 ))
             ) : (

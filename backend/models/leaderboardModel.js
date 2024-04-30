@@ -3,18 +3,14 @@ import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 const learderboardSchema = new Schema({
-
-   
-    month:{
+    month: {
         type: String,
         required: true
     },
-
-    year:{
+    year: {
         type: String,
         required: true
     },
-    
     mostPrescriptionHandledPid: {
         type: String,
         required: true
@@ -26,8 +22,6 @@ const learderboardSchema = new Schema({
     cashPrize: {
         type: Number,
     }
-   
-}, {timestamps: true});
+}, { timestamps: true });
 
-
-export default mongoose.model('leaderboard', learderboardSchema)
+export default mongoose.model('leaderboard', learderboardSchema);
