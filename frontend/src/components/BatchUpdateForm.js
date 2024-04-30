@@ -72,7 +72,7 @@
 
         return (
             <div className="fixed top-0 left-32 w-full h-full flex items-center justify-center bg-gray-800 bg-opacity-75">
-                <div className="bg-white p-8 rounded-lg w-96 relative" style={{ width: '35vw', height: '60vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', position: 'relative' }}>
+                <div className="bg-white p-8 rounded-xl w-96 relative border-4 border-black" style={{ width: '35vw', height: '60vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', position: 'relative' }}>
                  
                 
                 <h2 className="text-2xl font-bold mb-4">Update Batch</h2>

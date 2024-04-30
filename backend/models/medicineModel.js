@@ -12,7 +12,8 @@ const medicinenameSchema = new Schema({
     },
     totalquantity: {
         type: Number,
-        required: true
+        required: true,
+        min: 0
     },
     totalPrice: {
         type: Number,
