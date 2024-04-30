@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import StaffReward from '../models/staffRewardModel.js';
 import leaderboard from '../models/leaderboardModel.js';
 
-// Function to calculate and insert leaderboard data
+//Function to calculate and insert leaderboard data
 const calculateLeaderboardData = async () => {
     try {
         const leaderboardData = await StaffReward.aggregate([
@@ -62,6 +62,10 @@ const calculateLeaderboardData = async () => {
         return []; // Return an empty array in case of error
     }
 };
+
+
+
+
 
 // Controller to get all leaderboards
 export const getAllLeaderboards = async (req, res) => {

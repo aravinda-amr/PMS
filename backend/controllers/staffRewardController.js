@@ -73,21 +73,18 @@ export const createStaffReward = async (data) => {
                 existingReward.invoiceCount = item.invoiceCount.toString();
                 existingReward.totalCashAmount = item.totalCashAmount.toString();
                 await existingReward.save();
-               // console.log(`Data updated for pharmacist ${item.pharmacistID} for month ${item.month}, year ${item.year}`);
             } else {
                 // Insert new document
                 const staffReward = new StaffReward({
                     pharmacistID: item.pharmacistID,
                     month: item.month,
                     year: item.year,
-                    invoiceCount: item.invoiceCount.toString(), // Convert to string as per schema
-                    totalCashAmount: item.totalCashAmount.toString() // Convert to string as per schema
+                    invoiceCount: item.invoiceCount.toString(), 
+                    totalCashAmount: item.totalCashAmount.toString() 
                 });
                 await staffReward.save();
-              //  console.log(`New data added for pharmacist ${item.pharmacistID} for month ${item.month}, year ${item.year}`);
             }
         }
-       // console.log("Data updated/inserted into staffReward collection.");
     } catch (error) {
         console.error("Error updating/inserting data into staffReward collection:", error);
     }
