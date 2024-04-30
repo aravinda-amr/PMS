@@ -47,7 +47,7 @@ const PrescriptionDetails = ({ prescription }) => {
 
     const handleUpdate = async () => {
         const response = await fetch("/api/allPres/" + prescription._id, {
-            method: "PUT",
+            method: "PATCH",
         });
         const json = await response.json();
 

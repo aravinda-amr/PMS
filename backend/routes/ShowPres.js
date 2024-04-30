@@ -1,7 +1,7 @@
 import express from 'express';
 import requireRole from '../middleware/requireRole.js';
 
-import { getPres, deletePres, createQuotation, getQuotations, rejectPrescription, approvePrescription } from '../controllers/getAllPres.js';
+import { getPres, deletePres, updatePres, createQuotation, getQuotations, rejectPrescription, approvePrescription } from '../controllers/getAllPres.js';
 
 const router = express.Router();
 
@@ -11,6 +11,8 @@ const router = express.Router();
 router.get('/', getPres)
 
 router.delete('/:id', deletePres)
+
+router.patch('/:id', updatePres)
 
 //quotations route
 

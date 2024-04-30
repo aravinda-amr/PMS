@@ -26,6 +26,26 @@ const deletePres = async (req, res) => {
     res.status(200).json(prescription);
 }
 
+//update prescription
+const updatePres = async (req, res) => {
+    const {id} = req.params;
+
+    if(!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(404).json({error: 'No such prescription'});
+    }
+
+    const prescription = await Prescriptions.findOneAndUpdate({_id: id}, {
+        ...req.body
+    }, {new: true});
+
+    if(!prescription) {
+        return res.status(404).json({error: 'No such prescription'});
+    }
+
+    res.status(200).json(prescription);
+
+}
+
 //create quotation
 const createQuotation = async (req, res) => {
     const { id } = req.params;
@@ -99,4 +119,4 @@ const rejectPrescription = async (req, res) => {
   }
 };
 
-export { getPres, deletePres, createQuotation, getQuotations, rejectPrescription, approvePrescription};
+export { getPres, deletePres, createQuotation, getQuotations, rejectPrescription, approvePrescription, updatePres};
