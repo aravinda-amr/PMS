@@ -247,7 +247,7 @@ export const calculateTotalAmount = async (req, res) => {
         $group: {
           _id: '$customerID',
           totalAmount: {
-            $sum: '$calculateSubTotal'
+            $sum: '$grandTotal'
           }
         }
       }

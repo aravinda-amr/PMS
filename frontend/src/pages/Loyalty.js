@@ -85,57 +85,6 @@ const Loyalty = () => {
     setFilteredUsers(filtered);
   }, [searchTerm, users, isFiltered, customTotalAmount]); // Add customTotalAmount to the dependency array
 
-  /*const assignCoupons = async () => {
-    try {
-       // Iterate through the filtered users
-       for (const user of filteredUsers) {
-         // Check if the user has no coupons
-         if (user.coupons && user.coupons.length === 0) {
-           // Define the default coupon data
-           const twoWeeksFromToday = new Date();
-           twoWeeksFromToday.setDate(twoWeeksFromToday.getDate() + 14);
-           const couponData = {
-             expire: format(twoWeeksFromToday, 'yyyy-MM-dd'),
-             discount: 1,
-             used: false,
-             couponCode: 123, // Assuming generateCouponCode is accessible here
-           };
-   
-           // If conditions are met, assign a coupon to the user
-           const response = await fetch(`/api/user/${user._id}/coupons`, {
-             method: 'POST',
-             headers: {
-               'Content-Type': 'application/json',
-             },
-             body: JSON.stringify(couponData),
-           });
-   
-           if (!response.ok) {
-             throw new Error('Failed to assign coupon');
-           }
-   
-           // Optionally, you can update the local state to reflect the changes
-           // For example, update the user object with the newly assigned coupon
-   
-           // Break the loop after assigning the first coupon
-           break;
-         }
-       }
-   
-       // After assigning coupons to all filtered users, you can update the UI or perform any other actions
-    } catch (error) {
-       console.error('Error assigning coupons:', error);
-    }
-   };
-   
-   
-  
-  // Call the assignCoupons function after filtering the users
-  useEffect(() => {
-    // Filter users and then assign coupons
-    assignCoupons();
-  }, [filteredUsers]);*/
-  
 
 
   const downloadCSV = () => {
@@ -215,7 +164,7 @@ const Loyalty = () => {
             />
           </div>
           <div className="flex items-center space-x-4">
-            <FormControl variant="outlined" className="h-10 px-3 py-2">
+          {/*  <FormControl variant="outlined" className="h-10 px-3 py-2">
               <InputLabel id="months-label" className="appearance-none">Months</InputLabel>
               <Select
                 labelId="months-label"
@@ -229,7 +178,7 @@ const Loyalty = () => {
                 <MenuItem value={12}>12</MenuItem>
                 <MenuItem value={24}>24</MenuItem>
               </Select>
-            </FormControl>
+  </FormControl>*/}
             <Button
               variant="outlined"
               size="small"
