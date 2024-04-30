@@ -19,6 +19,7 @@ const Leave = () => {
      setEmailModalOpen(false);
   }
 
+  //
   useEffect(() => {
     // Filter items based on search term whenever searchTerm changes
     const filtered = leaves?.filter(
@@ -27,7 +28,8 @@ const Leave = () => {
     setFilteredLeaves(filtered);
 
   }, [searchTerm, leaves]);
-
+//
+  
   useEffect(() => {
 
     const fetchLeaves = async () => {
