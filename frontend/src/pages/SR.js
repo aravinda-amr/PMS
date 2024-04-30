@@ -8,8 +8,9 @@ import BarChart from '../components/Salechart';
 const SalesReport = () => {
   const { comment, dispatch } = useCommentsContext();
   const [searchTerm, setSearchTerm] = useState('');
-  const [filteredItems, setFilteredItems] = useState([]); // State to hold filtered items
+  const [filteredItems, setFilteredItems] = useState([]);
   const [billingData, setBillingData] = useState([]);
+  const [selectedRange, setSelectedRange] = useState(30); // Default to 30 days
 
   useEffect(() => {
     const fetchWorkouts = async () => {
@@ -37,22 +38,40 @@ const SalesReport = () => {
     fetchBillingData();
   }, []);
 
+
+//Search
   useEffect(() => {
-    // Filter items based on search term whenever searchTerm changes
     const filteredComments = comment?.filter(
       (comments) => comments.title.toLowerCase().includes(searchTerm.toLowerCase())
-    ) ?? []; // Ensure filtered is always an array
+    ) ?? [];
     setFilteredItems(filteredComments);
   }, [searchTerm, comment]);
+  
+
+  const filterTransactionsByDays = (days) => {
+    const today = new Date();
+    const fromDate = new Date(today);
+    fromDate.setDate(fromDate.getDate() - days);
+
+    return billingData.filter((bill) => new Date(bill.invoiceDate) >= fromDate);
+  };
+
+  const handleRangeChange = (range) => {
+    setSelectedRange(range);
+  };
+
+  const calculateSubTotal = (quantity, unitPrice) => {
+    return quantity * unitPrice;
+  };
 
   const chartData = {};
-  billingData.forEach((bill) => {
+  filterTransactionsByDays(selectedRange).forEach((bill) => {
     bill.medicines.forEach((medicine) => {
-      const { drugName, price } = medicine;
+      const { drugName, purchaseQuantity, price } = medicine;
       if (!chartData[drugName]) {
         chartData[drugName] = 0;
       }
-      chartData[drugName] += price;
+      chartData[drugName] += calculateSubTotal(purchaseQuantity,price);
     });
   });
 
@@ -78,6 +97,35 @@ const SalesReport = () => {
 
       <div className="flex justify-start items-center mb-4">
         <CommentForm />
+      </div>
+      <div>
+        <label>
+          <input
+            type="radio"
+            value={30}
+            checked={selectedRange === 30}
+            onChange={() => handleRangeChange(30)}
+          />
+          Last 30 days
+        </label>
+        <label>
+          <input
+            type="radio"
+            value={60}
+            checked={selectedRange === 60}
+            onChange={() => handleRangeChange(60)}
+          />
+          Last 60 days
+        </label>
+        <label>
+          <input
+            type="radio"
+            value={90}
+            checked={selectedRange === 90}
+            onChange={() => handleRangeChange(90)}
+          />
+          Last 90 days
+        </label>
       </div>
       {filteredItems.map((comment) => (
         <CommentDetails key={comment._id} comments={comment} />
