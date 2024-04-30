@@ -154,6 +154,58 @@ const Reorder = () => {
     setOpenDialog(false);
   };
 
+   
+    // Check if there is at least one item in filteredItems
+   // if (filteredItems.length > 0) {
+       // Get the first item from filteredItems array
+      //  const firstItem = filteredItems[0];
+   
+      //  // Convert the first item to the format expected by autoTable
+      //  const body = [{
+      //    supplierEmail: firstItem.supplierEmail,
+      //    drugName: firstItem.drugName,
+      //    quantity: firstItem.totalquantity, // Ensure this is correctly formatted
+      //    reorderLevel: firstItem.reorderLevel,
+      //    status: firstItem.status,
+      //  }];
+   
+       // Call autoTable function on the pdf instance
+  //      pdf.autoTable({
+  //        head: [headers.map(h => h.header)],
+  //        body: body.map(row => Object.values(row)),
+  //        columnStyles: {
+  //          0: { cellWidth: 'wrap' },
+  //          1: { cellWidth: 'wrap' },
+  //          2: { cellWidth: 'wrap' }, // Adjusted width for Quantity column
+  //          3: { cellWidth: 'wrap' },
+  //          4: { cellWidth: 'wrap' },
+  //        },
+  //        headStyles: {
+  //          fillColor: [0, 0, 0],
+  //          textColor: [255, 255, 255],
+  //          fontStyle: 'bold',
+  //          fontSize: 10,
+  //          halign: 'center',
+  //        },
+  //        bodyStyles: {
+  //          fontSize: 10,
+  //          textColor: [0, 0, 0],
+  //          cellPadding: { top: 1, right: 5, bottom: 1, left: 2 },
+  //          rowPageBreak: 'avoid',
+  //        },
+  //        margin: { top: 10, left: 13 },
+  //      });
+   
+  //      // Save the PDF
+  //      pdf.save('reorder_report.pdf');
+  //   } else {
+  //      alert('No reorder items found. Unable to generate PDF.');
+  //   }
+   
+  //   setOpenDialog(false);
+  //  };
+   
+
   return (
     <div className="ml-64" id="reorder-content">
       <div className="flex justify-between items-center bg-gray-100 rounded-lg p-4 mb-4">
@@ -240,8 +292,6 @@ const Reorder = () => {
         </div>
       )}
     </div>
-
-
   )
 
 }

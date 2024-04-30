@@ -63,6 +63,10 @@ const calculateLeaderboardData = async () => {
     }
 };
 
+
+
+
+
 // Controller to get all leaderboards
 export const getAllLeaderboards = async (req, res) => {
     try {
