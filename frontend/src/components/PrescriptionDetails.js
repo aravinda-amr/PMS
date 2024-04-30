@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { usePrescriptionContext } from "../hooks/usePrescription";
 import { Typography } from '@mui/material'
+import UpdateNoteModal from "./UpdateNoteModal";
 
 import ViewQuotation from "./ViewQuotation";
 
@@ -11,6 +12,7 @@ const PrescriptionDetails = ({ prescription }) => {
     const { dispatch } = usePrescriptionContext();
     const [showModal, setShowModal] = useState(false);
     const [quotations, setQuotations] = useState([]);
+    const [showUpdateModal, setShowUpdateModal] = useState(false);
 
     const handleQuotation = () => {
         setShowModal(true); // Show the modal when the button is clicked
@@ -45,9 +47,30 @@ const PrescriptionDetails = ({ prescription }) => {
         dispatch({ type: "DELETE_PRESCRIPTION", payload: json });
     }
 
+    // const handleUpdate = async () => {
+    //     const response = await fetch("/api/allPres/" + prescription._id, {
+    //         method: "PATCH",
+    //     });
+    //     const json = await response.json();
+
+    //     dispatch({ type: "UPDATE_PRESCRIPTION", payload: json });
+    // }
+
     const handleUpdate = async () => {
+        setShowUpdateModal(true);
+    }
+
+    const handleCloseUpdateModal = () => {
+        setShowUpdateModal(false);
+    }
+
+    const handleSaveNote = async (newNote) => {
         const response = await fetch("/api/allPres/" + prescription._id, {
             method: "PATCH",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ note: newNote })
         });
         const json = await response.json();
 
@@ -105,6 +128,10 @@ const PrescriptionDetails = ({ prescription }) => {
                 )}
               </div>
                
+            )}
+
+{showUpdateModal && (
+                <UpdateNoteModal onClose={handleCloseUpdateModal} onSave={handleSaveNote} />
             )}
             
         </div>
