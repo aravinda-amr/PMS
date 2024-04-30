@@ -79,6 +79,7 @@ const LeavesForm = () => {
                                 <label className="block text-sm font-medium text-gray-700 mt-4">Date (from)</label>
                                 <input
                                     type="date"
+                                    min={new Date().toISOString().split('T')[0]}
                                     onChange={(e) => setdateFrom(e.target.value)}
                                     value={dateFrom}
                                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 text-blue"
@@ -87,10 +88,12 @@ const LeavesForm = () => {
                                 <label className="block text-sm font-medium text-gray-700 mt-4">Date (to)</label>
                                 <input
                                     type="date"
+                                    min={new Date(new Date().getTime() + 24 * 60 * 60 * 1000).toISOString().split('T')[0]}
                                     onChange={(e) => setdateTo(e.target.value)}
                                     value={dateTo}
                                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 text-blue"
                                 />
+
 
                                 <label className="block text-sm font-medium text-gray-700 mt-4">Reason</label>
                                 <input
