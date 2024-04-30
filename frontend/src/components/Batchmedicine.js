@@ -40,9 +40,9 @@ const Batchmedicine = ({ onSuccess , onUpdateDrugs}) => {
         setLoading(true);
 
         
-    const selectedDrugObject = drugs.find(drug => drug.drugName._id === selectedDrug);
-    const drugNameFirstTwoLetters = selectedDrugObject.drugName.drugName.substring(0, 2);
-    const newBatchNumber = `${drugNameFirstTwoLetters}-${batchNumber}`;
+    // const selectedDrugObject = drugs.find(drug => drug.drugName._id === selectedDrug);
+    // const drugNameFirstTwoLetters = selectedDrugObject.drugName.drugName.substring(0, 2);
+    // const newBatchNumber = `${drugNameFirstTwoLetters}-${batchNumber}`;
 
     // Convert manufactureDate and expireDate to Date objects
     const manufactureDateObj = new Date(manufactureDate);
@@ -89,7 +89,7 @@ const Batchmedicine = ({ onSuccess , onUpdateDrugs}) => {
 
         const newBatch = {
             drugId: selectedDrug,
-            batchNumber: newBatchNumber,
+            batchNumber,
             manufactureDate,
             expireDate,
             quantity,

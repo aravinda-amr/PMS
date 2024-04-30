@@ -60,7 +60,7 @@
                 <button className="btn bg-login1 hover:bg-login2 hover:text-white mr-2 px-4 py-1 rounded-lg font-jakarta font-semibold cursor-pointer hover:transition-all" onClick={() => setShowPopup(true)}>Add Drug</button>
                 {showPopup && (
                     <div className="fixed top-40 left-0 w-full h-full flex items-start justify-center bg-gray-800 bg-opacity-75">
-                        <div className="bg-white p-8 rounded-lg "style={{ width: '20vw', height: '30vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', position: 'relative' }}>
+                        <div className="bg-white p-8 rounded-lg rounded-xl border-4 border-black"style={{ width: '20vw', height: '30vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', position: 'relative' }}>
                         <span className="absolute top-0 right-0 p-2 cursor-pointer" onClick={() => setShowPopup(false)}><MdClose className="text-gray-500 hover:text-gray-700 text-lg" style={{ fontSize: '24px' }}/></span>
                             
                         <form className="space-y-4 flex-grow" onSubmit={handleSubmit} style={{ overflow: 'auto', textAlign: 'center' }}>

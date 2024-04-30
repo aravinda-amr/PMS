@@ -3,12 +3,9 @@ import { AiOutlineDelete, AiOutlineEdit ,AiFillDelete  } from 'react-icons/ai';
 import {MdClose,MdDownload} from "react-icons/md";
 import MedicineForm from '../components/MedicineForm';
 import Batchmedicine from '../components/Batchmedicine';
-import InventorySearch from '../components/Inventorysearch';
 import BatchUpdateForm from '../components/BatchUpdateForm'; 
 import TextField from '@mui/material/TextField';
 import CircularProgress from '@mui/material/CircularProgress';
-import  BarChart from '../components/BarChart';
-import TotalPriceTable from '../components/TotalPriceTable';
 import logo from '../images/logo.png';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
@@ -21,7 +18,7 @@ const Inventory = () => {
     const [selectedBatch, setSelectedBatch] = useState(null);
     const [showUpdateForm, setShowUpdateForm] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
-    const [showBarChart, setShowBarChart] = useState(false); // State variable to control the visibility of the bar chart
+  
     
 
     useEffect(() => {
@@ -69,9 +66,6 @@ const Inventory = () => {
         fetchMedicinenames(); // Fetch updated list of medicines
     };
 
-    const TotalPriceSuccess = () => {
-        fetchMedicinenames(); // Fetch updated list of medicines
-    };
 
     // Display loading spinner while fetching data
     if (loading) {
@@ -172,42 +166,6 @@ const Inventory = () => {
                 setSearchTerm(e.target.value);
             };
             //searching a medicine in the inventory end here
-
-          
-            // Calculate total price of a medicine   
-            const calculateTotalPrice = (medicine) => {
-                let totalPrice = 0;
-                medicine.batches.forEach((batch) => {
-                    totalPrice += batch.quantity * batch.price;
-                });
-                return totalPrice;
-            };
-            // Calculate total price of a medicine end here
-            
-
-
-            
-
-            //updating total price of a medicine
-            const updateTotalPrice = async (medicineId, totalPrice) => {
-                        try {
-                            const response = await fetch(`api/medicinenames/drugnames/updateTotalPrice/${medicineId}`, {
-                            method: 'PATCH',
-                            headers: {
-                            'Content-Type': 'application/json',
-                            },
-                                body: JSON.stringify({ totalPrice }),
-                            });
-                                if (response.ok) {
-                                    alert('Update Success.');
-                                    console.log('Total price updated successfully');
-                                } else {
-                                    console.error('Error updating total price:', response.statusText);
-                                        }
-                                } catch (error) {
-                                    console.error('Error updating total price:', error.message);
-                                }
-                            };
              // updating total price of a medicine end here
 
 
@@ -302,7 +260,7 @@ const Inventory = () => {
                 <MedicineForm onSuccess={handleAddBatchSuccess} />
                 <Batchmedicine onSuccess={handleAddBatchSuccess} onUpdateDrugs={handleAddMedicineSuccess}/>
 
-                <button  className="btn bg-login1 hover:bg-login2 hover:text-white mr-2 px-4 py-1 rounded-lg font-jakarta font-semibold cursor-pointer hover:transition-all" onClick={() => setShowBarChart(!showBarChart)}>View Price</button>
+
                 
             </div>
 
@@ -409,38 +367,7 @@ const Inventory = () => {
             )}
             </div>
 
-            <InventorySearch  medicinenames={medicinenames}/>
-
-      {/* Button to toggle the visibility of the bar chart */}
-      
-        {/* Display bar chart if showBarChart state is true */}
-        {showBarChart && (
-         <div className="fixed top-40 left-12  w-full h-full flex items-start justify-center bg-gray-800 bg-opacity-75">
-         <div className="bg-white p-8 rounded-lg" style={{ width: '80vw', height: '80vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', position: 'relative' }}>
-         <span className="absolute top-0 right-0 p-2 cursor-pointer"  onClick={() => setShowBarChart(!showBarChart)}><MdClose className="text-gray-500 hover:text-gray-700 text-lg" style={{ fontSize: '24px' }}/></span>
-        <h2 className="text-2xl font-bold mb-4">Total Medicine Price by Bar Chart</h2>
-        <BarChart
-            data={medicinenames.map((medicine) => ({
-                name: medicine.drugName.drugName,
-                newtotalPrice: calculateTotalPrice(medicine),
-                fixtotalPrice: medicine.drugName.totalPrice,
-            }))}
-        />
-        {/* Render TotalPriceTable inside showBarChart */}
-        <TotalPriceTable medicinenames={medicinenames} onUpdateTotalPrice={updateTotalPrice} onSuccess={TotalPriceSuccess} />
-                {/* Total price table end here */}
-      </div>
-    </div>
-    
-     )}
-
-        {/* Total price table */}
-        {/* <TotalPriceTable medicinenames={medicinenames} onUpdateTotalPrice={updateTotalPrice} /> */}
-        {/* Total price table end here */}
-
         
-
-            
         </div>
     );
 };
