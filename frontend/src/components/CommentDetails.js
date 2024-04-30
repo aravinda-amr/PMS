@@ -22,9 +22,11 @@ const handleClick = async () => {
   }
 }
 
+
 const togglePopup = () => {
   setShowPopup(!showPopup);
 };
+
 
 const handleUpdate = () => {
   togglePopup(); // Toggle the popup visibility

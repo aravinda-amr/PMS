@@ -16,7 +16,7 @@ const BarChart = ({ data }) => {
         labels: data.map((item) => item.drugName),
         datasets: [
           {
-            label: 'Grand Total',
+            label: 'Sub Total',
             data: data.map((item) => item.grandTotal),
             backgroundColor: 'rgba(54, 162, 235, 0.5)',
             borderColor: 'rgba(54, 162, 235, 1)',
