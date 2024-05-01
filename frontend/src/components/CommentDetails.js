@@ -75,7 +75,7 @@ const handleSubmit = async (e) => {
                                 placeholder="Write Note"
                             />
                             <div className="mt-4 flex justify-end">
-                                <button type="submit" className="btn bg-signup1 hover:bg-signup2 hover:text-white mr-2 px-4 py-1 rounded-lg font-jakarta font-semibold cursor-pointer hover:transition-all">
+                                <button type="submit" className="btn bg-signup1 hover:bg-signup2 hover:text-black mr-2 px-4 py-1 rounded-lg font-jakarta font-semibold cursor-pointer hover:transition-all">
                                     Update
                                 </button>
                                 <button type="button" onClick={togglePopup} className="btn bg-login1 hover:bg-login2 hover:text-white mr-2 px-4 py-1 rounded-lg font-jakarta font-semibold cursor-pointer hover:transition-all">

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useCommentsContext } from '../hooks/useCommentContext';
 import CommentDetails from '../components/CommentDetails';
 import CommentForm from '../components/CommentForm';
@@ -38,15 +38,13 @@ const SalesReport = () => {
     fetchBillingData();
   }, []);
 
-
-//Search
+  // Search
   useEffect(() => {
     const filteredComments = comment?.filter(
       (comments) => comments.title.toLowerCase().includes(searchTerm.toLowerCase())
     ) ?? [];
     setFilteredItems(filteredComments);
   }, [searchTerm, comment]);
-  
 
   const filterTransactionsByDays = (days) => {
     const today = new Date();
@@ -71,7 +69,7 @@ const SalesReport = () => {
       if (!chartData[drugName]) {
         chartData[drugName] = 0;
       }
-      chartData[drugName] += calculateSubTotal(purchaseQuantity,price);
+      chartData[drugName] += calculateSubTotal(purchaseQuantity, price);
     });
   });
 
@@ -131,6 +129,30 @@ const SalesReport = () => {
         <CommentDetails key={comment._id} comments={comment} />
       ))}
       <BarChart data={chartDataArray} />
+      <table className="table-auto w-full">
+        <thead>
+          <tr>
+            <th className="border px-4 py-2">Date</th>
+            <th className="border px-4 py-2">Medicine Name</th>
+            <th className="border px-4 py-2">Quantity</th>
+            <th className="border px-4 py-2">Unit Price</th>
+            <th className="border px-4 py-2">Sub Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          {filterTransactionsByDays(selectedRange).map((bill) =>
+            bill.medicines.map((medicine, index) => (
+              <tr key={index}>
+                <td className="border px-4 py-2">{new Date(bill.invoiceDate).toLocaleDateString()}</td>
+                <td className="border px-4 py-2">{medicine.drugName}</td>
+                <td className="border px-4 py-2">{medicine.purchaseQuantity}</td>
+                <td className="border px-4 py-2">{medicine.price}</td>
+                <td className="border px-4 py-2">{calculateSubTotal(medicine.purchaseQuantity, medicine.price)}</td>
+              </tr>
+            ))
+          )}
+        </tbody>
+      </table>
     </div>
   );
 };
