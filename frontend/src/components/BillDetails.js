@@ -28,13 +28,18 @@ const BillDetails = ({ bill, isAdmin, onDeleteMedicine }) => {
         setActiveEditBillId(bill.invoiceID);
     };
 
-    // Check if discountAmount is not included and set it to 0.00
-    const discountAmount = bill.discountAmount ? (typeof bill.discountAmount === 'object' ? parseFloat(bill.discountAmount.$numberDecimal).toFixed(2) : parseFloat(bill.discountAmount).toFixed(2)) : "0.00";
-
+    // Check if discountAmount is not included and set it to 0
+    let discountAmount = 0;
+    if (bill.discountAmount) {
+        if (typeof bill.discountAmount === 'object' && bill.discountAmount.$numberDecimal) {
+            discountAmount = Math.floor(parseFloat(bill.discountAmount.$numberDecimal));
+        } else {
+            discountAmount = Math.floor(parseFloat(bill.discountAmount));
+        }
+    }
 
     return (
         <tr className="bg-blue-200 text-dark-blue">
-            <td className="border px-1 py-1">{bill.invoiceID}</td>
             <td className="border px-1 py-2">{bill.pharmacistID}</td>
             <td className="border px-1 py-2">{bill.customerID}</td>
             <td className="border px-1 py-2">{bill.invoiceDate}</td>
