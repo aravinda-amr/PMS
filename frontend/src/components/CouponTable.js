@@ -4,18 +4,17 @@ import EditIcon from '@mui/icons-material/Edit';
 import { format } from 'date-fns';
 
 const CouponTable = ({ coupons, onDeleteCoupon, onEditCoupon, isLoading }) => {
-  if (isLoading) {
+ if (isLoading) {
     return <Typography variant="body1">Loading...</Typography>;
-  }
-  return (
+ }
+ return (
     <TableContainer component={Paper}>
-      <Table aria-label="simple table" >
+      <Table aria-label="simple table">
         <TableHead className="bg-dark-blue text-white">
           <TableRow>
-          <TableCell sx={{ color: 'white' }}></TableCell>
+            <TableCell sx={{ color: 'white' }}></TableCell>
             <TableCell sx={{ color: 'white' }}>Discount</TableCell>
             <TableCell sx={{ color: 'white' }}>Expire Date</TableCell>
-            
             <TableCell sx={{ color: 'white' }}>Status</TableCell>
             <TableCell sx={{ color: 'white' }}>Actions</TableCell>
           </TableRow>
@@ -23,17 +22,16 @@ const CouponTable = ({ coupons, onDeleteCoupon, onEditCoupon, isLoading }) => {
         <TableBody>
           {coupons.map((coupon) => (
             <TableRow key={coupon._id}>
-              <TableCell sx={{ fontWeight: 'bold',fontSize: '0.875rem', color: 'text.secondary' }}>{coupon.accessNumber}</TableCell>
+              <TableCell sx={{ fontWeight: 'bold', fontSize: '0.875rem', color: 'text.secondary' }}>{coupon.accessNumber}</TableCell>
               <TableCell sx={{ fontWeight: 'bold', color: 'primary.main' }}>{coupon.discount}%</TableCell>
               <TableCell sx={{ fontSize: '0.875rem', color: 'text.secondary' }}>{format(new Date(coupon.expire), 'MM/dd/yyyy')}</TableCell>
-              {/*<TableCell sx={{ fontSize: '0.875rem', color: coupon.used ? 'error.main' : 'success.main' }}>{coupon.couponCode}</TableCell>*/}
-              <TableCell sx={{ fontWeight: 'bold', fontSize: '0.875rem', color: coupon.used ? 'error.main' : 'success.main' }}>{coupon.used ? 'Inactive' : 'Active'}</TableCell>
+              <TableCell sx={{ fontWeight: 'bold', fontSize: '0.875rem', color: coupon.status === 'Used' ? 'error.main' : coupon.status === 'Expired' ? 'warning.main' : 'success.main' }}>{coupon.status}</TableCell>
               <TableCell>
                 <IconButton onClick={() => onDeleteCoupon(coupon._id)}>
-                  <DeleteIcon />
+                 <DeleteIcon />
                 </IconButton>
                 <IconButton onClick={() => onEditCoupon(coupon._id)}>
-                  <EditIcon />
+                 <EditIcon />
                 </IconButton>
               </TableCell>
             </TableRow>
@@ -48,7 +46,7 @@ const CouponTable = ({ coupons, onDeleteCoupon, onEditCoupon, isLoading }) => {
         </TableBody>
       </Table>
     </TableContainer>
-  );
+ );
 };
 
 export default CouponTable;

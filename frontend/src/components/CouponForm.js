@@ -1,63 +1,59 @@
 import React, { useState, useEffect } from 'react';
-import { format, addWeeks, differenceInDays } from 'date-fns';
+import { format, addWeeks, differenceInDays, addDays  } from 'date-fns';
 
-
-
-// Define the generateCouponCode function before using it
 const generateCouponCode = () => {
-  let result = '';
-  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  const charactersLength = characters.length;
-  for (let i = 0; i < 10; i++) {
+ let result = '';
+ const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+ const charactersLength = characters.length;
+ for (let i = 0; i < 10; i++) {
     result += characters.charAt(Math.floor(Math.random() * charactersLength));
-  }
-  return result;
+ }
+ return result;
 };
 
 const AddCouponForm = ({ id, onCouponAdded, coupon, isEditing, onFormSubmit, onReset }) => {
-  const [expire, setExpire] = useState('');
-  const [discount, setDiscount] = useState(1);
-  const [used, setUsed] = useState(false);
-  const [couponCode, setCouponCode] = useState('');
-  const [expiryDifference, setExpiryDifference] = useState(''); // New state to hold the formatted difference
+ const [expire, setExpire] = useState('');
+ const [discount, setDiscount] = useState(1);
+ const [status, setStatus] = useState('Active'); // New state for status
+ const [couponCode, setCouponCode] = useState('');
+ const [expiryDifference, setExpiryDifference] = useState('');
+ const minDate = format(addDays(new Date(), 1), 'yyyy-MM-dd');
 
-  useEffect(() => {
+ useEffect(() => {
     if (coupon) {
       setExpire(format(new Date(coupon.expire), 'yyyy-MM-dd'));
       setDiscount(coupon.discount);
-      setUsed(coupon.used);
+      setStatus(coupon.status); // Set status from coupon prop
       setCouponCode(coupon.couponCode);
     } else {
       const twoWeeksFromToday = addWeeks(new Date(), 2);
       setExpire(format(twoWeeksFromToday, 'yyyy-MM-dd'));
       setDiscount(1);
-      setUsed(false);
+      setStatus('Active'); // Default status
       setCouponCode(generateCouponCode());
     }
-  }, [coupon]);
+ }, [coupon]);
 
-  // Calculate and set the expiry difference whenever the expire state changes
-  useEffect(() => {
+ useEffect(() => {
     if (expire) {
-       const expiryDate = new Date(expire);
-       const now = new Date();
-       const daysDifference = differenceInDays(expiryDate, now);
-   
-       let differenceText = '';
-       if (daysDifference > 0) {
-         differenceText = `${daysDifference} day(s) from now`;
-       } else {
-         differenceText = 'Expired';
-       }
-   
-       setExpiryDifference(differenceText);
-    }
-   }, [expire]);
-   
+      const expiryDate = new Date(expire);
+      const now = new Date();
+      const daysDifference = differenceInDays(expiryDate, now);
 
-  const handleSubmit = async (e) => {
+      let differenceText = '';
+      if (daysDifference > 0) {
+        differenceText = `${daysDifference} day(s) from now`;
+      } else {
+        differenceText = 'Expired';
+      }
+
+      setExpiryDifference(differenceText);
+    }
+ }, [expire]);
+
+ const handleSubmit = async (e) => {
     e.preventDefault();
-    const couponData = { expire, discount, used, couponCode };
+    const couponData = { expire, discount, status, couponCode }; // Include status
 
     try {
       let response;
@@ -83,9 +79,9 @@ const AddCouponForm = ({ id, onCouponAdded, coupon, isEditing, onFormSubmit, onR
         throw new Error('Failed to update coupon');
       }
 
-      // Reset form fields or close the form
       setExpire('');
       setDiscount('');
+      setStatus('Active'); // Reset status to default
 
       if (onCouponAdded) {
         onCouponAdded();
@@ -95,17 +91,15 @@ const AddCouponForm = ({ id, onCouponAdded, coupon, isEditing, onFormSubmit, onR
         onReset();
       }
 
-      // Call the onFormSubmit function to hide the form
       if (onFormSubmit) {
         onFormSubmit();
       }
-      onCouponAdded();
     } catch (error) {
       console.error('Error updating coupon:', error);
     }
-  };
+ };
 
-  return (
+ return (
     <form
       className="coupon-form bg-dark-blue-2 text-white p-4 rounded-lg shadow-md"
       onSubmit={handleSubmit}
@@ -116,6 +110,7 @@ const AddCouponForm = ({ id, onCouponAdded, coupon, isEditing, onFormSubmit, onR
           <input
             type="date"
             value={expire}
+            min={minDate}
             required
             onChange={(e) => setExpire(e.target.value)}
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50 text-dark-blue p-2"
@@ -137,18 +132,15 @@ const AddCouponForm = ({ id, onCouponAdded, coupon, isEditing, onFormSubmit, onR
         <label className="text-sm font-medium text-white">
           Status:
           <select
-            value={used ? 'used' : 'active'}
-            onChange={(e) => {
-              const newStatus = e.target.value === "used";
-              setUsed(newStatus);
-            }}
+            value={status}
+            onChange={(e) => setStatus(e.target.value)}
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-button focus:ring focus:ring-blue-button focus:ring-opacity-50 text-dark-blue p-2"
           >
-            <option value="active">Active</option>
-            <option value="used">Inactive</option>
+            <option value="Active">Active</option>
+            <option value="Used">Used</option>
+            <option value="Expired">Expired</option>
           </select>
         </label>
-
       </div>
       <button
         className="bg-login1 hover:bg-login2 text-white font-semibold py-2 px-4 rounded mt-4"
@@ -157,7 +149,7 @@ const AddCouponForm = ({ id, onCouponAdded, coupon, isEditing, onFormSubmit, onR
         {isEditing ? "Update Coupon" : "Add Coupon"}
       </button>
     </form>
-  );
+ );
 };
 
 export default AddCouponForm;

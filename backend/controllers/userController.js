@@ -112,7 +112,7 @@ export const createCoupon = async (req, res) => {
      expire,
      discount,
      couponCode,
-     used: false // Assuming you want to set used to false by default
+    // used: false // Assuming you want to set used to false by default
   };
  
   user.coupons.push(newCoupon);
@@ -163,7 +163,7 @@ export const deleteCoupon = async (req, res) => {
 //Update a coupon for a user
 export const updateCoupon = async (req, res) => {
   const { id, couponId } = req.params;
-  const { expire, discount, used } = req.body;
+  const { expire, discount, status } = req.body;
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).json({ error: 'No such user' });
@@ -183,7 +183,7 @@ export const updateCoupon = async (req, res) => {
 
   coupon.expire = expire;
   coupon.discount = discount;
-  coupon.used = used;
+  coupon.status  = status;
 
   await user.save();
 
