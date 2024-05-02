@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { usePrescriptionContext } from "../hooks/usePrescription";
 import { Typography } from '@mui/material'
 import UpdateNoteModal from "./UpdateNoteModal";
-
+import { useAuthContext } from "../hooks/useAuthContext";
 import ViewQuotation from "./ViewQuotation";
 
 // date fns
@@ -13,6 +13,7 @@ const PrescriptionDetails = ({ prescription }) => {
     const [showModal, setShowModal] = useState(false);
     const [quotations, setQuotations] = useState([]);
     const [showUpdateModal, setShowUpdateModal] = useState(false);
+    const { user } = useAuthContext();
 
     const handleQuotation = () => {
         setShowModal(true); // Show the modal when the button is clicked
@@ -39,8 +40,14 @@ const PrescriptionDetails = ({ prescription }) => {
 }, [prescription._id]);
 
     const handleClick = async () => {
+        if(!user){
+            return
+        }
         const response = await fetch("/api/allPres/" + prescription._id, {
             method: "DELETE",
+            headers: {
+                'Authorization': `Bearer ${user.token}`
+            }
         });
         const json = await response.json();
 
