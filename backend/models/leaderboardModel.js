@@ -13,11 +13,11 @@ const learderboardSchema = new Schema({
     },
     mostPrescriptionHandledPid: {
         type: String,
-        required: true
+        // required: true
     },
     mostCashAmountHandledPid: {
         type: String,
-        required: true
+        // required: true
     },
     cashPrize: {
         type: Number,

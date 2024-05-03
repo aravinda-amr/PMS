@@ -2,18 +2,17 @@ import mongoose from 'mongoose';
 import StaffReward from '../models/staffRewardModel.js';
 import leaderboard from '../models/leaderboardModel.js';
 
-//Function to calculate and insert leaderboard data
-const calculateLeaderboardData = async () => {
+//calculation for most prescription handled pharmacist
+const calculateMostPrescriptionHandledPharmacist = async () => {
     try {
-        const leaderboardData = await StaffReward.aggregate([
+        const result1 = await StaffReward.aggregate([
             {
                 $group: {
                     _id: { month: "$month", year: "$year" },
                     pharmacists: {
                         $push: {
                             pharmacistID: "$pharmacistID",
-                            invoiceCount: { $convert: { input: "$invoiceCount", to: "int" } },
-                            totalCashAmount: { $convert: { input: "$totalCashAmount", to: "double" } }
+                            invoiceCount: "$invoiceCount"
                         }
                     }
                 }
@@ -23,8 +22,7 @@ const calculateLeaderboardData = async () => {
             },
             {
                 $sort: {
-                    "pharmacists.invoiceCount": -1,
-                    "pharmacists.totalCashAmount": -1,
+                    "pharmacists.invoiceCount": -1
                 }
             },
             {
@@ -35,7 +33,54 @@ const calculateLeaderboardData = async () => {
                     },
                     mostPrescriptionHandledCount: {
                         $first: "$pharmacists.invoiceCount"
-                    },
+                    }
+                }
+            },
+            {
+                $project: {
+                    _id: 0,
+                    month: "$_id.month",
+                    year: "$_id.year",
+                    mostPrescriptionHandledPid: 1,
+                    mostPrescriptionHandledCount: 1
+                }
+            }
+        ]);
+
+        return result1 || []; 
+    } catch (error) {
+        console.error("Error calculating most prescription handled pharmacist:", error);
+        return []; 
+    }
+};
+
+
+//calculation for most cash amount handled pharmacist
+const calculateMostCashAmountHandledPharmacist = async () => {
+    try {
+        const result2 = await StaffReward.aggregate([
+            {
+                $group: {
+                    _id: { month: "$month", year: "$year" },
+                    pharmacists: {
+                        $push: {
+                            pharmacistID: "$pharmacistID",
+                            totalCashAmount: "$totalCashAmount"
+                        }
+                    }
+                }
+            },
+            {
+                $unwind: "$pharmacists"
+            },
+            {
+                $sort: {
+                    "pharmacists.totalCashAmount": -1
+                }
+            },
+            {
+                $group: {
+                    _id: { month: "$_id.month", year: "$_id.year" },
                     mostCashAmountHandledPid: {
                         $first: "$pharmacists.pharmacistID"
                     },
@@ -49,25 +94,22 @@ const calculateLeaderboardData = async () => {
                     _id: 0,
                     month: "$_id.month",
                     year: "$_id.year",
-                    mostPrescriptionHandledPid: 1,
-                    mostPrescriptionHandledCount: 1,
                     mostCashAmountHandledPid: 1,
                     mostCashAmountHandledAmount: 1
                 }
             }
         ]);
-        return leaderboardData || []; // Ensure an array is returned
+
+        return result2 || []; 
     } catch (error) {
-        console.error("Error calculating leaderboard data:", error);
-        return []; // Return an empty array in case of error
+        console.error("Error calculating most cash amount handled pharmacist:", error);
+        return []; 
     }
 };
 
 
 
-
-
-// Controller to get all leaderboards
+// Controllers for leaderboard operations
 export const getAllLeaderboards = async (req, res) => {
     try {
         const leaderboards = await leaderboard.find();
@@ -77,7 +119,6 @@ export const getAllLeaderboards = async (req, res) => {
     }
 };
 
-// Controller to get a leaderboard by pharmacistID
 export const getLeaderboard = async (req, res) => {
     try {
         const leaderboard = await leaderboard.findOne({ pharmacistID: req.params.pharmacistID });
@@ -90,8 +131,9 @@ export const getLeaderboard = async (req, res) => {
     }
 };
 
-// Function to create or update leaderboard entries
-export const createLeaderboardEntry = async (data) => {
+
+//create most prescription entry
+export const createMostPrescriptionEntry = async (data) => {
     try {
         if (!Array.isArray(data)) {
             throw new Error("Data is not iterable");
@@ -103,7 +145,8 @@ export const createLeaderboardEntry = async (data) => {
             if (existingEntry) {
                 // Update existing document
                 existingEntry.mostPrescriptionHandledPid = item.mostPrescriptionHandledPid;
-                existingEntry.mostCashAmountHandledPid = item.mostCashAmountHandledPid;
+
+
                 await existingEntry.save();
             } else {
                 // Insert new document
@@ -111,6 +154,48 @@ export const createLeaderboardEntry = async (data) => {
                     month: item.month,
                     year: item.year,
                     mostPrescriptionHandledPid: item.mostPrescriptionHandledPid,
+                });
+                await leaderboardEntry.save();
+            }
+        }
+    } catch (error) {
+        console.error("Error updating/inserting leaderboard data:", error);
+    }
+};
+
+(async () => {
+    try {
+        const result1 = await calculateMostPrescriptionHandledPharmacist();
+        await createMostPrescriptionEntry(result1);
+
+    } catch (error) {
+        console.error("Error:", error);
+    }
+})();
+
+
+
+//create most cash amount entry
+export const createMostCashAmountEntry = async (data) => {
+    try {
+        if (!Array.isArray(data)) {
+            throw new Error("Data is not iterable");
+        }
+
+        for (const item of data) {
+            const existingEntry = await leaderboard.findOne({ month: item.month, year: item.year });
+
+            if (existingEntry) {
+                // Update existing document
+                existingEntry.mostCashAmountHandledPid = item.mostCashAmountHandledPid;
+
+
+                await existingEntry.save();
+            } else {
+                // Insert new document
+                const leaderboardEntry = new leaderboard({
+                    month: item.month,
+                    year: item.year,
                     mostCashAmountHandledPid: item.mostCashAmountHandledPid,
                 });
                 await leaderboardEntry.save();
@@ -123,8 +208,9 @@ export const createLeaderboardEntry = async (data) => {
 
 (async () => {
     try {
-        const LeaderboardData = await calculateLeaderboardData();
-        await createLeaderboardEntry(LeaderboardData);
+        const result2 = await calculateMostCashAmountHandledPharmacist();
+        await createMostCashAmountEntry(result2);
+
     } catch (error) {
         console.error("Error:", error);
     }
@@ -134,12 +220,7 @@ export const createLeaderboardEntry = async (data) => {
 
 
 
-
-
-
-
-
-// Get cash prize from leaderboard
+// Additional functions for handling cash prizes
 export const getCashPrize = async (req, res) => {
     try {
         const leaderboardEntry = await leaderboard.findById(req.params.id).select('cashPrize -_id');
@@ -151,11 +232,7 @@ export const getCashPrize = async (req, res) => {
         res.status(500).json({ message: err.message });
     }
 };
-  
-   
 
-
-// Add cash prize to leaderboard
 export const addCashPrize = async (req, res) => {
     try {
         const updateLeaderboard = await leaderboard.findOneAndUpdate(
@@ -172,8 +249,6 @@ export const addCashPrize = async (req, res) => {
     }
 };
 
-
-//Delete cash prize from leaderboard
 export const deleteCashPrize = async (req, res) => {
     try {
         const result = await leaderboard.findByIdAndUpdate(
@@ -185,14 +260,11 @@ export const deleteCashPrize = async (req, res) => {
             return res.status(404).json({ message: 'Leaderboard entry not found' });
         }
         res.json(result);
-    }
-    catch (err) {
+    } catch (err) {
         res.status(500).json({ message: err.message });
     }
-}
+};
 
-
-//Update cash prize from leaderboard
 export const updateCashPrize = async (req, res) => {
     try {
         const result = await leaderboard.findByIdAndUpdate(
@@ -204,8 +276,7 @@ export const updateCashPrize = async (req, res) => {
             return res.status(404).json({ message: 'Leaderboard entry not found' });
         }
         res.json(result);
-    }
-    catch (err) {
+    } catch (err) {
         res.status(500).json({ message: err.message });
     }
-}
+};
