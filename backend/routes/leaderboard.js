@@ -3,13 +3,15 @@ import express from 'express';
 
 const router = express.Router();
 
-import { getAllLeaderboards, getLeaderboard, createLeaderboardEntry ,addCashPrize, getCashPrize, deleteCashPrize, updateCashPrize } from '../controllers/leaderboardController.js';
+import { getAllLeaderboards, getLeaderboard, createMostPrescriptionEntry, createMostCashAmountEntry, addCashPrize, getCashPrize, deleteCashPrize, updateCashPrize } from '../controllers/leaderboardController.js';
 
 
 // Routes for leaderboard
 router.get('/', getAllLeaderboards);
 router.get('/:id', getLeaderboard);
-router.post('/',  createLeaderboardEntry);
+router.post('/',  createMostPrescriptionEntry);
+router.post('/',  createMostCashAmountEntry);
+
 
 
 // Routes for cash prize

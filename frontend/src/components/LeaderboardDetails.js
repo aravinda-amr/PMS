@@ -73,7 +73,7 @@ const LeaderboardDetails = ({ leaderboard }) => {
             <div className="bg-dark-blue-2 flex items-center px-4 py-2 rounded-b-lg">
                 <Typography variant="subtitle1" component="h4" className="text-white font-medium mr-2">
                     Most Prescription Amount handled pharmacist: {leaderboard.mostPrescriptionHandledPid} <br />
-                    {/* Most Cash Amount handled pharmacist: {leaderboard.mostCashAmountHandledPid} */}
+                    Most Cash Amount handled pharmacist: {leaderboard.mostCashAmountHandledPid}
                 </Typography>
                 <div className="flex ml-auto">
                     <button
