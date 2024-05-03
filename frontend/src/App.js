@@ -19,6 +19,7 @@ import NewSale from './pages/NewSale';
 import StaffReward from './pages/StaffReward';
 import Leaderboard from './pages/Leaderboard.js';
 import Inventory from './pages/Inventory';
+import Landing from './pages/Landing.js';
 
 import SalesReport from './pages/SR'
 import './index.css';
@@ -35,12 +36,12 @@ function App() {
     <UserContextProvider>
     <div className="App">
       <BrowserRouter>
-        <Navbar />
         <div className="pages">
+          {user && <Navbar />}
           <Routes>
             <Route 
               path="/"
-              element={user ? <Home/> : <Navigate to="/login" />}
+              element={user ? <Home /> : <Landing/>}
             />
             <Route
               path="/login"
