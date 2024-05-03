@@ -16,7 +16,7 @@ const Quotations = () => {
     
     useEffect(() => {
         const fetchPrescriptions = async () => {
-        const response = await fetch("/api/allPres");
+        const response = await fetch("/api/allPres/all");
         const json = await response.json();
         console.log(json);
         if (response.ok) {

@@ -1,11 +1,21 @@
 import Prescriptions from '../models/prescriptionModel.js';
 import mongoose from 'mongoose';
 
-//get all prescriptions
+//get all prescriptions by user id
 const getPres = async (req, res) => {
-    const prescriptions = await Prescriptions.find({});
+    const user_id = req.headers.userid;
+    console.log(user_id);
+    const prescriptions = await Prescriptions.find({ userId: user_id });
 
     res.status(200).json(prescriptions);
+}
+
+//get all prescription
+const getAllPres = async (req, res) => {
+  
+  const prescriptions = await Prescriptions.find({});
+
+  res.status(200).json(prescriptions);
 }
 
 
@@ -119,4 +129,4 @@ const rejectPrescription = async (req, res) => {
   }
 };
 
-export { getPres, deletePres, createQuotation, getQuotations, rejectPrescription, approvePrescription, updatePres};
+export { getPres, getAllPres, deletePres, createQuotation, getQuotations, rejectPrescription, approvePrescription, updatePres};

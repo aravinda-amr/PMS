@@ -1,5 +1,6 @@
 import { useEffect , useState} from "react";
 import { usePrescriptionContext } from "../hooks/usePrescription";
+import { useAuthContext } from "../hooks/useAuthContext";
 import SearchIcon from '@mui/icons-material/Search';
 import TextField from '@mui/material/TextField';
 // import { useAuthContext } from '../hooks/useAuthContext';
@@ -12,19 +13,28 @@ const Prescription = () => {
     const { prescriptions, dispatch } = usePrescriptionContext();
     const [filteredItems, setFilteredItems] = useState([]); // State to hold filtered items
     const [searchTerm, setSearchTerm] = useState("");
-    // const { user } = useAuthContext();
+    const { user } = useAuthContext();
     
     useEffect(() => {
         const fetchPrescriptions = async () => {
-        const response = await fetch("/api/allPres");
+        const response = await fetch("/api/allPres", {
+          headers: {
+            'Authorization': `Bearer ${user.token}`,
+            'userId': `${user.userId}`
+          }
+        });
         const json = await response.json();
         console.log(json);
         if (response.ok) {
             dispatch({ type: "SET_PRESCRIPTIONS", payload: json });
         }
         };
+
+        if(user){ 
         fetchPrescriptions();
-    }, [dispatch]);
+        }
+        //fetchPrescriptions();
+    }, [dispatch, user]);
 
     useEffect(() => {
         // Filter items based on search term whenever searchTerm changes

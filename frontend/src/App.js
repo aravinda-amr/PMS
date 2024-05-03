@@ -29,6 +29,7 @@ import Quotations from './pages/Quotations.js';
 
 function App() {
   const { user } = useAuthContext();
+  //console.log('hh', user);
 
   return (
     <UserContextProvider>

@@ -4,8 +4,8 @@ import jwt from 'jsonwebtoken';
 import mongoose from 'mongoose';
 
 // generate tokens
-const createTokens = (_id) => {
-  return jwt.sign({ _id }, process.env.SECRET, { expiresIn: '3d' });
+const createTokens = ({ _id, role }) => {
+  return jwt.sign({ _id, role }, process.env.SECRET, { expiresIn: '3d' });
 }
 
 // login user
@@ -16,9 +16,11 @@ export const loginUser = async (req, res) => {
     const user = await User.login(email, password);
 
     //create a token
-    const token = createTokens(user._id);
+    const token = createTokens({ _id: user._id, role: user.role });
+    const userId = user._id;
+    const role = user.role;
 
-    res.status(200).json({ email, token });
+    res.status(200).json({ email, token, userId, role });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
@@ -33,7 +35,7 @@ export const signupUser = async (req, res) => {
     const user = await User.signup(email, password, name, contact, coupons);
 
     //create a token
-    const token = createTokens(user._id);
+    const token = createTokens({ _id: user._id, role: user.role });
 
     res.status(200).json({ email, token });
   } catch (error) {
