@@ -19,6 +19,7 @@ import NewSale from './pages/NewSale';
 import StaffReward from './pages/StaffReward';
 import Leaderboard from './pages/Leaderboard.js';
 import Inventory from './pages/Inventory';
+import Landing from './pages/Landing.js';
 
 import SalesReport from './pages/SR'
 import './index.css';
@@ -36,10 +37,11 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <div className="pages">
+          {user && <Navbar />}
           <Routes>
             <Route 
               path="/"
-              element={user ? <Navbar /> : <Home/>}
+              element={user ? <Home /> : <Landing/>}
             />
             <Route
               path="/login"
