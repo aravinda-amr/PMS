@@ -19,7 +19,8 @@ const Prescription = () => {
         const fetchPrescriptions = async () => {
         const response = await fetch("/api/allPres", {
           headers: {
-            'Authorization': `Bearer ${user.token}`
+            'Authorization': `Bearer ${user.token}`,
+            'userId': `${user.userId}`
           }
         });
         const json = await response.json();

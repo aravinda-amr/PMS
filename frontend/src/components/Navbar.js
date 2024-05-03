@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import { Link } from 'react-router-dom';
+import React, {useState, useEffect} from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useLogout } from '../hooks/useLogout';
 import { useAuthContext } from '../hooks/useAuthContext';
 import logo from '../images/logo.png';
@@ -25,6 +25,16 @@ const Navbar = () => {
     const { logout } = useLogout();
     const { user } = useAuthContext();
     const [showPosMenu, setShowPosMenu] = useState(false);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const userFromLocalStorage = JSON.parse(localStorage.getItem('user'));
+        if (!userFromLocalStorage || !userFromLocalStorage.role) {
+            navigate('/login');
+        }
+    }, [navigate]);
+
+    const userRole = user ? user.role : null;
 
     const handleClick = () => {
         logout();
@@ -49,12 +59,20 @@ const Navbar = () => {
                 <h1 className='ps-1 my-auto'>Home</h1>
             </div>
         </Link>
-        <Link to="/inventory">
-            <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
-                <InventoryIcon />
-                <h1 className='ps-1 my-auto'>Inventory</h1>
-            </div>
-        </Link>
+
+        {userRole === 'pharmacist' && (
+                        <>
+                            <Link to="/inventory">
+                                <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
+                                    <InventoryIcon />
+                                    <h1 className='ps-1 my-auto'>Inventory</h1>
+                                </div>
+                            </Link>
+                        </>
+        )}
+        
+
+
         <Link to="/loyalty">
             <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
                 <LoyaltyIcon/>
