@@ -35,12 +35,11 @@ function App() {
     <UserContextProvider>
     <div className="App">
       <BrowserRouter>
-        <Navbar />
         <div className="pages">
           <Routes>
             <Route 
               path="/"
-              element={user ? <Home/> : <Navigate to="/login" />}
+              element={user ? <Navbar /> : <Home/>}
             />
             <Route
               path="/login"
