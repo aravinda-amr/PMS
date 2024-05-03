@@ -48,7 +48,7 @@ const handleSubmit = async (e) => {
 
 
   return (
-    <div className="bg-dark-blue-2 p-4 rounded-lg shadow-md" style={{ marginBottom: '20px', marginTop:'20px', marginLeft:'30px', color: 'white' }}>
+    <div className="bg-dark-blue-2 p-4 rounded-lg shadow-md mr-4" style={{ marginBottom: '20px', marginTop:'20px', marginLeft:'30px', color: 'white' }}>
 
       <h4><strong>Verified By : </strong>{comments.title}</h4>
       <p><strong>Date : </strong>{new Date(comments.day).toLocaleDateString()}</p>
