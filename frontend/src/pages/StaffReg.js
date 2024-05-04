@@ -143,7 +143,7 @@ const StaffReg = () => {
                         <input
                             type="radio"
                             value="inventory handler"
-                            checked={selectedRole === "inventory_handler"}
+                            checked={selectedRole === "inventory handler"}
                             onChange={(e) => setSelectedRole(e.target.value)}
                         />
                         <span className='ml-2'>Inventory Handler</span>
@@ -161,7 +161,7 @@ const StaffReg = () => {
                         <input
                             type="radio"
                             value="prescription handler"
-                            checked={selectedRole === "prescription_handler"}
+                            checked={selectedRole === "prescription handler"}
                             onChange={(e) => setSelectedRole(e.target.value)}
                         />
                         <span className='ml-2'>Prescription Handler</span>
