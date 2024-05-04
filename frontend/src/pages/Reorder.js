@@ -207,26 +207,24 @@ const Reorder = () => {
    
 
   return (
-    <div className="ml-64" id="reorder-content">
-      <div className="flex justify-between items-center bg-gray-100 rounded-lg p-4 mb-4">
-        <h1 className="text-2xl font-semibold text-gray-800 flex-grow text-center">Reorder Drugs</h1> {/* Added flex-grow and text-center */}
-
-        <div className="flex items-center">
-          <TextField
-            label="Search Drugs..."
-            variant="outlined"
-            size="small"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            InputProps={{
-              endAdornment: <SearchIcon />,
-            }}
-            className="w-full px-4 py-2 rounded-md border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:ring-opacity-50 text-gray-700"
-            
-          />
-        </div>
-      </div>
-      <div className="flex justify-start items-center mb-4">
+    <div className="px-4 py-8 ml-auto">
+  <div className="flex justify-between items-center bg-gray-100 rounded-lg p-4 mb-4">
+    <h1 className="text-2xl font-semibold text-gray-800 ml-64 text-center">Reorder Drugs</h1>
+    <div className="flex items-center">
+      <TextField
+        label="Search Drugs..."
+        variant="outlined"
+        size="small"
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        InputProps={{
+          endAdornment: <SearchIcon />,
+        }}
+        className="w-full px-4 py-2 rounded-md border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:ring-opacity-50 text-gray-700"
+      />
+    </div>
+  </div>
+      <div className="flex justify-start items-center mb-4 ml-64">
         <ReorderForm className="mr-4" />
         <div className="ml-auto pr-4"> {/* Added margin to the right and left for positioning */}
 
@@ -276,11 +274,11 @@ const Reorder = () => {
       </Dialog>
 
       {isLoading ? (
-        <div className="flex justify-center items-center h-screen">
+        <div className="flex justify-center items-center h-screen ml-64">
           <CircularProgress />
         </div>
       ) : (
-        <div>
+        <div className="ml-64">
 
           {filteredItems.length > 0 ? (
             filteredItems.map((item) => (

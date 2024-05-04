@@ -44,8 +44,8 @@ export const Expired =() => {
     }, [searchTerm, expire]);
 
     return(
-        <div className="ml-64">
-         <div className="flex justify-between items-center bg-gray-100 rounded-lg p-4 mb-4"> 
+        <div className="px-4 py-8 ml-auto">
+         <div className="flex justify-between items-center bg-gray-100 rounded-lg p-4 mb-4 ml-64"> 
             <h1 className="text-2xl font-semibold text-gray-800 ">Expired Drugs</h1>
        
         <div className="flex items-center">
@@ -62,6 +62,7 @@ export const Expired =() => {
             />
           </div> 
           </div>
+          <div className="ml-64">
           {isLoading ? (
                 <div className="flex justify-center items-center h-40">
                     <CircularProgress />
@@ -75,7 +76,7 @@ export const Expired =() => {
                     <p>No Drug Found</p>
                 )
             )}
-               
+               </div>
             </div>
 
     )
