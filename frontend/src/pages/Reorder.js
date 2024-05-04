@@ -12,7 +12,7 @@ import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
-import EmailModal from './email.js'; 
+import EmailModal from './email.js';
 
 
 
@@ -29,7 +29,7 @@ const Reorder = () => {
   const [emailModalOpen, setEmailModalOpen] = useState(false);
 
   const handleEmailModalClose = () => {
-     setEmailModalOpen(false);
+    setEmailModalOpen(false);
   }
 
   useEffect(() => {
@@ -63,12 +63,12 @@ const Reorder = () => {
   const handleEmailModalSubmit = async (emailDetails) => {
     // Destructure the emailDetails object to get the email entered by the user
     const { to } = emailDetails;
-  
+
     // Check if filteredItems is empty or not
     if (filteredItems.length > 0) {
       // Get the supplierEmail of the first item in filteredItems array
       const firstSupplierEmail = filteredItems[0].supplierEmail;
-  
+
       // Check if the entered email matches the supplierEmail
       if (to === firstSupplierEmail) {
         try {
@@ -79,7 +79,7 @@ const Reorder = () => {
             },
             body: JSON.stringify(emailDetails),
           });
-  
+
           if (response.ok) {
             alert('Email sent successfully');
           } else {
@@ -96,7 +96,7 @@ const Reorder = () => {
       alert('No reorder items found. Unable to send email.');
     }
   };
-  
+
 
 
   const generatePDF = () => {
@@ -154,22 +154,22 @@ const Reorder = () => {
     setOpenDialog(false);
   };
 
-   
-    // Check if there is at least one item in filteredItems
-   // if (filteredItems.length > 0) {
-       // Get the first item from filteredItems array
-      //  const firstItem = filteredItems[0];
-   
-      //  // Convert the first item to the format expected by autoTable
-      //  const body = [{
-      //    supplierEmail: firstItem.supplierEmail,
-      //    drugName: firstItem.drugName,
-      //    quantity: firstItem.totalquantity, // Ensure this is correctly formatted
-      //    reorderLevel: firstItem.reorderLevel,
-      //    status: firstItem.status,
-      //  }];
-   
-       // Call autoTable function on the pdf instance
+
+  // Check if there is at least one item in filteredItems
+  // if (filteredItems.length > 0) {
+  // Get the first item from filteredItems array
+  //  const firstItem = filteredItems[0];
+
+  //  // Convert the first item to the format expected by autoTable
+  //  const body = [{
+  //    supplierEmail: firstItem.supplierEmail,
+  //    drugName: firstItem.drugName,
+  //    quantity: firstItem.totalquantity, // Ensure this is correctly formatted
+  //    reorderLevel: firstItem.reorderLevel,
+  //    status: firstItem.status,
+  //  }];
+
+  // Call autoTable function on the pdf instance
   //      pdf.autoTable({
   //        head: [headers.map(h => h.header)],
   //        body: body.map(row => Object.values(row)),
@@ -195,62 +195,67 @@ const Reorder = () => {
   //        },
   //        margin: { top: 10, left: 13 },
   //      });
-   
+
   //      // Save the PDF
   //      pdf.save('reorder_report.pdf');
   //   } else {
   //      alert('No reorder items found. Unable to generate PDF.');
   //   }
-   
+
   //   setOpenDialog(false);
   //  };
-   
+
 
   return (
-    <div className="px-4 py-8 ml-auto">
-  <div className="flex justify-between items-center bg-gray-100 rounded-lg p-4 mb-4">
-    <h1 className="text-2xl font-semibold text-gray-800 ml-64 text-center">Reorder Drugs</h1>
-    <div className="flex items-center">
-      <TextField
-        label="Search Drugs..."
-        variant="outlined"
-        size="small"
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        InputProps={{
-          endAdornment: <SearchIcon />,
-        }}
-        className="w-full px-4 py-2 rounded-md border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:ring-opacity-50 text-gray-700"
-      />
-    </div>
-  </div>
-      <div className="flex justify-start items-center mb-4 ml-64">
+    <div className="ml-64" id="reorder-content">
+      <div className="flex justify-between items-center bg-gray-100 rounded-lg p-4 mb-4">
+        <h1 className="text-2xl font-semibold text-gray-800 flex-grow text-center">Reorder Drugs</h1> {/* Added flex-grow and text-center */}
+
+        <div className="flex items-center">
+          <TextField
+            label="Search Drugs..."
+            variant="outlined"
+            size="small"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            InputProps={{
+              endAdornment: <SearchIcon />,
+            }}
+            className="w-full px-4 py-2 rounded-md border-gray-300 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:ring-opacity-50 text-gray-700"
+
+          />
+        </div>
+      </div>
+      <div className="flex justify-start items-center mb-4">
+
         <ReorderForm className="mr-4" />
         <div className="ml-auto pr-4"> {/* Added margin to the right and left for positioning */}
 
-<Button
-        variant="outlined"
-        size="small"
-        onClick={() => setEmailModalOpen(true)}
-        className="text-white px-4 py-1 rounded-lg font-semibold cursor-pointer hover:transition-all"
-        sx={{
-          backgroundColor: '#00BFFF', // Sets the background color to light blue
-          color: 'white', // Sets the text color to white
-          '&:hover': {
-            backgroundColor: 'blue', // Adjust hover color as needed
-          },
-          marginRight: '10px', // Adds space from the right side of the button
-        }}
-      >
-       
-        Send Email
-       <MailOutlineIcon sx={{ marginLeft: '5px' }} /> {/* Adds an icon to the button */}
-      </Button>
-      <EmailModal
-        open={emailModalOpen}
-        handleClose={handleEmailModalClose}
-        handleSubmit={handleEmailModalSubmit}
-      />
+          <Button
+            variant="outlined"
+            size="small"
+            onClick={() => setEmailModalOpen(true)}
+            className="text-white px-4 py-1 rounded-lg font-semibold cursor-pointer hover:transition-all"
+            sx={{
+              backgroundColor: '#00BFFF', // Sets the background color to light blue
+              color: 'white', // Sets the text color to white
+              '&:hover': {
+                backgroundColor: 'blue', // Adjust hover color as needed
+              },
+              marginRight: '10px', // Adds space from the right side of the button
+            }}
+          >
+
+            Send Email
+            <MailOutlineIcon sx={{ marginLeft: '5px' }} /> {/* Adds an icon to the button */}
+          </Button>
+          <EmailModal
+            open={emailModalOpen}
+            handleClose={handleEmailModalClose}
+            handleSubmit={handleEmailModalSubmit}
+            drugNames={filteredItems.map((item) => item.drugName)}
+          />
+
 
 
 

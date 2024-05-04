@@ -5,8 +5,10 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
+import MenuItem from '@mui/material/MenuItem';
 
-const EmailModal = ({ open, handleClose, handleSubmit }) => {
+const EmailModal = ({ open, handleClose, handleSubmit, drugNames }) => {
+
     const [emailDetails, setEmailDetails] = React.useState({ to: '', subject: '', text: '' });
 
     const handleChange = (e) => {
@@ -19,7 +21,7 @@ const EmailModal = ({ open, handleClose, handleSubmit }) => {
     };
 
     return (
-       
+
         <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth
             sx={{
                 '& .MuiDialog-paper': {
@@ -28,9 +30,9 @@ const EmailModal = ({ open, handleClose, handleSubmit }) => {
                 },
             }}
         >
-           
-                <DialogTitle style={{ color: 'black' }}>Send Email</DialogTitle>
-           
+
+            <DialogTitle style={{ color: 'black' }}>Send Email</DialogTitle>
+
             <DialogContent>
                 <TextField
                     autoFocus
@@ -48,9 +50,17 @@ const EmailModal = ({ open, handleClose, handleSubmit }) => {
                     type="text"
                     fullWidth
                     name="subject"
+                    select
                     value={emailDetails.subject}
                     onChange={handleChange}
-                />
+                >
+                    {drugNames.map((drugName) => (
+                        <MenuItem key={drugName} value={drugName}>
+                            {drugName}
+                        </MenuItem>
+                    ))}
+                </TextField>
+
                 <TextField
                     margin="dense"
                     label="Message"
@@ -63,22 +73,22 @@ const EmailModal = ({ open, handleClose, handleSubmit }) => {
                     onChange={handleChange}
                 />
             </DialogContent>
-           
+
             <DialogActions>
-            <div className="btn bg-signup1 hover:bg-signup2 hover:text-white mr-2 px-4 py-1 rounded-lg font-jakarta font-semibold cursor-pointer hover:transition-all">
-                <Button onClick={handleClose}>
-                    Cancel
-                </Button>
+                <div className="btn bg-signup1 hover:bg-signup2 hover:text-white mr-2 px-4 py-1 rounded-lg font-jakarta font-semibold cursor-pointer hover:transition-all">
+                    <Button onClick={handleClose}>
+                        Cancel
+                    </Button>
                 </div>
-                <div  className="btn bg-login1 hover:bg-login2 hover:text-white mr-2 px-4 py-1 rounded-lg font-jakarta font-semibold cursor-pointer hover:transition-all">
-                <Button onClick={handleSubmitClick} color="primary">
-                    Send
-                </Button>
+                <div className="btn bg-login1 hover:bg-login2 hover:text-white mr-2 px-4 py-1 rounded-lg font-jakarta font-semibold cursor-pointer hover:transition-all">
+                    <Button onClick={handleSubmitClick} color="primary">
+                        Send
+                    </Button>
                 </div>
             </DialogActions>
-           
+
         </Dialog>
-      
+
     );
 };
 
