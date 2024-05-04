@@ -207,9 +207,9 @@ const Reorder = () => {
 
 
   return (
-    <div className="ml-64" id="reorder-content">
-      <div className="flex justify-between items-center bg-gray-100 rounded-lg p-4 mb-4">
-        <h1 className="text-2xl font-semibold text-gray-800 flex-grow text-center">Reorder Drugs</h1> {/* Added flex-grow and text-center */}
+    <div className="px-4 py-8 ml-auto">
+            <div className="flex justify-between items-center bg-gray-100 rounded-lg p-4 mb-4 ml-64"> 
+        <h1 className="text-2xl font-semibold text-gray-800 flex-grow">Reorder Drugs</h1> {/* Added flex-grow and text-center */}
 
         <div className="flex items-center">
           <TextField
@@ -226,7 +226,7 @@ const Reorder = () => {
           />
         </div>
       </div>
-      <div className="flex justify-start items-center mb-4">
+      <div className="flex justify-start items-center mb-4 ml-64">
 
         <ReorderForm className="mr-4" />
         <div className="ml-auto pr-4"> {/* Added margin to the right and left for positioning */}
