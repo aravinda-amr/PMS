@@ -20,6 +20,7 @@ import RemoveShoppingCartIcon from '@mui/icons-material/RemoveShoppingCart';
 import SummarizeIcon from '@mui/icons-material/Summarize';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import InventoryIcon from '@mui/icons-material/Inventory';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 const Navbar = () => {
     const { logout } = useLogout();
@@ -48,9 +49,10 @@ const Navbar = () => {
         <header>
 
 
-            <div className="fixed flex flex-col top-0 left-0 w-64 bg-dark-blue h-full text-white mr-2 px-4 py-1 font-jakarta overflow-y-scroll">
+            <div className="fixed flex flex-col top-0 left-0 w-64 bg-dark-blue h-full text-white mr-2 px-4 py-1 font-jakarta overflow-y-scroll" style={{ overflowY: 'hidden' }}>
 
-                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '20px' }}> {/* Centering the logo */}
+
+                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}> {/* Centering the logo */}
                     <img src={logo} alt="Logo" width="150px" height="150px" /> {/* Decreased size */}
                 </div>
 
@@ -172,17 +174,22 @@ const Navbar = () => {
                             )}
                         </div>
                     </div>
+                    {user && (
+
+                    <div id="logout" className='fixed bottom-0'>
+                        <h1 className='px-3 py-1 text-white'>{user.email}</h1>
+                        <div onClick={handleClick} className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
+                            <LogoutIcon />
+                            <h1 className='ps-1 my-auto'>Logout</h1>
+                        </div>
+                    </div>
+                )}
                 </div>
 
             </div>
 
             <nav className="flex justify-end bg-dark-blue-2 h-15 items-end text-sm">
-                {user && (
-                    <div>
-                        <span className='text-xl mx-4 my-8 text-white'>{user.email}</span>
-                        <button onClick={handleClick} className='bg-update hover:bg-updateH hover:text-white mr-2 px-4 py-1 rounded-lg font-jakarta font-semibold cursor-pointer hover:transition-all my-2'>Logout</button>
-                    </div>
-                )}
+                
 
                 {!user && (
                     <div className='flex my-auto'>

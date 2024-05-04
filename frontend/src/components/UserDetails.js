@@ -117,7 +117,16 @@ const UserDetails = ({ user }) => {
 
       {showCouponForm && (
         <div className="mt-4">
-          <CouponForm id={user._id} onCouponAdded={fetchCoupons} coupon={selectedCoupon} isEditing={isEditing} onFormSubmit={handleAddCouponClick} onReset={resetForm} />
+          <CouponForm
+            id={user._id}
+            onCouponAdded={fetchCoupons}
+            coupon={selectedCoupon}
+            isEditing={isEditing}
+            onFormSubmit={handleAddCouponClick}
+            onReset={resetForm}
+            onClose={handleAddCouponClick} // Pass onClose prop here
+          />
+
         </div>
       )}
     </div>
