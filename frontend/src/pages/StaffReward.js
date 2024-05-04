@@ -35,9 +35,9 @@
         
 
         return (
-            <div className="ml-64">
-                <div className="flex justify-between items-center bg-gray-100 rounded-lg p-4 mb-4"> 
-                    <h1 className="text-2xl font-semibold text-gray-800 ml-64">Handled Order Details</h1>
+            <div className="px-4 py-8 ml-auto">
+            <div className="flex justify-between items-center bg-gray-100 rounded-lg p-4 mb-4 ml-64"> 
+                    <h1 className="text-2xl font-semibold text-gray-800">Handled Order Details</h1>
                     <div className="flex items-center">
                         <TextField
                             label="Search pharmacists..."
@@ -49,7 +49,7 @@
                         />
                     </div> 
                 </div>
-
+                <div className="ml-64">
                 {loading ? (
                     <div className="flex justify-center items-center">
                         <CircularProgress />
@@ -63,6 +63,7 @@
                 ) : (
                     <p>No pharmacist Found</p>
                 )}
+                </div>
             </div>
         );
     };

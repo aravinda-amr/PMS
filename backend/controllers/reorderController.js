@@ -28,7 +28,7 @@ export const getReorder = async (req, res)=>{
 
 //create a new Reorder
 export const createReorder = async (req, res) => {
-    const { supplierEmail, drugName , reorderLevel} = req.body;
+    const { supplierName, supplierEmail, drugName , reorderLevel} = req.body;
 
     try {
         const drug = await MedicineName.findOne({drugName}); //
@@ -37,6 +37,7 @@ export const createReorder = async (req, res) => {
         }
     
         const reorder = await Reorder.create({
+            supplierName,
             supplierEmail,
             drugName,// Use the drugName from the found drug document
             reorderLevel,
