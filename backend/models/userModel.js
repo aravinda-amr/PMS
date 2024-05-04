@@ -52,14 +52,13 @@ const userSchema = new Schema({
     },
     coupons: [couponSchema],
     role: {
-        type: String,
-        enum: ['admin', 'pharmacist', 'customer'], 
+        type: String, 
         default: 'customer'
     }
 })
 
 //static signUp method
-userSchema.statics.signup = async function (email, password, name, contact) {
+userSchema.statics.signup = async function (email, password, name, contact, role) {
 
     //validation
     if(!email || !password || !name || !contact){
@@ -85,7 +84,7 @@ userSchema.statics.signup = async function (email, password, name, contact) {
     const salt = await bcrypt.genSalt(10)
     const hash = await bcrypt.hash(password, salt)
 
-    const user = await this.create({ email, password: hash, name, contact })
+    const user = await this.create({ email, password: hash, name, contact, role })
 
     return user
 

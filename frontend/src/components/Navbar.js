@@ -20,6 +20,7 @@ import RemoveShoppingCartIcon from '@mui/icons-material/RemoveShoppingCart';
 import SummarizeIcon from '@mui/icons-material/Summarize';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import InventoryIcon from '@mui/icons-material/Inventory';
+import HowToRegIcon from '@mui/icons-material/HowToReg';
 import LogoutIcon from '@mui/icons-material/Logout';
 
 const Navbar = () => {
@@ -153,6 +154,38 @@ const Navbar = () => {
                             <h1 className='ps-1 my-auto'>Leaves</h1>
                         </div>
                     </Link>
+        <Link to="/outofstock">
+            <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
+                <RemoveShoppingCartIcon/>
+                
+                <h1 className='ps-1 my-auto'>OutOfStock</h1>
+            </div>
+        </Link>
+        <Link to="/abtoutofstock">
+            <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
+                <ProductionQuantityLimitsIcon/>
+                <h1 className='ps-1 my-auto'>AboutToOutOfStock</h1>
+            </div>
+        </Link>
+        <Link to="/salesreport">
+            <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
+                <SummarizeIcon/>
+                <h1 className='ps-1 my-auto'>SalesReport</h1>
+            </div>
+        </Link>
+        <Link to="/leaves">
+            <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
+                <CalendarTodayIcon/>
+                <h1 className='ps-1 my-auto'>Leaves</h1>
+            </div>
+        </Link>
+
+        <Link to="/staffreg">
+            <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
+                <HowToRegIcon/>
+                <h1 className='ps-1 my-auto'>Staff Registration</h1>
+            </div>
+        </Link>
 
                     {/* //CHAMESHA POS */}
 
