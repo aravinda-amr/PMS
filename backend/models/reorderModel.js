@@ -3,6 +3,10 @@
 const Schema = mongoose.Schema
 
 const reorderSchema = new Schema({
+    supplierName:{
+        type: String,
+        required: true
+    },
     supplierEmail:{
         type: String,
         required:true

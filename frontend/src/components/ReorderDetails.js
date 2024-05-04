@@ -62,6 +62,7 @@ const ReorderDetials = ({reorder})=>{
         <table className="coupon-table w-full  text-black border-collapse">
           <thead className="coupon-table-thead bg-dark-blue text-white">
             <tr className="coupon-table-tr">
+              <th className="coupon-table-th border border-gray-300 px-4 py-2">Supplier Name</th> 
               <th className="coupon-table-th border border-gray-300 px-4 py-2">Supplier Email</th>
               <th className="coupon-table-th border border-gray-300 px-4 py-2">Drug Name</th>
               <th className="coupon-table-th border border-gray-300 px-4 py-2">Quantity</th>
@@ -74,6 +75,7 @@ const ReorderDetials = ({reorder})=>{
           <tbody>
         
               <tr>
+                <td className="coupon-table-th border border-gray-300 px-4 py-2">{reorder.supplierName}</td>
                 <td className="coupon-table-th border border-gray-300 px-4 py-2">{reorder.supplierEmail}</td>
                 <td className="coupon-table-th border border-gray-300 px-4 py-2">{reorder.drugName}</td>
                 <td className="coupon-table-th border border-gray-300 px-4 py-2">{reorder.totalquantity}</td>        

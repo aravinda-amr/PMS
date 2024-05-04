@@ -4,8 +4,10 @@ import { useState } from "react";
 import { useReordersContext } from '../hooks/useReorderContext';
 
 
+
 const ReorderForm = () => {
     const { dispatch } = useReordersContext();
+    const [supplierName, setSupplierName] = useState(''); 
     const [supplierEmail, setSupplierEmail] = useState('');
     const [drugName, setDrugName] = useState('');
     const [reorderLevel, setReorderLevel] = useState('');
@@ -24,7 +26,7 @@ const ReorderForm = () => {
             return; // Exit the function if reorder level is invalid
         }
 
-        const reorder = { supplierEmail, drugName, reorderLevel };
+        const reorder = {supplierName, supplierEmail, drugName, reorderLevel };
         const response = await fetch('/api/reorder', {
             method: 'POST',
             body: JSON.stringify(reorder),
@@ -37,6 +39,7 @@ const ReorderForm = () => {
             setError(json.error);
             setShowCheckmark(false);
         } else {
+            setSupplierName('');
             setSupplierEmail('');
             setDrugName('');
             setReorderLevel('');
@@ -52,6 +55,7 @@ const ReorderForm = () => {
    const togglePopup = () => {
     if (!showPopup) {
         // Clear form fields when opening the popup
+        setSupplierName('');
         setSupplierEmail('');
         setDrugName('');
         setReorderLevel('');
@@ -79,6 +83,10 @@ const ReorderForm = () => {
                                 <div className="mt-2">
                                     <form onSubmit={handleSubmit} className="reorder-form bg-dark-blue-2 p-4 rounded-lg shadow-md">
                                         {/* Form fields */}
+
+                                        <label className="block text-sm font-medium text-gray-700" htmlFor="supplierEmail">Supplier's Name</label>
+                                        <input type="text" id="supplierName" className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" onChange={(e) => setSupplierName(e.target.value)} value={supplierName} required />
+
                                         <label className="block text-sm font-medium text-gray-700" htmlFor="supplierEmail">Supplier's Email</label>
                                         <input type="email" id="supplierEmail" className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" onChange={(e) => setSupplierEmail(e.target.value)} value={supplierEmail} required />
 
