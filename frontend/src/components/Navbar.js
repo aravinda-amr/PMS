@@ -43,6 +43,7 @@ const Navbar = () => {
 
     const handleClick = () => {
         logout();
+        navigate('/');
     }
 
     const togglePosMenu = () => {

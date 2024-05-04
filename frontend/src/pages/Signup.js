@@ -50,10 +50,10 @@ const Signup = () => {
             return;
         }
 
-        if (!isStrongPassword(password)) {
-            setErrors(prevErrors => ({...prevErrors, password: 'Password must contain at least 8 characters including at least one uppercase letter, one number, and one special character' }));
-            return;
-        }
+        //if (!isStrongPassword(password)) {
+        //    setErrors(prevErrors => ({...prevErrors, password: 'Password must contain at least 8 characters including at least one uppercase letter, one number, and one special character' }));
+        //    return;
+        //}
 
         await signup(email, password, name, contact);
     }
