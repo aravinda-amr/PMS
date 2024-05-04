@@ -41,7 +41,13 @@ function App() {
           <Routes>
             <Route 
               path="/"
-              element={user ? <Home /> : <Landing/>}
+              element={user ? <Home
+                aboutToExpirePath="/abtexpired"
+                outOfStockPath="/outofstock"
+                expiredPath="/expired"
+                aboutToOutOfStockPath="/abtoutofstock"
+              />
+               : <Landing/>}
             />
             <Route
               path="/login"

@@ -43,6 +43,8 @@ export const Expired =() => {
         filterItems();
     }, [searchTerm, abtexpire]);
 
+    
+
     return(
         <div className="px-4 py-8 ml-auto">
                <div className="flex justify-between items-center bg-gray-100 rounded-lg p-4 mb-4 ml-64"> 
@@ -72,6 +74,7 @@ export const Expired =() => {
             ) : (
                 filteredItems.length > 0 ? (
                     filteredItems.map((item) => (
+                        
                         <AboutExpireDetials key={item._id} expire={item} />
                     ))
                 ) : (

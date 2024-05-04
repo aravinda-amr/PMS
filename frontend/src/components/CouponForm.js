@@ -1,25 +1,25 @@
 import React, { useState, useEffect } from 'react';
-import { format, addWeeks, differenceInDays, addDays  } from 'date-fns';
+import { format, addWeeks, differenceInDays, addDays } from 'date-fns';
 
 const generateCouponCode = () => {
- let result = '';
- const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
- const charactersLength = characters.length;
- for (let i = 0; i < 10; i++) {
+  let result = '';
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const charactersLength = characters.length;
+  for (let i = 0; i < 10; i++) {
     result += characters.charAt(Math.floor(Math.random() * charactersLength));
- }
- return result;
+  }
+  return result;
 };
 
 const AddCouponForm = ({ id, onCouponAdded, coupon, isEditing, onFormSubmit, onReset }) => {
- const [expire, setExpire] = useState('');
- const [discount, setDiscount] = useState(1);
- const [status, setStatus] = useState('Active'); // New state for status
- const [couponCode, setCouponCode] = useState('');
- const [expiryDifference, setExpiryDifference] = useState('');
- const minDate = format(addDays(new Date(), 1), 'yyyy-MM-dd');
+  const [expire, setExpire] = useState('');
+  const [discount, setDiscount] = useState(1);
+  const [status, setStatus] = useState('Active'); // New state for status
+  const [couponCode, setCouponCode] = useState('');
+  const [expiryDifference, setExpiryDifference] = useState('');
+  const minDate = format(addDays(new Date(), 1), 'yyyy-MM-dd');
 
- useEffect(() => {
+  useEffect(() => {
     if (coupon) {
       setExpire(format(new Date(coupon.expire), 'yyyy-MM-dd'));
       setDiscount(coupon.discount);
@@ -32,9 +32,9 @@ const AddCouponForm = ({ id, onCouponAdded, coupon, isEditing, onFormSubmit, onR
       setStatus('Active'); // Default status
       setCouponCode(generateCouponCode());
     }
- }, [coupon]);
+  }, [coupon]);
 
- useEffect(() => {
+  useEffect(() => {
     if (expire) {
       const expiryDate = new Date(expire);
       const now = new Date();
@@ -49,9 +49,9 @@ const AddCouponForm = ({ id, onCouponAdded, coupon, isEditing, onFormSubmit, onR
 
       setExpiryDifference(differenceText);
     }
- }, [expire]);
+  }, [expire]);
 
- const handleSubmit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const couponData = { expire, discount, status, couponCode }; // Include status
 
@@ -97,11 +97,11 @@ const AddCouponForm = ({ id, onCouponAdded, coupon, isEditing, onFormSubmit, onR
     } catch (error) {
       console.error('Error updating coupon:', error);
     }
- };
+  };
 
- return (
+  return (
     <form
-      className="coupon-form bg-dark-blue-2 text-white p-4 rounded-lg shadow-md"
+      className="coupon-form bg-dark-blue-2 text-white p-4 rounded-lg shadow-md transform scale-105 transition-transform duration-300 hover:scale-110"
       onSubmit={handleSubmit}
     >
       <div className="flex flex-col space-y-2">
@@ -149,7 +149,7 @@ const AddCouponForm = ({ id, onCouponAdded, coupon, isEditing, onFormSubmit, onR
         {isEditing ? "Update Coupon" : "Add Coupon"}
       </button>
     </form>
- );
+  );
 };
 
 export default AddCouponForm;
