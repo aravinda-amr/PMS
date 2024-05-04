@@ -20,6 +20,7 @@ import RemoveShoppingCartIcon from '@mui/icons-material/RemoveShoppingCart';
 import SummarizeIcon from '@mui/icons-material/Summarize';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import InventoryIcon from '@mui/icons-material/Inventory';
+import HowToRegIcon from '@mui/icons-material/HowToReg';
 
 const Navbar = () => {
     const { logout } = useLogout();
@@ -147,6 +148,13 @@ const Navbar = () => {
             <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
                 <CalendarTodayIcon/>
                 <h1 className='ps-1 my-auto'>Leaves</h1>
+            </div>
+        </Link>
+
+        <Link to="/staffreg">
+            <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
+                <HowToRegIcon/>
+                <h1 className='ps-1 my-auto'>Staff Registration</h1>
             </div>
         </Link>
 

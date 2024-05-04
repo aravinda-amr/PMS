@@ -20,6 +20,7 @@ import StaffReward from './pages/StaffReward';
 import Leaderboard from './pages/Leaderboard.js';
 import Inventory from './pages/Inventory';
 import Landing from './pages/Landing.js';
+import StaffReg from './pages/StaffReg.js';
 
 import SalesReport from './pages/SR'
 import './index.css';
@@ -115,6 +116,11 @@ function App() {
             <Route
                 path="/quotations"
                 element={<Quotations/>}
+            />
+
+            <Route
+                path="/staffreg"
+                element={<StaffReg/>}
             />
             
 
