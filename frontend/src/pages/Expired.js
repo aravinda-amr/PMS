@@ -58,9 +58,6 @@ export const Expired = () => {
         filterItems();
     }, [searchTerm, expire, showExpiredWithin30Days]);
 
-    const handleFilterExpiredWithin30DaysClick = () => {
-        setShowExpiredWithin30Days(true);
-    };
 
     return (
         <div className="ml-64">
@@ -92,6 +89,7 @@ export const Expired = () => {
                 </div>
             </div>
             {isLoading ? (
+
                 <div className="flex justify-center items-center h-40">
                     <CircularProgress />
                 </div>
@@ -104,8 +102,5 @@ export const Expired = () => {
                     <p>No Drug Found</p>
                 )
             )}
-        </div>
-    );
-};
 
 export default Expired;

@@ -47,9 +47,9 @@ export const Leaderboard =() => {
 
     return(
 
-        <div className="ml-64 reward">
-            <div className="flex justify-between items-center bg-gray-100 rounded-lg p-4 mb-4"> 
-            <h1 className="text-2xl font-semibold text-gray-800 ml-64">Staff Leaderboard</h1>
+        <div className="px-4 py-8 ml-auto">
+               <div className="flex justify-between items-center bg-gray-100 rounded-lg p-4 mb-4 ml-64"> 
+            <h1 className="text-2xl font-semibold text-gray-800">Staff Leaderboard</h1>
             <div className="flex items-center">
                     <TextField
                         label="Search months..."
@@ -61,7 +61,7 @@ export const Leaderboard =() => {
                     />
                 </div> 
         </div>  
-
+        <div className="ml-64">
         {loading ? (
                 <div className="flex justify-center items-center">
                     <CircularProgress />
@@ -71,12 +71,13 @@ export const Leaderboard =() => {
       
             filteredItems.length > 0 ? (
                 filteredItems.map((item) => (
+
                     item && <LeaderboardDetails key={item._id} leaderboard={item} />
                 ))
             ) : (
                 <p>No months Found</p>
             )}
-         
+         </div>
         </div>    
     );
 };

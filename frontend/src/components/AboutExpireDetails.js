@@ -28,6 +28,7 @@ const AboutExpireDetials = ({ expire }) => {
     fetchDrugName();
   }, [expire.drugName]);
 
+
   return (
     <div className="overflow-x-auto" style={{ marginTop: '30px' }}>
       {isLoading ? (

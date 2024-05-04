@@ -227,6 +227,7 @@ const Reorder = () => {
         </div>
       </div>
       <div className="flex justify-start items-center mb-4">
+
         <ReorderForm className="mr-4" />
         <div className="ml-auto pr-4"> {/* Added margin to the right and left for positioning */}
 
@@ -278,11 +279,11 @@ const Reorder = () => {
       </Dialog>
 
       {isLoading ? (
-        <div className="flex justify-center items-center h-screen">
+        <div className="flex justify-center items-center h-screen ml-64">
           <CircularProgress />
         </div>
       ) : (
-        <div>
+        <div className="ml-64">
 
           {filteredItems.length > 0 ? (
             filteredItems.map((item) => (

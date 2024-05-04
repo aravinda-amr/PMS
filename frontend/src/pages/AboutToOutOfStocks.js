@@ -54,8 +54,8 @@ export const AboutToOutOfStock = () => {
     // }, [searchTerm, abouttooutofstock]);
  
     return (
-        <div className="ml-64">
-                <div className="flex justify-between items-center bg-gray-100 rounded-lg p-4 mb-4"> 
+        <div className="px-4 py-8 ml-auto">
+               <div className="flex justify-between items-center bg-gray-100 rounded-lg p-4 mb-4 ml-64"> 
             <h1 className="text-2xl font-semibold text-gray-800 ">About To Out Of Stock</h1>
        
         <div className="flex items-center">
@@ -72,15 +72,18 @@ export const AboutToOutOfStock = () => {
             />
           </div> 
           </div>
+          
           {isLoading ? (
-                <div className="flex justify-center items-center h-40">
+                <div className="flex justify-center items-center h-40 ml-64">
                     <CircularProgress />
                 </div>
             ) : (
+                
                 filteredItems.length > 0 ? (
                     filteredItems.map((item) => (
+                        <div className="ml-64">
                         <AboutToOutOfStockDetials key={item._id} abtoutof={item} />
-
+                        </div>
                     ))
                 ) : (
                     <p>No Drug Found</p>

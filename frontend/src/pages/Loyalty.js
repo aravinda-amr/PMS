@@ -164,7 +164,7 @@ const Loyalty = () => {
             />
           </div>
           <div className="flex items-center space-x-4">
-          {/*  <FormControl variant="outlined" className="h-10 px-3 py-2">
+          <FormControl variant="outlined" className="h-10 px-3 py-2">
               <InputLabel id="months-label" className="appearance-none">Months</InputLabel>
               <Select
                 labelId="months-label"
@@ -178,7 +178,7 @@ const Loyalty = () => {
                 <MenuItem value={12}>12</MenuItem>
                 <MenuItem value={24}>24</MenuItem>
               </Select>
-  </FormControl>*/}
+  </FormControl>
             <Button
               variant="outlined"
               size="small"
