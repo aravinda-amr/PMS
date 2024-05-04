@@ -38,6 +38,9 @@ const Navbar = () => {
 
     const userRole = user ? user.role : null;
 
+
+    console.log(userRole);
+
     const handleClick = () => {
         logout();
     }
@@ -58,138 +61,139 @@ const Navbar = () => {
                 </div>
 
                 <div className="text-sm border-t-2 pt-6 border-blue-button">
-                    <Link to="/">
-                        <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
-                            <HomeIcon />
-                            <h1 className='ps-1 my-auto'>Home</h1>
-                        </div>
-                    </Link>
+                    
 
-                    {userRole === 'pharmacist' && (
+                    {userRole === 'inventory handler' && (
                         <>
+                            <Link to="/">
+                                <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
+                                    <HomeIcon />
+                                    <h1 className='ps-1 my-auto'>Home</h1>
+                                </div>
+                            </Link>
+
                             <Link to="/inventory">
                                 <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
                                     <InventoryIcon />
                                     <h1 className='ps-1 my-auto'>Inventory</h1>
                                 </div>
                             </Link>
+
+                            <Link to="/reorder">
+                                <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
+                                    <ReorderIcon />
+                                    <h1 className='ps-1 my-auto'>Reorder</h1>
+                                </div>
+                            </Link>
+
+                            <Link to="/expired">
+                                <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
+                                    <AccessTimeIcon />
+                                    <h1 className='ps-1 my-auto'>Expired Drugs</h1>
+                                </div>
+                            </Link>
+
+                            <Link to="/abtexpired">
+                                <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
+                                    <RemoveCircleIcon />
+                                    <h1 className='ps-1 my-auto'>About To Expire Drugs</h1>
+                                </div>
+                            </Link>
+
+                            <Link to="/outofstock">
+                                <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
+                                    <RemoveShoppingCartIcon />
+                                    <h1 className='ps-1 my-auto'>OutOfStock</h1>
+                                </div>
+                            </Link>
+
+                            <Link to="/abtoutofstock">
+                                <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
+                                    <ProductionQuantityLimitsIcon />
+                                    <h1 className='ps-1 my-auto'>AboutToOutOfStock</h1>
+                                </div>
+                            </Link>
                         </>
                     )}
 
+                    {userRole === 'manager' && (
+                        <>
+                            <Link to="/loyalty">
+                                <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
+                                    <LoyaltyIcon />
+                                    <h1 className='ps-1 my-auto'>Loyalty</h1>
+                                </div>
+                            </Link>
 
+                            <Link to="/staffReward">
+                                <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
+                                    <HandshakeIcon />
+                                    <h1 className='ps-1 my-auto'>Handled order Details</h1>
+                                </div>
+                            </Link>
 
-                    <Link to="/loyalty">
-                        <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
-                            <LoyaltyIcon />
-                            <h1 className='ps-1 my-auto'>Loyalty</h1>
-                        </div>
-                    </Link>
-                    <Link to="/reorder">
-                        <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
-                            <ReorderIcon />
-                            <h1 className='ps-1 my-auto'>Reorder</h1>
-                        </div>
-                    </Link>
-                    <Link to="/expired">
-                        <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
-                            <AccessTimeIcon />
-                            <h1 className='ps-1 my-auto'>Expired Drugs</h1>
-                        </div>
-                    </Link>
-                    <Link to="/abtexpired">
-                        <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
-                            <RemoveCircleIcon />
-                            <h1 className='ps-1 my-auto'>About To Expire Drugs</h1>
-                        </div>
-                    </Link>
-                    <Link to="/prescription">
-                        <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
-                            <MedicationOutlinedIcon />
-                            <h1 className='ps-1 my-auto'>Prescriptions</h1>
-                        </div>
-                    </Link>
-                    <Link to="/quotations">
-                        <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
-                            <MedicationOutlinedIcon />
-                            <h1 className='ps-1 my-auto'>Quotations</h1>
-                        </div>
-                    </Link>
-                    <Link to="/staffReward">
-                        <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
-                            <HandshakeIcon />
-                            <h1 className='ps-1 my-auto'>Handled order Details</h1>
-                        </div>
-                    </Link>
+                            <Link to="/leaderboard">
+                                <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
+                                    <LeaderboardIcon />
+                                    <h1 className='ps-1 my-auto'>Staff Leaderboard</h1>
+                                </div>
+                            </Link>
 
-                    <Link to="/leaderboard">
+                            <Link to="/salesreport">
+                                <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
+                                    <SummarizeIcon />
+                                    <h1 className='ps-1 my-auto'>SalesReport</h1>
+                                </div>
+                            </Link>
+                        </>
+                    )}
+
+                    {userRole === 'admin' && (
+                        <>
+                            <Link to="/staffreg">
+                                <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
+                                    <HowToRegIcon/>
+                                    <h1 className='ps-1 my-auto'>Staff Registration</h1>
+                                </div>
+                            </Link>
+                        </>
+                    )}
+
+                    {userRole === 'customer' && (
+                        <>
+                            <Link to="/prescription">
+                                <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
+                                    <MedicationOutlinedIcon />
+                                    <h1 className='ps-1 my-auto'>Prescriptions</h1>
+                                </div>
+                            </Link>
+                        </>
+                    )}
+
+                    {userRole === 'prescription handler' && (
+                        <>
+                            <Link to="/quotations">
+                                <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
+                                    <MedicationOutlinedIcon />
+                                    <h1 className='ps-1 my-auto'>Quotations</h1>
+                                </div>
+                            </Link>
+                        </>
+                    )}
+                    
+                    {userRole === 'pharmacist' && (
+                           <Link to="/leaves">
+                                <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
+                                    <CalendarTodayIcon />
+                                    <h1 className='ps-1 my-auto'>Leaves</h1>
+                                </div>
+                            </Link> 
+                    )}
+                    
+
+                    {userRole === 'cashier' && (
+                        
                         <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
-                            <LeaderboardIcon />
-                            <h1 className='ps-1 my-auto'>Staff Leaderboard</h1>
-                        </div>
-                    </Link>
-
-
-                    <Link to="/outofstock">
-                        <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
-                            <RemoveShoppingCartIcon />
-
-                            <h1 className='ps-1 my-auto'>OutOfStock</h1>
-                        </div>
-                    </Link>
-                    <Link to="/abtoutofstock">
-                        <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
-                            <ProductionQuantityLimitsIcon />
-                            <h1 className='ps-1 my-auto'>AboutToOutOfStock</h1>
-                        </div>
-                    </Link>
-                    <Link to="/salesreport">
-                        <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
-                            <SummarizeIcon />
-                            <h1 className='ps-1 my-auto'>SalesReport</h1>
-                        </div>
-                    </Link>
-                    <Link to="/leaves">
-                        <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
-                            <CalendarTodayIcon />
-                            <h1 className='ps-1 my-auto'>Leaves</h1>
-                        </div>
-                    </Link>
-        <Link to="/outofstock">
-            <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
-                <RemoveShoppingCartIcon/>
-                
-                <h1 className='ps-1 my-auto'>OutOfStock</h1>
-            </div>
-        </Link>
-        <Link to="/abtoutofstock">
-            <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
-                <ProductionQuantityLimitsIcon/>
-                <h1 className='ps-1 my-auto'>AboutToOutOfStock</h1>
-            </div>
-        </Link>
-        <Link to="/salesreport">
-            <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
-                <SummarizeIcon/>
-                <h1 className='ps-1 my-auto'>SalesReport</h1>
-            </div>
-        </Link>
-        <Link to="/leaves">
-            <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
-                <CalendarTodayIcon/>
-                <h1 className='ps-1 my-auto'>Leaves</h1>
-            </div>
-        </Link>
-
-        <Link to="/staffreg">
-            <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
-                <HowToRegIcon/>
-                <h1 className='ps-1 my-auto'>Staff Registration</h1>
-            </div>
-        </Link>
-
-                    {/* //CHAMESHA POS */}
-
-                    <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
                         <PointOfSaleIcon onClick={togglePosMenu} />
                         <div className='ml-2 flex flex-col' style={{ marginTop: '2px' }}>
                             <h1 className='my-auto'>POS</h1>
@@ -207,6 +211,10 @@ const Navbar = () => {
                             )}
                         </div>
                     </div>
+
+                    )}
+
+                    
                     {user && (
 
                     <div id="logout" className='fixed bottom-0'>
