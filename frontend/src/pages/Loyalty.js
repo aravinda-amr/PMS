@@ -40,7 +40,7 @@ const Loyalty = () => {
           })
         );
         // Filter users to only include those with totalAmount > 100000
-        const filteredUsers = usersWithTotal.filter(user => user.totalAmount > 100);
+        const filteredUsers = usersWithTotal.filter(user => user.totalAmount > 100000);
         setUsers(usersWithTotal); // Store all users
         setFilteredUsers(filteredUsers); // Initially, show users with totalAmount > 100000
       } catch (error) {
@@ -67,7 +67,7 @@ const Loyalty = () => {
     let filtered;
     if (isFiltered) {
       // If filtered, only include users with totalAmount > customTotalAmount
-      filtered = users.filter(user => user.totalAmount > (customTotalAmount || 100) && (
+      filtered = users.filter(user => user.totalAmount > (customTotalAmount || 100000) && (
         user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         user.contact.includes(searchTerm)
       ));

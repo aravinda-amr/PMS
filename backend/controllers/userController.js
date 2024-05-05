@@ -60,11 +60,14 @@ export const signupManager = async (req, res) => {
  }
  
 //get all users
+// Updated getUsers function to only get users with role = 'customer'
 export const getUsers = async (req, res) => {
-  const users = await User.find({}).sort({ createdAt: -1 });
+  // Find users where role is 'customer' and sort them by creation date in descending order
+  const users = await User.find({ role: 'customer' }).sort({ createdAt: -1 });
 
   res.status(200).json(users);
 }
+
 
 
 
