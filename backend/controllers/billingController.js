@@ -3,8 +3,33 @@ import MedicineName from '../models/medicineModel.js';
 import Bill from '../models/billingModel.js';
 import User from '../models/userModel.js'; 
 import mongoose from 'mongoose';
+
 const{Types} = mongoose;
 
+const generateNextInvoiceID = async () => {
+    try {
+        // Retrieve the latest invoice ID from the database
+        const latestBill = await Bill.findOne().sort({ invoiceID: -1 });
+        // If no latestBill found, start with invoice ID P000001
+        let lastInvoiceNumber = 0;
+        if (latestBill && latestBill.invoiceID) {
+            // Parse the numeric part of the latest invoice ID
+            lastInvoiceNumber = parseInt(latestBill.invoiceID.substr(1),10);
+        }
+
+        // Increment the numeric part by 1
+        const nextInvoiceNumber = lastInvoiceNumber + 1;
+
+        // Format the new invoice number with leading zeros
+        const formattedInvoiceNumber = nextInvoiceNumber.toString().padStart(6, '0');
+        return `P${formattedInvoiceNumber}`;
+
+    } catch (error) {
+        // Handle errors
+        console.error('Error generating next invoice ID:', error);
+        throw new Error('Failed to generate next invoice ID');
+    }
+};
 
 
 // Function to calculate item total for each medicine
@@ -44,10 +69,12 @@ const retrieveDiscountForUser = async (customerID, invoiceDate) => {
             if (new Date(coupon.expire).getTime() === new Date(invoiceDate).getTime()) {
                 return false; // Exclude if expiration date is the same as invoice date
             }
-            return !coupon.used && new Date(coupon.expire) >= new Date();
+            return coupon.status === "Active" && !coupon.used && new Date(coupon.expire) >= new Date();
             });
             // If a valid coupon is found, return its discount
             if (validCoupon) {
+                validCoupon.status = "Used"; // Update the status to "Used"
+                await user.save(); // Save the user to update the coupon status
                 return validCoupon.discount;
             }
         }
@@ -96,6 +123,8 @@ const calculateGrandTotal = (subTotal, discountAmount) => {
 };
 
 
+
+
 //Validate phone number (10 digits)
 const isValidPhoneNumber = (phoneNumber) => {
     return /^\d{10}$/.test(phoneNumber);
@@ -113,7 +142,7 @@ const getBills = async (req, res)=> {
         
             //constructing the response object with _id renamed to invoiceID and excluding _id from medicines
             const response = bills.map(bill => {
-                const {_id, pharmacistID,customerID, invoiceDate, medicines, discountAmount } = bill;
+                const {invoiceID, pharmacistID,customerID, invoiceDate, medicines, discountAmount } = bill;
 
                 const transformedMedicines = medicines.map((medicine, index) => ({
                     index: index + 1, // Add auto-generated index for each medicine
@@ -128,7 +157,7 @@ const getBills = async (req, res)=> {
                         const grandTotal = calculateGrandTotal(subTotal, discountAmount || 0);
 
                 return {
-                        invoiceID: _id, // Rename _id to invoiceID
+                        invoiceID,
                         pharmacistID,
                         customerID,
                         invoiceDate,
@@ -176,7 +205,7 @@ const getBill = async(req, res) => {
 
     // Construct the response object with _id renamed to invoiceID and excluding _id from medicines
     const response ={
-        invoiceID: bill._id,
+        invoiceID: bill.invoiceID,
         pharmacistID: bill.pharmacistID,
         customerID: bill.customerID,
         invoiceDate: bill.invoiceDate,
@@ -202,15 +231,16 @@ const getBill = async(req, res) => {
 const createBill = async (req, res) => {
     const { pharmacistID, customerID, invoiceDate, medicines} = req.body;
 
-    // generate a new objectID for the invoiceID
-    const invoiceID = new Types.ObjectId();
-
+    
     // Validate customerID
     if (!isValidPhoneNumber(customerID)) {
         return res.status(400).json({ error: 'Invalid customerID. It should be a 10-digit phone number' });
     }
 
     try {
+
+         // Generate a unique invoice ID
+         const invoiceID = await generateNextInvoiceID();
        
         // Retrieve discount for the user
         const discount = await retrieveDiscountForUser(customerID);
@@ -255,7 +285,7 @@ const createBill = async (req, res) => {
 
         // Create a new bill document in the database
         const bill = await Bill.create({
-            _id: invoiceID,
+            invoiceID,
             pharmacistID,
             customerID,
             invoiceDate,
@@ -270,21 +300,8 @@ const createBill = async (req, res) => {
         // Save the updated bill
         await bill.save();
 
-        // Update coupon status to "used" if discount is applied
-        if (discount > 0) {
-            // Find the user to update the coupon status
-            const user = await User.findOne({ contact: customerID });
-            if (user) {
-                const validCoupon = user.coupons.find(coupon => !coupon.used && new Date(coupon.expire) >= new Date());
-                if (validCoupon) {
-                    validCoupon.used = true;
-                    await user.save(); // Save the user to update the coupon status
-                }
-            }
-        }
-
         const response = {
-            invoiceID: bill._id,
+            invoiceID,
             pharmacistID,
             customerID,
             invoiceDate,
@@ -319,14 +336,14 @@ const deleteMedicineFromBill = async(req, res) => {
    const { invoiceID, medicineIndex } = req.params;
 
    try{
-        const bill= await Bill.findById(invoiceID);
+        const bill= await Bill.findOne({invoiceID});
 
         if(!bill){
         return res.status(404).json({error: 'No such bill'});
     }
     
     // Find the medicine with the specified index
-    const index = parseInt(medicineIndex) - 1;
+    const index = parseInt(medicineIndex);
 
     //Check if the index is within the valid range
     if (index < 0 || index >= bill.medicines.length) {

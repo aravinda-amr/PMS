@@ -3,6 +3,11 @@ import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 const billingSchema = new Schema({
+    invoiceID: {
+        type: String,
+        required: true,
+        unique: true
+    },
     pharmacistID: {
         type: String,
         required: true

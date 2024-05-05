@@ -1,21 +1,24 @@
 import React, { useState } from 'react';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 
-const BillDetails = ({ bill, isAdmin, onDeleteMedicine }) => {
+const BillDetails = ({ bill, isAdmin , dispatch}) => {
     const [activeEditBillId, setActiveEditBillId] = useState(null);
 
     const handleDeleteMedicine = async (index) => {
         try {
             // Send a DELETE request to your backend API
-            const response = await fetch(`/api/billing/${bill.invoiceID}/${index}`, {
+            const response = await fetch(`/api/billing/${bill.invoiceID}/medicine/${index}`, {
                 method: 'DELETE',
             });
-
+    
             if (response.ok) {
                 // If the deletion is successful, update the bill list in the frontend
-                onDeleteMedicine(index);
-                window.location.reload();
-
+                // Update the bill list by removing the deleted medicine
+                const updatedMedicines = bill.medicines.filter((medicine, idx) => idx !== index);
+                const updatedBill = { ...bill, medicines: updatedMedicines };
+    
+                // Update the bill list in the state
+                dispatch({ type: 'UPDATE_BILL', payload: updatedBill });
             } else {
                 console.error('Error deleting medicine:', response.statusText);
             }
@@ -23,6 +26,7 @@ const BillDetails = ({ bill, isAdmin, onDeleteMedicine }) => {
             console.error('Error deleting medicine:', error);
         }
     };
+    
 
     const handleEditClick = () => {
         setActiveEditBillId(bill.invoiceID);
@@ -42,9 +46,9 @@ const BillDetails = ({ bill, isAdmin, onDeleteMedicine }) => {
                 <table className="table-auto bg-green-200">
                     <thead>
                         <tr className="bg-blue-200 text-dark-blue">
-                            <th className="px-2 py-1 text-left text-xs font-medium uppercase whitespace-nowrap">Drug Name</th>
-                            <th className="px-2 py-1 text-left text-xs font-medium uppercase whitespace-nowrap">Purchase Quantity</th>
-                            <th className="px-2 py-1 text-left text-xs font-medium uppercase whitespace-nowrap">Unit Price</th>
+                            <th className="px-2 py-1 text-left text-xs font-medium uppercase whitespace-nowrap w-1/3">Drug Name</th>
+                            <th className="px-2 py-1 text-left text-xs font-medium uppercase whitespace-nowrap w-1/3">Purchase Quantity</th>
+                            <th className="px-2 py-1 text-left text-xs font-medium uppercase whitespace-nowrap w-1/3">Unit Price</th>
                             {isAdmin && <th className="px-2 py-1 text-left text-xs font-medium uppercase whitespace-nowrap"></th>}
                         </tr>
                     </thead>

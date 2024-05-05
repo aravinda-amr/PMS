@@ -15,13 +15,13 @@ router.get('/', getBills)
 
 
 //Get a single bill
-router.get('/:id', getBill)
+router.get('/', getBill)
 
 //POST a new bill
 router.post('/', createBill) 
 
 //Delete a medicine from bill
-router.delete('/:invoiceID/:medicineIndex', deleteMedicineFromBill)
+router.delete('/:invoiceID/medicine/:medicineIndex', deleteMedicineFromBill)
 
 //Update a bill
 router.patch('/:id', updateBill)

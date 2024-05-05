@@ -5,6 +5,7 @@ import BillDetails from '../components/BillDetails';
 const Billing = () => {
     const { bills, dispatch } = useBillContext();
     const [isAdmin, setIsAdmin] = useState(true);
+    const [searchQuery, setSearchQuery] = useState('');
 
     useEffect(() => {
         const fetchBilling = async () => {
@@ -26,19 +27,22 @@ const Billing = () => {
         setIsAdmin(true);
     }, []);
 
-    const onDeleteMedicine = async (invoiceID, medicineIndex) => {
+    const handleDeleteMedicine = async (invoiceID, medicineIndex) => {
         try {
-            const response = await fetch(`/api/billing/${invoiceID}/${medicineIndex}`, {
+            const response = await fetch(`/api/billing/${invoiceID}/medicine/${medicineIndex}`, {
                 method: 'DELETE',
             });
-
+    
             if (response.ok) {
-                const updatedResponse = await fetch('/api/billing');
-                const updatedJson = await updatedResponse.json();
-
-                if (updatedResponse.ok) {
-                    dispatch({ type: 'SET_BILLS', payload: updatedJson });
-                }
+                // Update the local state with the updated bills data
+                const updatedBills = bills.map(bill => {
+                    if (bill.invoiceID === invoiceID) {
+                        // Filter out the deleted medicine from the current bill
+                        bill.medicines = bill.medicines.filter((medicine, index) => index !== medicineIndex);
+                    }
+                    return bill;
+                });
+                dispatch({ type: 'SET_BILLS', payload: updatedBills });
             } else {
                 console.error('Error deleting medicine:', response.statusText);
             }
@@ -46,6 +50,13 @@ const Billing = () => {
             console.error('Error deleting medicine:', error);
         }
     };
+    
+
+    const filteredBills = bills.filter(bill =>
+        (bill.invoiceID && bill.invoiceID.includes(searchQuery)) ||
+        (bill.customerID && bill.customerID.includes(searchQuery)) ||
+        (bill.pharmacistID && bill.pharmacistID.includes(searchQuery))
+    );
 
     return (
         <div className="billing-container flex">
@@ -53,7 +64,16 @@ const Billing = () => {
                 {/* Navigation bar content */}
             </div>
             <div className="bill-list px-4 sm:px-6 lg:px-8 overflow-y-auto">
-                <h1 className="text-2xl font-bold mb-4">All Bills</h1>
+                <div className="flex justify-between items-center mb-4">
+                    <h1 className="text-2xl font-bold mb-4">All Bills</h1>
+                    <input
+                        type="text"
+                        placeholder="Search..."
+                        value={searchQuery}
+                        onChange={e => setSearchQuery(e.target.value)}
+                        className="px-2 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                </div>
                 <table className="table-auto w-full min-w-[500px]">
                     <thead>
                         <tr className="bg-dark-blue text-white">
@@ -69,8 +89,9 @@ const Billing = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {bills.map((bill) => (
-                            <BillDetails key={bill.invoiceID} bill={bill} isAdmin={isAdmin} onDeleteMedicine={onDeleteMedicine} />
+                        {filteredBills.map((bill, medicineIndex) => (
+                            <BillDetails key={bill.invoiceID} bill={bill} isAdmin={isAdmin} onDeleteMedicine={() => handleDeleteMedicine(bill.invoiceID, medicineIndex)} 
+                            dispatch={dispatch}/>
                         ))}
                     </tbody>
                 </table>
