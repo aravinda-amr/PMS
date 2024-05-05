@@ -87,4 +87,7 @@ const POSSearch = ({ handleAddToBill }) => {
     );
 };
 
-export default POSSearch;
+export default POSSearch;
+
+
+

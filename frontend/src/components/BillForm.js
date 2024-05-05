@@ -17,12 +17,19 @@ const BillForm = () => {
     const [grandTotal, setGrandTotal] = useState(0);
     const [showBillPopup, setShowBillPopup] = useState(false);
     const [error, setError] = useState('');
+    const[customerIDError,setCustomerIDError]=useState('');
+    const[pharmacistIDError,setPharmacistIDError]=useState('');
     
     useEffect(() => {
         // Calculate subtotal whenever medicines or their quantities change
         const total = medicines.reduce((acc, curr) => acc + (curr.price * curr.purchaseQuantity), 0);
         setSubTotal(total);
     }, [medicines]);
+
+    useEffect(() => {
+        // Set invoiceDate to today's date
+        setInvoiceDate(new Date().toISOString().split('T')[0]);
+    }, []);
 
     const handleAddToBill = (drug) => {
         const existingMedicineIndex = medicines.findIndex(item => item.drugName === drug.drugName);
@@ -204,10 +211,18 @@ const handleDownload = () => {
                             type="text"
                             id="customerID"
                             value={customerID}
-                            onChange={(e) => setCustomerID(e.target.value)}
+                            onChange={(e) => {
+                                setCustomerID(e.target.value);
+                                if (e.target.value.length > 10) {
+                                    setCustomerIDError('Customer ID should be a 10-digit phone number.');
+                                } else {
+                                    setCustomerIDError('');
+                                }
+                            }}
                             required
-                            className="input-field"
+                            className={`input-field ${customerIDError && 'border-red-500'}`}
                         />
+                        {customerIDError && <p className="text-red-500 text-sm mt-1">{customerIDError}</p>}
                     </div>
                     <div>
                         <label htmlFor="pharmacistID" className="block text-sm font-semibold text-gray-800">Pharmacist ID:</label>
@@ -215,10 +230,19 @@ const handleDownload = () => {
                             type="text"
                             id="pharmacistID"
                             value={pharmacistID}
-                            onChange={(e) => setPharmacistID(e.target.value)}
+                            onChange={(e) => {
+                                setPharmacistID(e.target.value);
+                                const pharmacistIDRegex = /^AP\d{3}$/;
+                                if (!pharmacistIDRegex.test(e.target.value)) {
+                                    setPharmacistIDError('Pharmacist ID should start with "AP" followed by 3 digits.');
+                                } else {
+                                    setPharmacistIDError('');
+                                }
+                            }}
                             required
-                            className="input-field"
+                            className={`input-field ${pharmacistIDError && 'border-red-500'}`}
                         />
+                        {pharmacistIDError && <p className="text-red-500 text-sm mt-1">{pharmacistIDError}</p>}
                     </div>
                     <div>
                         <label htmlFor="invoiceDate" className="block text-sm font-semibold text-gray-800">Invoice Date:</label>
@@ -229,6 +253,8 @@ const handleDownload = () => {
                             onChange={(e) => setInvoiceDate(e.target.value)}
                             required
                             className="input-field"
+                            min={new Date().toISOString().split('T')[0]}
+                            max={new Date().toISOString().split('T')[0]} // Set max attribute to today's date
                         />
                     </div>
                 </div>
