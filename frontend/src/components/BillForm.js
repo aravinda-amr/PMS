@@ -162,7 +162,10 @@ const BillForm = () => {
         printWindow.document.write('</body></html>');
         
         printWindow.document.close();
-        printWindow.print();
+        
+        setTimeout(() => {
+            printWindow.print();
+            }, 100);
         
         // Close the print window after 3 seconds even if print is canceled
         setTimeout(() => {
@@ -193,8 +196,8 @@ const handleDownload = () => {
     };
  
     return (
-        <div className="max-w-custom mx-auto p-6 bg-white shadow-md rounded-lg">
-            <h3 className="text-2xl font-semibold mb-4 text-gray-800">Add a new Sale</h3>
+        <div className="max-w-600 mx-50 p-6 bg-dark-blue shadow-md rounded-lg border-4 border-black">
+            <h3 className="text-2xl font-semibold mb-4 text-white">Add a new Sale</h3>
             <POSSearch handleAddToBill={handleAddToBill} />
 
             {error && <div className="text-red-500 mt-2">{error}</div>}
@@ -202,11 +205,11 @@ const handleDownload = () => {
             <form onSubmit={handleSubmit}>
                 <div className="grid grid-cols-4 gap-4 mb-4">
                     <div>
-                        <label htmlFor="generatedInvoiceID" className="block text-sm font-semibold text-gray-800">Generated Invoice ID:</label>
-                        <p id="generatedInvoiceID" className="text-sm text-gray-800">{generatedInvoiceID}</p>
+                        <label htmlFor="generatedInvoiceID" className="block text-sm font-semibold text-white">Generated Invoice ID:</label>
+                        <p id="generatedInvoiceID" className="text-sm text-white">{generatedInvoiceID}</p>
                     </div>
                     <div>
-                        <label htmlFor="customerID" className="block text-sm font-semibold text-gray-800">Customer ID:</label>
+                        <label htmlFor="customerID" className="block text-sm font-semibold text-white">Customer ID:</label>
                         <input
                             type="text"
                             id="customerID"
@@ -225,7 +228,7 @@ const handleDownload = () => {
                         {customerIDError && <p className="text-red-500 text-sm mt-1">{customerIDError}</p>}
                     </div>
                     <div>
-                        <label htmlFor="pharmacistID" className="block text-sm font-semibold text-gray-800">Pharmacist ID:</label>
+                        <label htmlFor="pharmacistID" className="block text-sm font-semibold text-white">Pharmacist ID:</label>
                         <input
                             type="text"
                             id="pharmacistID"
@@ -245,7 +248,7 @@ const handleDownload = () => {
                         {pharmacistIDError && <p className="text-red-500 text-sm mt-1">{pharmacistIDError}</p>}
                     </div>
                     <div>
-                        <label htmlFor="invoiceDate" className="block text-sm font-semibold text-gray-800">Invoice Date:</label>
+                        <label htmlFor="invoiceDate" className="block text-sm font-semibold text-white">Invoice Date:</label>
                         <input
                             type="date"
                             id="invoiceDate"
@@ -259,35 +262,35 @@ const handleDownload = () => {
                     </div>
                 </div>
                 <div>
-                    <h4 className="text-lg font-semibold mb-2 text-gray-800">Medicines</h4>
+                    <h4 className="text-lg font-semibold mb-2 text-white">Medicines</h4>
                     <table className="w-full mb-4">
                         <thead>
                             <tr>
-                                <th className="px-4 py-2 text-gray-800">Index</th>
-                                <th className="px-4 py-2 text-gray-800">Drug Name</th>
-                                <th className="px-4 py-2 text-gray-800">Unit Price</th>
-                                <th className="px-4 py-2 text-gray-800">Purchase Quantity</th>
-                                <th className="px-4 py-2 text-gray-800">Item Total</th>
-                                <th className="px-4 py-2 text-gray-800">Actions</th>
+                                <th className="px-4 py-2 text-white">Index</th>
+                                <th className="px-4 py-2 text-white">Drug Name</th>
+                                <th className="px-4 py-2 text-white">Unit Price</th>
+                                <th className="px-4 py-2 text-white">Purchase Quantity</th>
+                                <th className="px-4 py-2 text-white">Item Total</th>
+                                <th className="px-4 py-2 text-white">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             {medicines.map((medicine, index) => (
                                 <tr key={index}>
-                                    <td className="border px-4 py-2">{index + 1}</td>
-                                    <td className="border px-4 py-2">{medicine.drugName}</td>
-                                    <td className="border px-4 py-2">{medicine.price.toFixed(2)}</td>
-                                    <td className="border px-4 py-2">
+                                    <td className="border px-4 py-2 text-white"style={{ width: "7%" }}>{index + 1}</td>
+                                    <td className="border px-4 py-2 text-white"style={{ width: "16.67%" }}>{medicine.drugName}</td>
+                                    <td className="border px-4 py-2 text-white"style={{ width: "16.67%" }}>{medicine.price.toFixed(2)}</td>
+                                    <td className="border px-4 py-2 border-white"style={{ width: "16.67%" }}>
                                         <input
                                             type="number"
                                             value={medicine.purchaseQuantity}
                                             onChange={(e) => handlePurchaseQuantityChange(e, index)}
                                             required
-                                            className="input-field"
+                                            className="input-field w-full"
                                         />
                                     </td>
-                                    <td className="border px-4 py-2">{(medicine.price * medicine.purchaseQuantity).toFixed(2)}</td>
-                                    <td className="border px-4 py-2">
+                                    <td className="border px-4 py-2 text-white"style={{ width: "16.67%" }}>{(medicine.price * medicine.purchaseQuantity).toFixed(2)}</td>
+                                    <td className="border px-4 py-2 text-white"style={{ width: "7%" }}>
                                         <button onClick={() => handleDeleteMedicine(index)} className="text-red-500">
                                             <FaTrash />
                                         </button>
@@ -298,16 +301,16 @@ const handleDownload = () => {
                     </table>
                 </div>
                 <div>
-                    <h4 className="text-lg font-semibold mb-2 text-gray-800">Subtotal: LKR{subTotal.toFixed(2)}</h4>
+                    <h4 className="text-lg font-semibold mb-2 text-white">Subtotal: LKR{subTotal.toFixed(2)}</h4>
                 </div>
                 <button type="submit" className="bg-login1 hover:bg-login2 text-black font-bold px-4 py-1 rounded-lg font-jakarta cursor-pointer hover:transition-all">Checkout</button>
             </form>
             
             <div>
-                <h4 className="text-lg font-semibold mb-2 text-gray-800">Discount Amount: LKR{discountAmount.toFixed(2)}</h4>
+                <h4 className="text-lg font-semibold mb-2 text-white">Discount Amount: LKR{discountAmount.toFixed(2)}</h4>
             </div>
             <div>
-                <h4 className="text-lg font-semibold mb-2 text-gray-800">Grand Total: LKR{grandTotal.toFixed(2)}</h4>
+                <h4 className="text-lg font-semibold mb-2 text-white">Grand Total: LKR{grandTotal.toFixed(2)}</h4>
             </div>
             <button onClick={handleGenerateBill} className="bg-login1 hover:bg-login2 text-black font-bold px-4 py-1 rounded-lg font-jakarta cursor-pointer hover:transition-all mt-4">
                 Generate Bill
