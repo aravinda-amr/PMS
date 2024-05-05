@@ -162,7 +162,10 @@ const BillForm = () => {
         printWindow.document.write('</body></html>');
         
         printWindow.document.close();
-        printWindow.print();
+        
+        setTimeout(() => {
+            printWindow.print();
+            }, 100);
         
         // Close the print window after 3 seconds even if print is canceled
         setTimeout(() => {
