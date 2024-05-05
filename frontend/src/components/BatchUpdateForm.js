@@ -54,6 +54,12 @@
                 setLoading(false);
                 return;
             }
+
+            if (newData.price <= 0) {
+                setError("Price must be greater than 0.");
+                setLoading(false);
+                return;
+            }
     
             const priceWithTwoDecimals = parseFloat(newData.price).toFixed(2);
             if (isNaN(priceWithTwoDecimals) || priceWithTwoDecimals !== newData.price) {
@@ -78,23 +84,40 @@
                 <h2 className="text-2xl font-bold mb-4">Update Batch</h2>
                 <form className="space-y-4 flex-grow" onSubmit={handleSubmit}>
                     <label className="flex flex-col text-left">Batch Number:
-                        <input type="text" name="batchNumber" value={newData.batchNumber} onChange={handleChange}   className="appearance-none border border-gray-300 rounded-md py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-blue-500"
+                        <input type="text" name="batchNumber" value={newData.batchNumber} onChange={handleChange} className="appearance-none border border-gray-300 rounded-md py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-blue-500"
                     style={{ fontSize: '18px' }}/>
                     </label>
+
                     <label className="flex flex-col text-left">Manufacture Date:
-                        <input type="date" name="manufactureDate" value={newData.manufactureDate} onChange={handleChange}  className="appearance-none border border-gray-300 rounded-md py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-blue-500"
+                        <input type="date" name="manufactureDate" value={newData.manufactureDate} onChange={handleChange} 
+
+                         required // Set required attribute
+                         max={new Date().toISOString().split('T')[0]} // Set max attribute to today's date
+                         
+                         className="appearance-none border border-gray-300 rounded-md py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-blue-500"
                     style={{ fontSize: '18px' }}/>
                     </label>
+
                     <label className="flex flex-col text-left">Expire Date:
-                        <input type="date" name="expireDate" value={newData.expireDate} onChange={handleChange}  className="appearance-none border border-gray-300 rounded-md py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-blue-500"
-                    style={{ fontSize: '18px' }}/>
+                        <input type="date" name="expireDate" value={newData.expireDate} onChange={handleChange}
+                        className="appearance-none border border-gray-300 rounded-md py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-blue-500"
+                        style={{ fontSize: '18px' }}
+
+                        min={(new Date(Date.now() + 24 * 60 * 60 * 1000)).toISOString().split('T')[0]}/> 
                     </label>
+
+
                     <label className="flex flex-col text-left">Quantity:
-                        <input type="number" name="quantity" value={newData.quantity} onChange={handleChange}  className="appearance-none border border-gray-300 rounded-md py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-blue-500"
+                        <input type="number" name="quantity" value={newData.quantity} onChange={handleChange} 
+                         min="1" // Set min attribute to 1
+                         className="appearance-none border border-gray-300 rounded-md py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-blue-500"
                     style={{ fontSize: '18px' }}/>
+
                     </label>
+
                     <label className="flex flex-col text-left">Price:
-                        <input type="number" name="price" value={newData.price} onChange={handleChange}  className="appearance-none border border-gray-300 rounded-md py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-blue-500"
+                        <input type="number" name="price" value={newData.price} onChange={handleChange} 
+                         className="appearance-none border border-gray-300 rounded-md py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-blue-500"
                     style={{ fontSize: '18px' }}/>
                     </label>
 
