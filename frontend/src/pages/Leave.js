@@ -5,7 +5,7 @@ import Button from '@mui/material/Button';
 import LeaveDetails from '../components/LeaveDetails'
 import LeavesForm from '../components/LeaveForm'
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
-import EmailModal from './email.js'; 
+import EmailModal from './emailleave.js'; 
 
 const Leave = () => {
   const {leaves, dispatch} = useLeavesContext()
