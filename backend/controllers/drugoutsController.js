@@ -266,12 +266,13 @@ const getDrugNameAndBatches = async (req, res) => {
 
 const getDrugNamesWithPrice = async (req, res) => {
     try {
-        // Find all drugs with their prices from the first batch
-        const drugsWithPrices = await Drug.aggregate([
+        // Find all drugs with their prices and total quantity from the first batch
+        const drugsWithPricesAndQuantity = await Drug.aggregate([
             {
                 $group: {
                     _id: "$drugName", // Group by drugName
-                    price: { $first: "$price" } // Get the price from the first batch
+                    price: { $first: "$price" }, // Get the price from the first batch
+                    totalQuantity: { $sum: "$quantity" } // Sum of quantity from all batches
                 }
             },
             {
@@ -286,15 +287,16 @@ const getDrugNamesWithPrice = async (req, res) => {
                 $project: {
                     _id: 0,
                     drugName: { $arrayElemAt: ["$drugName.drugName", 0] }, // Get the drugName from the lookup result
-                    price: 1 // Include the price
+                    price: 1, // Include the price
+                    totalQuantity: 1 // Include the total quantity
                 }
             }
         ]);
 
-        res.json(drugsWithPrices);
+        res.json(drugsWithPricesAndQuantity);
         
     } catch (error) {
-        console.error('Error fetching drug names with price:', error);
+        console.error('Error fetching drug names with price and quantity:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
 };

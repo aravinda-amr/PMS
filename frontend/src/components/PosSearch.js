@@ -1,10 +1,10 @@
-
 import React, { useState, useEffect } from 'react';
 
 const POSSearch = ({ handleAddToBill }) => {
     const [drugs, setDrugs] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [error, setError] = useState('');
+    const [selectedDrug, setSelectedDrug] = useState(null);
 
     useEffect(() => {
         const fetchDrugs = async () => {
@@ -27,7 +27,7 @@ const POSSearch = ({ handleAddToBill }) => {
         handleAddToBill({ drugName, price });
     };
 
-    const handleAdd = (selectedDrug) => {
+    const handleAdd = () => {
         if (!selectedDrug) {
             setError('Please select a drug');
             return;
@@ -35,7 +35,13 @@ const POSSearch = ({ handleAddToBill }) => {
         setError('');
         const drug = drugs.find(drug => drug.drugName === selectedDrug);
         if (drug) {
-            handleSearch(drug.drugName, drug.price || 0);
+            const totalQuantity = drug.totalQuantity || 0;
+            const price = drug.price || 0;
+            if (totalQuantity <= 0) {
+                setError('Selected drug is out of stock');
+            } else {
+                handleSearch(drug.drugName, price);
+            }
         } else {
             setError('Selected drug not found');
         }
@@ -63,10 +69,12 @@ const POSSearch = ({ handleAddToBill }) => {
                     {filteredDrugs.map((drug, index) => (
                         <div key={index} className="flex items-center justify-between py-2">
                             <div>
-                                <p className="text-lg font-semibold text-blue-500 mb-1">{drug.drugName} | Price: {drug.price}</p>
+                                <p className="text-lg font-semibold text-blue-500 mb-1">
+                                    {drug.drugName} | Price: {drug.price} | Available: {drug.totalQuantity || 0}
+                                </p>
                             </div>
                             <button 
-                                onClick={() => handleAdd(drug.drugName)} 
+                                onClick={() => handleAddToBill({ drugName: drug.drugName, price: drug.price })} 
                                 className="bg-login1 hover:bg-login2 text-black hover:text-white px-4 py-2 rounded-md font-jakarta font-bold"
                             >
                                 Add
@@ -79,14 +87,4 @@ const POSSearch = ({ handleAddToBill }) => {
     );
 };
 
-export default POSSearch;
-
-
-
-
-
-
-
-
-
-
+export default POSSearch;

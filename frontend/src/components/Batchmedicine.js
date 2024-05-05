@@ -78,6 +78,12 @@ const Batchmedicine = ({ onSuccess , onUpdateDrugs}) => {
         return;
     }
 
+    if (price <= 0) {
+        setError("Price must be greater than 0.");
+        setLoading(false);
+        return;
+    }
+
     // Check if price is entered with 2 decimal places
     const priceWithTwoDecimals = parseFloat(price).toFixed(2);
     if (isNaN(priceWithTwoDecimals) || priceWithTwoDecimals !== price) {
@@ -142,7 +148,7 @@ const Batchmedicine = ({ onSuccess , onUpdateDrugs}) => {
         } catch (error) { // Catch any errors and update the error state
             setError(error.message);
             console.error('Error adding batch:', error);
-            alert('Please enter details correctly to add a new batch.');
+            alert('Please enter details correctly ,check batch number to add a new batch.');
         }finally {
             setLoading(false); // Stop loading
         }
@@ -207,6 +213,8 @@ const Batchmedicine = ({ onSuccess , onUpdateDrugs}) => {
                     type="date"
                     value={manufactureDate}
                     onChange={(event) => setManufactureDate(event.target.value)}
+                    required
+                    max={new Date().toISOString().split('T')[0]} // Set max attribute to today's date
                     className="appearance-none border border-gray-300 rounded-md py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-blue-500"
                     style={{ fontSize: '18px' }}
                 />
@@ -219,6 +227,7 @@ const Batchmedicine = ({ onSuccess , onUpdateDrugs}) => {
                     onChange={(event) => setExpireDate(event.target.value)}
                     className="appearance-none border border-gray-300 rounded-md py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-blue-500"
                     style={{ fontSize: '18px' }}
+                    min={(new Date(Date.now() + 24 * 60 * 60 * 1000)).toISOString().split('T')[0]}// Set min attribute to tomorrow's date
                 />
             </label>
             <label className="flex flex-col text-left">
@@ -227,6 +236,7 @@ const Batchmedicine = ({ onSuccess , onUpdateDrugs}) => {
                     type="number"
                     value={quantity}
                     onChange={(event) => setQuantity(event.target.value)}
+                    min="1"
                     className="appearance-none border border-gray-300 rounded-md py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-blue-500"
                     style={{ fontSize: '18px' }}
                 />

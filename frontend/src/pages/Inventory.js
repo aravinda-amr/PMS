@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { AiOutlineDelete, AiOutlineEdit ,AiFillDelete  } from 'react-icons/ai';
-import {MdClose,MdDownload} from "react-icons/md";
+import {MdClose,MdDownload, MdNotifications} from "react-icons/md";
 import MedicineForm from '../components/MedicineForm';
 import Batchmedicine from '../components/Batchmedicine';
 import BatchUpdateForm from '../components/BatchUpdateForm'; 
 import TextField from '@mui/material/TextField';
 import CircularProgress from '@mui/material/CircularProgress';
-import logo from '../images/logo.png';
+import logo from '../images/logo-bw-2-nbg.png';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 
@@ -18,6 +18,8 @@ const Inventory = () => {
     const [selectedBatch, setSelectedBatch] = useState(null);
     const [showUpdateForm, setShowUpdateForm] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
+    const [notificationBatches, setNotificationBatches] = useState([]);
+    const [showNotificationPopup, setShowNotificationPopup] = useState(false); 
   
     
 
@@ -30,6 +32,13 @@ const Inventory = () => {
                 }
                 const data = await response.json();
                 setMedicinenames(data);
+
+                const newNotificationBatches = data
+                .flatMap(medicine => medicine.batches.filter(batch => batch.quantity === 0))
+                .map(batch => ({ medicine: batch.drugName, batch: batch.batchNumber }));
+            setNotificationBatches(newNotificationBatches);
+
+
             } catch (error) {
                 setError(error);
             } finally {
@@ -50,6 +59,11 @@ const Inventory = () => {
             }
             const data = await response.json();
             setMedicinenames(data);
+
+            // const newNotificationBatches = data
+            //     .flatMap(medicine => medicine.batches.filter(batch => batch.quantity === 0))
+            //     .map(batch => ({ medicine: batch.drugName, batch: batch.batchNumber }));
+            // setNotificationBatches(newNotificationBatches);
         } catch (error) {
             console.error('Error fetching updated medicinenames:', error.message);
         }
@@ -154,12 +168,18 @@ const Inventory = () => {
             };
             //updating a batch in the inventory end here
 
+            const handleDismissNotification = (batchNumber) => { //for dismissing a notification
+                const updatedBatches = notificationBatches.filter(batch => batch.batch !== batchNumber);
+                setNotificationBatches(updatedBatches);
+            };
+
 
             
 
             //searching a medicine in the inventory
-            const filteredMedicines = medicinenames.filter(medicine => 
-                medicine.drugName.drugName.toLowerCase().startsWith(searchTerm.toLowerCase())
+            const filteredMedicines = medicinenames.filter(medicine =>
+                medicine.drugName.drugName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                medicine.batches.some(batch => batch.batchNumber.toLowerCase().includes(searchTerm.toLowerCase()))
             );
 
             const handleSearch = (e) => {
@@ -266,6 +286,12 @@ const Inventory = () => {
 
             <div className="relative mb-4 flex justify-end">
             <div className="flex items-center">
+
+
+                <div className="mr-8" onClick={() => setShowNotificationPopup(!showNotificationPopup)}>
+                        <MdNotifications size={38} className="text-yellow-500" />
+                        <span className="text-yellow-500 text-sm">{notificationBatches.length}</span>
+                    </div>
                     
                      
                    <button onClick={generatePDF} className="mr-6">
@@ -294,6 +320,21 @@ const Inventory = () => {
                     >
                     <MdClose/>
                     </button>
+                )}
+
+
+                {showNotificationPopup && notificationBatches.length > 0 && (
+                     <div className="fixed top-40 left-80 w-full h-full flex items-start justify-center bg-gray-800 bg-opacity-75">
+                     <div className="bg-white p-8 rounded-xl w-96 relative border-4 border-black" >
+                    {notificationBatches.map((notification, index) => (
+                        <div key={index}>
+                            <p className="font-semibold text-lg">Batch {notification.batch}</p>
+                            <p className="text-sm">Quantity is 0</p>
+                            <button onClick={() => handleDismissNotification(notification.batch)} className="btn bg-signup1 hover:bg-signup2 hover:text-white mr-2 px-4 py-1 rounded-lg font-jakarta font-semibold cursor-pointer hover:transition-all">Dismiss</button>
+                        </div>
+                    ))}
+                </div>
+            </div>
                 )}
                 
     
@@ -327,7 +368,7 @@ const Inventory = () => {
                                     <td className="text-center text-lg">{new Date(batch.manufactureDate).toLocaleDateString()}</td>
                                     <td className="text-center text-lg">{new Date(batch.expireDate).toLocaleDateString()}</td>
                                     <td className="text-center text-lg">{batch.quantity}</td>
-                                    <td className="text-center text-lg">{batch.price}</td>
+                                    <td className="text-center text-lg">{parseFloat(batch.price).toFixed(2)}</td>
                                     <td className="text-center text-lg"><button onClick={() => handleDeleteBatch(batch._id)} className="text-red-600"> <AiOutlineDelete /> </button></td>
                                     <td>
                                     <button onClick={() => handleUpdateButtonClick(batch._id)} className="text-blue-600"> <AiOutlineEdit /></button>
