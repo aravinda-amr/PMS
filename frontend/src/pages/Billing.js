@@ -50,6 +50,9 @@ const Billing = () => {
             console.error('Error deleting medicine:', error);
         }
     };
+
+   
+    
     
 
     const filteredBills = bills.filter(bill =>
@@ -63,7 +66,7 @@ const Billing = () => {
             <div className="navbar w-64 bg-dark-blue h-full text-white px-4 py-1 px-3 font-jakarta">
                 {/* Navigation bar content */}
             </div>
-            <div className="bill-list px-4 sm:px-6 lg:px-8 overflow-y-auto">
+            <div className="bill-list flex flex-col flex-1 px-4 sm:px-6 lg:px-8 overflow-y-auto">
                 <div className="flex justify-between items-center mb-4">
                     <h1 className="text-2xl font-bold mb-4">All Bills</h1>
                     <input
@@ -74,27 +77,29 @@ const Billing = () => {
                         className="px-2 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                 </div>
-                <table className="table-auto w-full min-w-[500px]">
-                    <thead>
-                        <tr className="bg-dark-blue text-white">
-                            <th className="px-4 py-2 text-left text-sm font-medium uppercase">Invoice ID</th>
-                            <th className="px-4 py-2 text-left text-sm font-medium uppercase whitespace-nowrap">Pharmacist ID</th>
-                            <th className="px-4 py-2 text-left text-sm font-medium uppercase whitespace-nowrap">Customer ID</th>
-                            <th className="px-4 py-2 text-left text-sm font-medium uppercase">Invoice Date</th>
-                            <th className="px-4 py-2 text-left text-sm font-medium uppercase">Medicines</th>
-                            <th className="px-4 py-2 text-left text-sm font-medium uppercase">Subtotal</th>
-                            <th className="px-4 py-2 text-left text-sm font-medium uppercase">Discount Amount</th>
-                            <th className="px-4 py-2 text-left text-sm font-medium uppercase whitespace-nowrap">Grand Total</th>
-                            <th className="px-4 py-2 text-left text-sm font-medium uppercase whitespace-nowrap">Edit</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {filteredBills.map((bill, medicineIndex) => (
-                            <BillDetails key={bill.invoiceID} bill={bill} isAdmin={isAdmin} onDeleteMedicine={() => handleDeleteMedicine(bill.invoiceID, medicineIndex)} 
-                            dispatch={dispatch}/>
-                        ))}
-                    </tbody>
-                </table>
+                <div className="overflow-x-auto">
+                    <table className="table-auto w-full min-w-[500px]">
+                        <thead>
+                            <tr className="bg-dark-blue text-white">
+                                <th className="px-4 py-2 text-left text-sm font-medium uppercase">Invoice ID</th>
+                                <th className="px-4 py-2 text-left text-sm font-medium uppercase whitespace-nowrap">Pharmacist ID</th>
+                                <th className="px-4 py-2 text-left text-sm font-medium uppercase whitespace-nowrap">Customer ID</th>
+                                <th className="px-4 py-2 text-left text-sm font-medium uppercase">Invoice Date</th>
+                                <th className="px-4 py-2 text-left text-sm font-medium uppercase">Medicines</th>
+                                <th className="px-4 py-2 text-left text-sm font-medium uppercase">Subtotal</th>
+                                <th className="px-4 py-2 text-left text-sm font-medium uppercase">Discount Amount</th>
+                                <th className="px-4 py-2 text-left text-sm font-medium uppercase whitespace-nowrap">Grand Total</th>
+                                <th className="px-4 py-2 text-left text-sm font-medium uppercase whitespace-nowrap">Edit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {filteredBills.map((bill, medicineIndex) => (
+                                <BillDetails key={bill.invoiceID} bill={bill} isAdmin={isAdmin} onDeleteMedicine={() => handleDeleteMedicine(bill.invoiceID, medicineIndex)} 
+                                dispatch={dispatch} />
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     );
