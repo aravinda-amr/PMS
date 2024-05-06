@@ -119,6 +119,12 @@ const Navbar = () => {
 
                     {(userRole === 'manager' || userRole === 'admin') && (
                         <>
+                            <Link to="/dash">
+                                <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
+                                    <SummarizeIcon />
+                                    <h1 className='ps-1 my-auto'>Dashboard</h1>
+                                </div>
+                            </Link>
                             <Link to="/loyalty">
                                 <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
                                     <LoyaltyIcon />

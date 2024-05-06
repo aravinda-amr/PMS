@@ -21,6 +21,7 @@ import Leaderboard from './pages/Leaderboard.js';
 import Inventory from './pages/Inventory';
 import Landing from './pages/Landing.js';
 import StaffReg from './pages/StaffReg.js';
+import CustomerHome from './pages/CustomerHome.js';
 
 import SalesReport from './pages/SR'
 import './index.css';
@@ -42,13 +43,7 @@ function App() {
           <Routes>
             <Route 
               path="/"
-              element={user ? <Home
-                aboutToExpirePath="/abtexpired"
-                outOfStockPath="/outofstock"
-                expiredPath="/expired"
-                aboutToOutOfStockPath="/abtoutofstock"
-              />
-               : <Landing/>}
+              element={user ? <CustomerHome/> : <Landing/>}
             />
             <Route
               path="/login"
@@ -128,7 +123,16 @@ function App() {
                 path="/staffreg"
                 element={<StaffReg/>}
             />
-            
+
+            <Route
+                path="/dash"
+                element={<Home
+                  aboutToExpirePath="/abtexpired"
+                  outOfStockPath="/outofstock"
+                  expiredPath="/expired"
+                  aboutToOutOfStockPath="/abtoutofstock"
+                />}
+            />
 
           </Routes>
         </div>
