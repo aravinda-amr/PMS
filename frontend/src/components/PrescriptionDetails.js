@@ -114,10 +114,10 @@ const PrescriptionDetails = ({ prescription }) => {
 
                     {!showModal && prescription.quotation.length === 0 && (
                         <div className="flex justify-between">
-                            <button onClick={handleClick} className="bg-delete hover:bg-deleteH text-white font-bold px-8 py-1 
+                            <button onClick={handleClick} className="bg-login1 hover:bg-login2 text-white font-bold px-8 py-1 
                                 rounded-lg font-jakarta cursor-pointer hover:transition-all">Delete</button>
-                            <button onClick={handleUpdate} className="bg-update hover:bg-updateH text-white font-bold px-8 py-1 
-                                rounded-lg font-jakarta cursor-pointer hover:transition-all">Update</button>
+                            <button onClick={handleUpdate} className="bg-signup1 hover:bg-signup2 text-white font-bold px-8 py-1 
+                                rounded-lg font-jakarta cursor-pointer hover:transition-all">Edit Note</button>
                         </div>
             )}
                     
