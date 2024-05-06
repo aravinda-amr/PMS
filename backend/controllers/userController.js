@@ -68,6 +68,17 @@ export const getUsers = async (req, res) => {
   res.status(200).json(users);
 }
 
+//need to get a single user by using the id
+export const getUser = async (req, res) => {
+  const { id } = req.params;
+  const user = await User.findById(id);
+
+  if (!user) {
+    return res.status(400).json({ error: 'No such user' });
+  }
+
+  res.status(200).json(user);
+}
 
 
 

@@ -1,4 +1,8 @@
 import React, { useState } from 'react';
+import logo from '../images/logo-bw-2-nbg.png';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
+import FileDownloadIcon from '@mui/icons-material/FileDownload';
 
 const ViewQuotation = ({ quotation, presID }) => {
 
@@ -36,6 +40,40 @@ const ViewQuotation = ({ quotation, presID }) => {
         }
     };
 
+    const generatePDF = () => {
+                const doc = new jsPDF();
+                doc.setFont('helvetica', 'bold');
+                doc.setFontSize(24);
+            
+                // Add logo at the center of the PDF
+                const logoImg = new Image();
+                logoImg.src = logo;
+            
+                // Calculate the x-coordinate to place the logo at the center
+                const logoWidth = 40; // Adjust the width of the logo image as needed
+                const pageWidth = doc.internal.pageSize.getWidth();
+                const x = (pageWidth - logoWidth) / 2;
+            
+                doc.addImage(logoImg, 'PNG', x, 10, logoWidth, logoWidth * (40 / 40));
+            
+                // Display "Inventory Report" text under the logo
+                doc.setFontSize(18);
+                doc.text("Quotation", pageWidth / 2, 60, { align: 'center' });
+
+        // Add table to the PDF
+        doc.autoTable({
+            head: [['Drug Name', 'Quantity', 'Price', 'Total']],
+            body: quotation.medicines.map(medicine => [medicine.drugName, medicine.purchaseQuantity, medicine.price, medicine.calculateItemTotal]),
+            startY: 70 // Adjust as needed
+        });
+
+        // Add subtotal to the PDF
+        doc.text(`Subtotal: LKR ${quotation.subTotal} /=`, 10, doc.autoTable.previous.finalY + 10);
+
+        // Save the PDF
+        doc.save("quotation.pdf");
+    };
+
 
     return (
         <div className="ml-8 mr-8 border-gray-300 rounded-lg px-8 py-6 mb-8 bg-update" >
@@ -68,11 +106,15 @@ const ViewQuotation = ({ quotation, presID }) => {
             {!isActionTaken && (
                 <div>
                     <button onClick={handleApprove} className="bg-login1 hover:bg-login2 text-white font-bold px-4 py-1 
-                                rounded-lg font-jakarta cursor-pointer hover:transition-all mx-4 my-4">Approve</button>
+                                rounded-lg font-jakarta cursor-pointer hover:transition-all mr-4 my-4">Approve</button>
                     <button onClick={handleReject} className="bg-delete hover:bg-deleteH text-white font-bold px-4 py-1 
                                 rounded-lg font-jakarta cursor-pointer hover:transition-all" >Reject</button>
                 </div>
             )}
+
+            <button onClick={generatePDF} className="mr-6">
+                    <FileDownloadIcon fontSize='large'/>
+            </button> 
         </div>
     );
 };

@@ -58,6 +58,15 @@ const Quotations = () => {
                     </FormControl>
                 </div>
             </div>
+
+        <div className="grid grid-cols-6 mx-4">
+            <h1 className="text-2xl font-semibold text-gray-800 flex-grow mx-4">Prescription Note</h1>
+            <h1 className="text-2xl font-semibold text-gray-800 flex-grow mx-4">Email</h1>
+            <h1 className="text-2xl font-semibold text-gray-800 flex-grow mx-4">Substitutes</h1>
+            <h1 className="text-2xl font-semibold text-gray-800 flex-grow mx-4">Created At</h1>
+            <h1 className="text-2xl font-semibold text-gray-800 flex-grow mx-4">Status</h1>
+            <h1 className="text-2xl font-semibold text-gray-800 flex-grow mx-4">Quotation</h1>
+        </div>
             
 
         <div className="prescription_list">
