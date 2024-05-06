@@ -64,7 +64,7 @@ const Navbar = () => {
                 <div className="text-sm border-t-2 pt-6 border-blue-button">
                     
 
-                    {userRole === 'inventory handler' && (
+                    {(userRole === 'inventory handler' || userRole === 'admin') && (
                         <>
                             <Link to="/">
                                 <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
@@ -117,7 +117,7 @@ const Navbar = () => {
                         </>
                     )}
 
-                    {userRole === 'manager' && (
+                    {(userRole === 'manager' || userRole === 'admin') && (
                         <>
                             <Link to="/loyalty">
                                 <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
@@ -160,7 +160,7 @@ const Navbar = () => {
                         </>
                     )}
 
-                    {userRole === 'customer' && (
+                    {(userRole === 'customer' || userRole === 'admin') && (
                         <>
                             <Link to="/prescription">
                                 <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
@@ -171,7 +171,7 @@ const Navbar = () => {
                         </>
                     )}
 
-                    {userRole === 'prescription handler' && (
+                    {(userRole === 'prescription handler' || userRole === 'admin') && (
                         <>
                             <Link to="/quotations">
                                 <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
@@ -182,7 +182,7 @@ const Navbar = () => {
                         </>
                     )}
                     
-                    {userRole === 'pharmacist' && (
+                    {(userRole === 'pharmacist' || userRole === 'admin') && (
                            <Link to="/leaves">
                                 <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
                                     <CalendarTodayIcon />
@@ -192,7 +192,7 @@ const Navbar = () => {
                     )}
                     
 
-                    {userRole === 'cashier' && (
+                    {(userRole === 'cashier' || userRole === 'admin') && (
                         
                         <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
                         <PointOfSaleIcon onClick={togglePosMenu} />
