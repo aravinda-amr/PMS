@@ -10,7 +10,7 @@
 
 const StaffRewardDetails = ({staffreward}) => {
   return(
-    <div className="bg-gray-100 rounded-lg p-4 mb-4 flex flex-col">
+    <div className="bg-gray-100 rounded-lg p-4 mb-4 mx-4 flex flex-col">
     <div className="bg-dark-blue-2 flex justify-between items-center px-4 py-2 rounded-t-lg">
       <h2 className="text-lg font-medium text-white">
         Pharmacist ID: {staffreward.pharmacistID}

@@ -57,11 +57,11 @@ const BillForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const pharmacistIDRegex = /^AP\d{3}$/; // Regular expression to match "AP" followed by 3 digits
-        if (!pharmacistIDRegex.test(pharmacistID)) {
-            setError('Pharmacist ID should start with "AP" followed by 3 digits.');
-            return;
-        }
+        // const pharmacistIDRegex = /^AP\d{3}$/; // Regular expression to match "AP" followed by 3 digits
+        // if (!pharmacistIDRegex.test(pharmacistID)) {
+        //     setError('Pharmacist ID should start with "AP" followed by 3 digits.');
+        //     return;
+        // }
     
         // Validate customerID format (10 digits)
         const customerIDRegex = /^\d{10}$/;
@@ -228,19 +228,19 @@ const handleDownload = () => {
                         {customerIDError && <p className="text-red-500 text-sm mt-1">{customerIDError}</p>}
                     </div>
                     <div>
-                        <label htmlFor="pharmacistID" className="block text-sm font-semibold text-white">Pharmacist ID:</label>
+                        <label htmlFor="pharmacistID" className="block text-sm font-semibold text-white">Pharmacist Name:</label>
                         <input
                             type="text"
                             id="pharmacistID"
                             value={pharmacistID}
                             onChange={(e) => {
                                 setPharmacistID(e.target.value);
-                                const pharmacistIDRegex = /^AP\d{3}$/;
-                                if (!pharmacistIDRegex.test(e.target.value)) {
-                                    setPharmacistIDError('Pharmacist ID should start with "AP" followed by 3 digits.');
-                                } else {
-                                    setPharmacistIDError('');
-                                }
+                                // const pharmacistIDRegex = /^AP\d{3}$/;
+                                // if (!pharmacistIDRegex.test(e.target.value)) {
+                                //     setPharmacistIDError('Pharmacist ID should start with "AP" followed by 3 digits.');
+                                // } else {
+                                //     setPharmacistIDError('');
+                                // }
                             }}
                             required
                             className={`input-field ${pharmacistIDError && 'border-red-500'}`}

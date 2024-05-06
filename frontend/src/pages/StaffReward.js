@@ -49,7 +49,7 @@
                         />
                     </div> 
                 </div>
-                <div className="ml-64">
+                <div className="ml-64 grid grid-cols-2">
                 {loading ? (
                     <div className="flex justify-center items-center">
                         <CircularProgress />
