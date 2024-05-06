@@ -18,7 +18,14 @@ const SalesReport = () => {
   const [showGraph, setShowGraph] = useState(false);
   const [currentMonthProfit, setCurrentMonthProfit] = useState(0);
   const [previousMonthProfit, setPreviousMonthProfit] = useState(0);
-  const currentMonth = new Date().toLocaleDateString("default", { month: "long" });
+  const currentMonth = new Date().toLocaleDateString("default", {
+    month: "long",
+  });
+  const currentDate = new Date();
+  currentDate.setMonth(currentDate.getMonth() - 1);
+  const previousMonth = currentDate.toLocaleDateString("default", {
+    month: "long",
+  });
 
   useEffect(() => {
     const fetchWorkouts = async () => {
@@ -202,7 +209,7 @@ const SalesReport = () => {
                       {medicine.purchaseQuantity}
                     </td>
                     <td className="border px-4 py-2">Rs.{medicine.price}.00</td>
-                    <td className="border px-4 py-2">Rs.{calculateSubTotal(medicine.purchaseQuantity,medicine.price)}.00</td>
+                    <td className="border px-4 py-2">Rs. {calculateSubTotal(medicine.purchaseQuantity,medicine.price )}.00</td>
                   </tr>
                 ))
               )}
@@ -233,12 +240,14 @@ const SalesReport = () => {
     logoImg.onload = function () {
       // Calculate the width of the image to maintain aspect ratio
       const logoWidth = 80;
+      const pageWidth = doc.internal.pageSize.getWidth();
       const aspectRatio = logoImg.width / logoImg.height;
       const logoHeight = logoWidth / aspectRatio;
 
       // Add the logo at the center of the PDF
       const x = (doc.internal.pageSize.width - logoWidth) / 2;
       doc.addImage(logoImg, "PNG", x, 10, logoWidth, logoHeight);
+      doc.text("Sales Report", pageWidth / 2, 90, { align: 'center' });
 
       // Add months under the image
       let y = 10 + logoHeight + 10;
@@ -277,8 +286,8 @@ const SalesReport = () => {
           theme: "striped",
           columnStyles: {
             0: { cellWidth: 80 },
-            1: { cellWidth: 40 },
-            2: { cellWidth: 30 },
+            1: { cellWidth: 50 },
+            2: { cellWidth: 40 },
           },
           styles: {
             fontSize: 12,
@@ -299,7 +308,11 @@ const SalesReport = () => {
       const date = new Date().toLocaleDateString();
       const time = new Date().toLocaleTimeString();
       doc.setFontSize(10);
-      doc.text(`Generated on: ${date} at ${time}`,14,doc.internal.pageSize.height - 10);
+      doc.text(
+        `Generated on: ${date} at ${time}`,
+        14,
+        doc.internal.pageSize.height - 10
+      );
 
       doc.save("Monthly Sales Reports.pdf");
     };
@@ -356,9 +369,11 @@ const SalesReport = () => {
         {showGraph && <BarChart data={chartDataArray} />}
       </div>
 
-      {filteredItems.map((comment) => (
-        <CommentDetails key={comment._id} comments={comment} />
-      ))}
+      <div className="grid grid-cols-4">
+        {filteredItems.map((comment) => (
+          <CommentDetails key={comment._id} comments={comment} />
+        ))}
+      </div>
 
       <div className="mt-8 mb-12 mr-4 ml-8 rounded-lg bg-greenn text-white">
         <div className="bg-red-100 rounded-lg p-4 mt-4">
@@ -369,7 +384,9 @@ const SalesReport = () => {
               <p>Profit: Rs.{currentMonthProfit}.00</p>
             </div>
             <div>
-              <h3 className="text-lg font-semibold">Previous Month</h3>
+              <h3 className="text-lg font-semibold">
+               {previousMonth}
+              </h3>
               <p>Profit: Rs.{previousMonthProfit}.00</p>
             </div>
           </div>
