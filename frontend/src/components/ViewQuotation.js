@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import logo from '../images/logo-bw-2-nbg.png';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
-import {MdClose,MdDownload, MdNotifications} from "react-icons/md";
+import FileDownloadIcon from '@mui/icons-material/FileDownload';
 
 const ViewQuotation = ({ quotation, presID }) => {
 
@@ -113,7 +113,7 @@ const ViewQuotation = ({ quotation, presID }) => {
             )}
 
             <button onClick={generatePDF} className="mr-6">
-                    <MdDownload size={48}/>
+                    <FileDownloadIcon fontSize='large'/>
             </button> 
         </div>
     );
