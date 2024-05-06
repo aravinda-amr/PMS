@@ -48,12 +48,12 @@ const PresDisplay = ({ prescription }) => {
             
             {showModal && (
                 <div className="fixed inset-0 flex items-center justify-center">
-                    <div className="modal-container bg-white md:max-w-3xl mx-auto rounded shadow-lg z-50">
+                    <div className="modal-container bg-white md:max-w-3xl mx-auto rounded shadow-lg z-50 border-4 border-gray-300">
 
                         <div className="modal-content py-50 text-left px-6">
                             <div className="flex justify-between items-center pb-3">
                                 <p className="text-2xl font-bold">Add Quotation</p>
-                                <button onClick={handleCloseModal} className="bg-login1 hover:bg-login2 text-white font-bold px-4 py-1 rounded-lg font-jakarta cursor-pointer hover:transition-all">Close</button>
+                                <button onClick={handleCloseModal} className="bg-login1 hover:bg-login2 text-white font-bold px-4 py-1 rounded-lg font-jakarta cursor-pointer hover:transition-all my-4">Close</button>
                             </div>
 
                             <div className="">
