@@ -10,6 +10,7 @@ import Button from '@mui/material/Button';
 import SearchIcon from '@mui/icons-material/Search';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
+import logo from '../images/logo-bw-2-nbg.png';
 
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import EmailModal from './email.js';
@@ -102,6 +103,23 @@ const Reorder = () => {
   const generatePDF = () => {
     // Initialize jsPDF instance
     const pdf = new jsPDF();
+    pdf.setFont('helvetica', 'bold');
+    pdf.setFontSize(24);
+            
+      // Add logo at the center of the PDF
+      const logoImg = new Image();
+      logoImg.src = logo;
+            
+      // Calculate the x-coordinate to place the logo at the center
+      const logoWidth = 40; // Adjust the width of the logo image as needed
+      const pageWidth = pdf.internal.pageSize.getWidth();
+      const x = (pageWidth - logoWidth) / 2;
+            
+      pdf.addImage(logoImg, 'PNG', x, 10, logoWidth, logoWidth * (40 / 40));
+
+      // Display "Inventory Report" text under the logo
+      pdf.setFontSize(18);
+      pdf.text("Reorder Drugs Report", pageWidth / 2, 60, { align: 'center' });
 
     // Define headers and body data
     const headers = [
@@ -123,6 +141,7 @@ const Reorder = () => {
 
     // Call autoTable function on the pdf instance
     pdf.autoTable({
+      startY: 70,
       head: [headers.map(h => h.header)],
       body: body.map(row => Object.values(row)),
       columnStyles: {
@@ -144,6 +163,7 @@ const Reorder = () => {
         textColor: [0, 0, 0],
         cellPadding: { top: 1, right: 5, bottom: 1, left: 2 },
         rowPageBreak: 'avoid',
+        halign: 'center',
       },
       margin: { top: 10, left: 13 },
     });
