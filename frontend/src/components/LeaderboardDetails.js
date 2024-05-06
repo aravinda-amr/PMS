@@ -2,6 +2,10 @@ import React, { useState, useEffect } from 'react';
 import LeaderboardPrizeForm from "./LeaderboardPrizeForm";
 import LeaderboardPrizeDisplay from "./LeaderboardPrizeDisplay";
 import { Typography, Button } from '@mui/material'; // Import Material-UI components
+import logo from '../images/logo-bw-2-nbg.png';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
+
 
 const LeaderboardDetails = ({ leaderboard }) => {
     const [showPrizeForm, setShowPrizeForm] = useState(false);
@@ -57,6 +61,42 @@ const LeaderboardDetails = ({ leaderboard }) => {
         setEditingCashPrize(null); // Reset the cash prize being edited
     };
 
+    //function for download pdf
+    const handleDownloadPDF = () => {
+        const doc = new jsPDF();
+                doc.setFont('helvetica', 'bold');
+                doc.setFontSize(24);
+            
+                // Add logo at the center of the PDF
+                const logoImg = new Image();
+                logoImg.src = logo;
+            
+                const logoWidth = 40; // Adjust the width of the logo
+                const pageWidth = doc.internal.pageSize.getWidth();
+                const x = (pageWidth - logoWidth) / 2;
+            
+                doc.addImage(logoImg, 'PNG', x, 10, logoWidth, logoWidth * (40 / 40));
+        doc.setFontSize(18);
+        doc.text(`Leaderboard Details - ${getMonthName(leaderboard.month)} ${leaderboard.year}`, 10, 55);
+    
+        // Content
+        const content = [
+            [`Year: ${leaderboard.year}`],
+            [`Month: ${getMonthName(leaderboard.month)}`],
+            [`Most Prescription Amount handled pharmacist: ${leaderboard.mostPrescriptionHandledPid}`],
+            [`Most Cash Amount handled pharmacist: ${leaderboard.mostCashAmountHandledPid}`]
+        ];
+
+        doc.autoTable({
+            startY: 60,
+            head: [['Details']],
+            body: content,
+        });
+
+        // Save the PDF
+        doc.save(`Leaderboard_Details_${leaderboard.year}_${leaderboard.month}.pdf`)
+    }
+
 
 
     return (
@@ -68,6 +108,9 @@ const LeaderboardDetails = ({ leaderboard }) => {
                 <Typography variant="h5" component="h4" className="text-white font-medium px-4 py-2">
                     Month: {getMonthName(leaderboard.month)}
                 </Typography>
+                <Button variant="contained" color="primary" onClick={handleDownloadPDF}>
+                    Download PDF
+                </Button>
             </div>
 
             <div className="bg-dark-blue-2 flex items-center px-4 py-2 rounded-b-lg">

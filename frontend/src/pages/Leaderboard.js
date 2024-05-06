@@ -61,7 +61,7 @@ export const Leaderboard =() => {
                     />
                 </div> 
         </div>  
-        <div className="ml-64">
+        <div className="ml-64 px-16">
         {loading ? (
                 <div className="flex justify-center items-center">
                     <CircularProgress />
