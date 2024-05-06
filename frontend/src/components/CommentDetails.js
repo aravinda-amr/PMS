@@ -43,15 +43,7 @@ const CommentDetails = ({ comments }) => {
   };
 
   return (
-    <div
-      className="bg-dark-blue-2 p-4 rounded-lg shadow-md mr-4"
-      style={{
-        marginBottom: "20px",
-        marginTop: "20px",
-        marginLeft: "30px",
-        color: "white",
-      }}
-    >
+    <div className="bg-dark-blue-2 p-4 rounded-lg shadow-md mr-4 my-4 ml-6 text-white">
       <h4>
         <strong>Verified By : </strong>
         {comments.title}
@@ -68,7 +60,7 @@ const CommentDetails = ({ comments }) => {
         {formatDistanceToNow(new Date(comments.createdAt), { addSuffix: true })}
       </p>
       <button
-        className="btn bg-login1 hover:bg-login2 hover:text-white mr-2 px-4 py-1 rounded-lg font-jakarta font-semibold cursor-pointer hover:transition-all"
+        className="btn bg-login1 hover:bg-login2 hover:text-white mr-2 mt-2 px-4 py-1 rounded-lg font-jakarta font-semibold cursor-pointer hover:transition-all"
         style={{ color: "black" }}
         onClick={handleClick}
       >
@@ -100,9 +92,9 @@ const CommentDetails = ({ comments }) => {
               &#8203;
             </span>
             <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-              <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+              <div className="bg-box shadow-lg px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                 <h3
-                  className="text-lg leading-6 font-medium text-black-900"
+                  className="text-lg leading-6 font-medium text-black"
                   id="modal-title"
                 >
                   Update Note
@@ -112,7 +104,7 @@ const CommentDetails = ({ comments }) => {
                     <textarea
                       value={note}
                       onChange={(e) => setNote(e.target.value)}
-                      className="w-full px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-100 focus:border-indigo-300 dark:bg-gray-700 dark:text-black dark:placeholder-gray-500 dark:border-gray-600 dark:focus:ring-gray-900 dark:focus:border-gray-500"
+                      className="w-full color-black px-3 py-2 placeholder-gray-300 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-indigo-100 focus:border-indigo-300 dark:bg-gray-700 dark:text-black dark:placeholder-gray-500 dark:border-gray-600 dark:focus:ring-gray-900 dark:focus:border-gray-500"
                       placeholder="Write Note"
                     />
                     <div className="mt-4 flex justify-end">
