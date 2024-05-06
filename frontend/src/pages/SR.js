@@ -18,6 +18,7 @@ const SalesReport = () => {
   const [showGraph, setShowGraph] = useState(false);
   const [currentMonthProfit, setCurrentMonthProfit] = useState(0);
   const [previousMonthProfit, setPreviousMonthProfit] = useState(0);
+  const currentMonth = new Date().toLocaleDateString("default", { month: "long" });
 
   useEffect(() => {
     const fetchWorkouts = async () => {
@@ -70,6 +71,7 @@ const SalesReport = () => {
     return quantity * unitPrice;
   };
 
+  //Profitability Calculation
   const calculateProfitability = (data) => {
     const currentMonth = new Date().getMonth();
     const currentYear = new Date().getFullYear();
@@ -104,6 +106,7 @@ const SalesReport = () => {
     setPreviousMonthProfit(previousMonthTotal);
   };
 
+  //Generate Chart Data
   const chartData = {};
   filterTransactionsByDays(selectedRange).forEach((bill) => {
     bill.medicines.forEach((medicine) => {
@@ -115,11 +118,13 @@ const SalesReport = () => {
     });
   });
 
+  //Generate Chart Data Array
   const chartDataArray = Object.keys(chartData).map((drugName) => ({
     drugName,
     grandTotal: chartData[drugName],
   }));
 
+  //Generate Data Month Wise
   const monthWiseData = billingData.reduce((acc, bill) => {
     const month = new Date(bill.invoiceDate).getMonth();
     const year = new Date(bill.invoiceDate).getFullYear();
@@ -131,6 +136,7 @@ const SalesReport = () => {
     return acc;
   }, {});
 
+  //Generate Data Month Wise (Tables)
   const monthTables = Object.entries(monthWiseData).map(([key, bills]) => {
     const total = bills.reduce((acc, bill) => {
       return (
@@ -144,6 +150,7 @@ const SalesReport = () => {
       );
     }, 0);
 
+    //Most Sold Product
     const mostSoldProduct = bills.reduce((acc, bill) => {
       bill.medicines.forEach((medicine) => {
         if (!acc[medicine.drugName]) {
@@ -154,6 +161,7 @@ const SalesReport = () => {
       return acc;
     }, {});
 
+    //Sort Most Sold Product
     const mostSoldProductArray = Object.entries(mostSoldProduct).sort(
       (a, b) => b[1] - a[1]
     );
@@ -194,14 +202,7 @@ const SalesReport = () => {
                       {medicine.purchaseQuantity}
                     </td>
                     <td className="border px-4 py-2">Rs.{medicine.price}.00</td>
-                    <td className="border px-4 py-2">
-                      Rs.
-                      {calculateSubTotal(
-                        medicine.purchaseQuantity,
-                        medicine.price
-                      )}
-                      .00
-                    </td>
+                    <td className="border px-4 py-2">Rs.{calculateSubTotal(medicine.purchaseQuantity,medicine.price)}.00</td>
                   </tr>
                 ))
               )}
@@ -218,6 +219,7 @@ const SalesReport = () => {
     );
   });
 
+  //Generate PDF and Download
   const generateBillingPDF = () => {
     const doc = new jsPDF();
     doc.setFont("helvetica", "bold");
@@ -297,13 +299,9 @@ const SalesReport = () => {
       const date = new Date().toLocaleDateString();
       const time = new Date().toLocaleTimeString();
       doc.setFontSize(10);
-      doc.text(
-        `Generated on: ${date} at ${time}`,
-        14,
-        doc.internal.pageSize.height - 10
-      );
+      doc.text(`Generated on: ${date} at ${time}`,14,doc.internal.pageSize.height - 10);
 
-      doc.save("monthly_billing_report.pdf");
+      doc.save("Monthly Sales Reports.pdf");
     };
   };
 
@@ -362,12 +360,12 @@ const SalesReport = () => {
         <CommentDetails key={comment._id} comments={comment} />
       ))}
 
-      <div className="mt-8 mb-12 mr-4 ml-8 rounded-lg bg-greenn">
+      <div className="mt-8 mb-12 mr-4 ml-8 rounded-lg bg-greenn text-white">
         <div className="bg-red-100 rounded-lg p-4 mt-4">
           <h1 className="text-xl font-semibold mb-2">Profitability</h1>
           <div className="flex justify-between">
             <div>
-              <h3 className="text-lg font-semibold">Current Month</h3>
+              <h3 className="text-lg font-semibold">{currentMonth}</h3>
               <p>Profit: Rs.{currentMonthProfit}.00</p>
             </div>
             <div>
