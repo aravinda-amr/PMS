@@ -106,7 +106,7 @@ const ViewQuotation = ({ quotation, presID }) => {
             {!isActionTaken && (
                 <div>
                     <button onClick={handleApprove} className="bg-login1 hover:bg-login2 text-white font-bold px-4 py-1 
-                                rounded-lg font-jakarta cursor-pointer hover:transition-all my-4">Approve</button>
+                                rounded-lg font-jakarta cursor-pointer hover:transition-all mr-4 my-4">Approve</button>
                     <button onClick={handleReject} className="bg-delete hover:bg-deleteH text-white font-bold px-4 py-1 
                                 rounded-lg font-jakarta cursor-pointer hover:transition-all" >Reject</button>
                 </div>
