@@ -45,8 +45,8 @@ const LeaveDetails = ({ leave }) => {
   };
 
   return (
-    <div className="bg-gray-800 rounded-lg p-4 mb-4 flex flex-col">
-      <div className="bg-dark-blue-2 flex justify-between items-center px-6 py-3 rounded-t-lg">
+    <div className="bg-gray-800 rounded-lg p-4 mb-4 flex flex-col font-jakarta">
+      <div className="bg-dark-blue-2 flex justify-between items-center px-6 py-6 rounded-lg">
         <div className="flex items-center space-x-4">
           <div className="flex flex-col space-y-2">
             <h4 className="text-3xl font-semibold text-white">{leave.name}</h4>
@@ -61,13 +61,13 @@ const LeaveDetails = ({ leave }) => {
         </div>
         <div className="flex space-x-4">
           <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-150 ease-in-out"
+            className="ring-2 ring-white bg-login1 hover:bg-login2 text-black hover:text-white font-bold py-2 px-4 rounded transition duration-150 ease-in-out"
             onClick={handleClick}
           >
             Delete
           </button>
           <button
-            className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition duration-150 ease-in-out"
+            className="ring-2 ring-white bg-signup1 hover:bg-signup2 text-black hover:text-white font-bold py-2 px-4 rounded transition duration-150 ease-in-out"
             onClick={handleUpdate}
           >
             Update

@@ -61,7 +61,7 @@ const Leave = () => {
   return (
     <div className="px-4 py-8 ml-auto">
       <div className="flex justify-between items-center bg-gray-100 rounded-lg p-4 mb-4">
-        <h1 className="text-2xl font-semibold text-gray-800 flex-grow ml-64">Staff Leaves</h1>
+        <h1 className="text-2xl font-bold font-jakarta text-black flex-grow ml-64">Staff Leaves</h1>
         <div className="flex items-center">
          <TextField
               label="Search by name..."
@@ -100,7 +100,7 @@ const Leave = () => {
           />
         </div>
       </div>
-<div className="ml-64">
+<div className="ml-64 grid grid-cols-3">
       {filteredLeaves.map((leave) => (
         <LeaveDetails key={leave._id} leave={leave} />
       ))}
