@@ -20,6 +20,10 @@ const PresDisplay = ({ prescription }) => {
         setShowModal(false);
     };
 
+    const handlePickUpReceipt = () => {
+        // Logic to handle pick-up receipt
+    };
+
     return (
         <div className="bg-dark-blue-2 grid grid-cols-5 items-center px-4 py-2 rounded-lg my-4 mx-4">
             <div className="flex items-center">
@@ -43,6 +47,11 @@ const PresDisplay = ({ prescription }) => {
             {prescription.quotation.length === 0 && (
                 <button onClick={handleQuotation} className="bg-login1 hover:bg-login2 text-white font-bold px-4 py-1 
                 rounded-lg font-jakarta cursor-pointer hover:transition-all">Add Quotation</button>
+            )}
+
+            {prescription.status === 'approved' && (
+                <button onClick={handlePickUpReceipt} className="bg-green-500 hover:bg-green-600 text-white font-bold px-4 py-1 
+                rounded-lg font-jakarta cursor-pointer hover:transition-all">Pick Up Receipt</button>
             )}
             
             
