@@ -14,11 +14,11 @@ const UpdateNoteModal = ({ onClose, onSave }) => {
 
     return (
         <div className="modal">
-            <div className="modal-content">
-                <span className="close" onClick={onClose}>&times;</span>
-                <h2>Update Note</h2>
-                <textarea value={newNote} onChange={handleChange} />
-                <button onClick={handleSave}>Save</button>
+            <div className="ml-8 mr-8 border-gray-300 rounded-lg px-8 py-6 mb-8 bg-update">
+                <button onClick={onClose} className="bg-login1 hover:bg-login2 text-white font-bold px-4 py-1 rounded-lg font-jakarta cursor-pointer hover:transition-all mb-2">Close</button>
+                <h2 className='font-semibold'>New Note</h2>
+                <textarea value={newNote} onChange={handleChange} className="bg-gray-200 p-4 rounded-md" /><br />
+                <button onClick={handleSave} className="bg-login1 hover:bg-login2 text-white font-bold px-4 py-1 rounded-lg font-jakarta cursor-pointer hover:transition-all mt-2">Save</button>
             </div>
         </div>
     );
