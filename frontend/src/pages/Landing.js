@@ -71,7 +71,7 @@ const Landing = () => {
                 <Toolbar>
                     <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center' }}> {/* Center align content */}
                         <img src={logo} alt="Anura Pharmacy Logo" style={{ height: '120px', marginLeft: '40px' }} />
-                        <h4 style={{ color: '#2152A4', margin: '0 auto', fontSize: '2.75rem' }}>
+                        <h4 style={{ color: '#2152A4', margin: '0 auto', fontSize: '2.75rem', fontFamily: 'Arial Black', letterSpacing: '-3px' }}>
                             <strong>ANURA PHARMACY (PVT) LTD</strong>
                         </h4>
                     </Box>
