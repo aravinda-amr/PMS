@@ -8,6 +8,11 @@ const leavechema = new Schema({
         type:String,
         required:true
     },
+ 
+    email:{
+         type: String,
+         required:true
+    },
     dateFrom:{   
         type:Date,
         required:true
