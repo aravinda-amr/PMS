@@ -126,7 +126,7 @@ const Loyalty = () => {
         <h1 className="text-2xl font-semibold text-gray-800 ml-64">Loyalty Program</h1>
         <div className="flex items-center">
           <h4 className="text-lg font-medium text-gray-600 mr-2">
-            {isFiltered ? `User purchases over 100,000 within the last ${months} months` : `User purchases within last ${months} months`}
+            {isFiltered ? `Customer purchases over 100,000 within the last ${months} months` : `Customer purchases within last ${months} months`}
           </h4>
         </div>
         <div className="flex items-center">
