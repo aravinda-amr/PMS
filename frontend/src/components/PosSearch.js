@@ -69,7 +69,7 @@ const POSSearch = ({ handleAddToBill }) => {
                     {filteredDrugs.map((drug, index) => (
                         <div key={index} className="flex items-center justify-between py-2">
                             <div>
-                                <p className="text-lg font-semibold text-white mb-1">
+                                <p className="text-lg font-semibold text-black mb-1">
                                     {drug.drugName} | Price: {drug.price} | Available: {drug.totalQuantity || 0}
                                 </p>
                             </div>
