@@ -51,7 +51,7 @@ const LeaveDetails = ({ leave }) => {
           <div className="flex flex-col space-y-2">
             <h4 className="text-3xl font-semibold text-white">{leave.name}</h4>
 
-
+            <p className="text-white"><strong>Email: </strong> {leave.email}</p>
             <p className="text-white"><strong>Date From: </strong>{new Date(leave.dateFrom).toLocaleDateString()}</p>
             <p className="text-white"><strong>Date To : </strong>{new Date(leave.dateTo).toLocaleDateString()}</p>
             <p className="text-white"><strong>Reasons: </strong>{leave.reason}</p>

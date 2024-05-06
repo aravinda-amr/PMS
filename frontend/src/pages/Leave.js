@@ -17,6 +17,7 @@ const Leave = () => {
     setEmailModalOpen(false);
   };
 
+  //search
   useEffect(() => {
     const filtered = leaves?.filter(
       (item) => item.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -24,6 +25,8 @@ const Leave = () => {
     setFilteredLeaves(filtered);
   }, [searchTerm, leaves]);
 
+
+  //getting data from the backend
   useEffect(() => {
     const fetchLeaves = async () => {
       const response = await fetch('/api/leaves');
@@ -37,6 +40,8 @@ const Leave = () => {
     fetchLeaves();
   }, [dispatch]);
 
+
+  // Email 
   const handleEmailModalSubmit = async (emailDetails) => {
     try {
       const response = await fetch('/api/email/send-email', {

@@ -32,10 +32,10 @@ export const getLeave = async (req, res) => {
 
 // Create a leave
 export const createLeave = async (req, res) => {
-    const { name, dateFrom, dateTo, reason } = req.body;
+    const { name, email,  dateFrom, dateTo, reason } = req.body;
 
     try {
-        const leave = await Leave.create({ name, dateFrom, dateTo, reason });
+        const leave = await Leave.create({ name, email, dateFrom, dateTo, reason });
         res.status(201).json(leave);
     } catch (error) {
         res.status(400).json({ error: error.message });

@@ -5,6 +5,7 @@ const LeavesForm = () => {
     const { dispatch } = useLeavesContext();
 
     const [name, setname] = useState('');
+    const [email, setemail] = useState('');
     const [dateFrom, setdateFrom] = useState('');
     const [dateTo, setdateTo] = useState('');
     const [reason, setReason] = useState('');
@@ -15,7 +16,7 @@ const LeavesForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const leave = { name, dateFrom, dateTo, reason };
+        const leave = { name, email,  dateFrom, dateTo, reason };
 
         const response = await fetch('/api/leaves', {
             method: 'POST',
@@ -34,6 +35,7 @@ const LeavesForm = () => {
 
         if (response.ok) {
             setname('');
+            setemail('');
             setdateFrom('');
             setdateTo('');
             setReason('');
@@ -73,6 +75,14 @@ const LeavesForm = () => {
                                     type="text"
                                     onChange={(e) => setname(e.target.value)}
                                     value={name}
+                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 text-blue"
+                                />
+
+                                <label className="block text-sm font-medium text-gray-700 mt-4">Email:</label>
+                                <input
+                                    type="text"
+                                    onChange={(e) => setemail(e.target.value)}
+                                    value={email}
                                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 text-blue"
                                 />
 
