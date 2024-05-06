@@ -38,37 +38,37 @@ const ViewQuotation = ({ quotation, presID }) => {
 
 
     return (
-        <div className=" ml-8 mr-8 medicine  border-gray-300 rounded-lg px-8 py-6 mb-8 bg-update" >
-            <div className="overflow-x-auto">
-                        <table className="w-full">
+        <div className="ml-8 mr-8 border-gray-300 rounded-lg px-8 py-6 mb-8 bg-update" >
+            <div>
+                        <table className='w-full mb-4'>
                             <thread>
-                                <tr className="bg-gray-200 w-full">
-                                    <th className="py-2 px-4 text-center text-lg w-1/4">Drug Name</th>
-                                    <th className="py-2 px-4 text-center text-lg w-1/4">Quantity</th>
-                                    <th className="py-2 px-4 text-center text-lg w-1/4">Price</th>
-                                    <th className="py-2 px-4 text-center text-lg w-1/4">Total</th>
+                                <tr className='grid grid-cols-4 items-center'>
+                                    <th className="py-2 px-4 text-center text-lg">Drug Name</th>
+                                    <th className="py-2 px-4 text-center text-lg">Quantity</th>
+                                    <th className="py-2 px-4 text-center text-lg">Price</th>
+                                    <th className="py-2 px-4 text-center text-lg">Total</th>
                                 </tr>
                             </thread>
                             <tbody>
                             {quotation.medicines.map((medicine) => (
-                                <tr key={medicine.drugName}>
-                                    <td className="py-2 px-4 text-center text-lg w-1/4">{medicine.drugName}</td>
-                                    <td className="py-2 px-4 text-center text-lg w-1/4">{medicine.purchaseQuantity}</td>
-                                    <td className="py-2 px-4 text-center text-lg w-1/4">{medicine.price}</td>
-                                    <td className="py-2 px-4 text-center text-lg w-1/4">{medicine.calculateItemTotal}</td>
+                                <tr key={medicine.drugName} className='grid grid-cols-4 items-center'>
+                                    <td className="text-center text-lg">{medicine.drugName}</td>
+                                    <td className="text-center text-lg">{medicine.purchaseQuantity}</td>
+                                    <td className="text-center text-lg">{medicine.price}</td>
+                                    <td className="text-center text-lg">{medicine.calculateItemTotal}</td>
                                 </tr>
                             ))}
                             </tbody>
                         </table>
             </div>
             <div>
-                <h4>Subtotal</h4>
-                <p>LKR {quotation.subTotal}</p>
+                <h4 className='mt-4 text-2xl'>Subtotal</h4>
+                <p className='font-extrabold'>LKR {quotation.subTotal} /=</p>
             </div>
             {!isActionTaken && (
                 <div>
                     <button onClick={handleApprove} className="bg-login1 hover:bg-login2 text-white font-bold px-4 py-1 
-                                rounded-lg font-jakarta cursor-pointer hover:transition-all">Approve</button>
+                                rounded-lg font-jakarta cursor-pointer hover:transition-all mx-4 my-4">Approve</button>
                     <button onClick={handleReject} className="bg-delete hover:bg-deleteH text-white font-bold px-4 py-1 
                                 rounded-lg font-jakarta cursor-pointer hover:transition-all" >Reject</button>
                 </div>

@@ -125,7 +125,7 @@ const PrescriptionDetails = ({ prescription }) => {
 
             {showModal && (
                 <div>
-                    <button onClick={handleCloseModal} className="bg-login1 hover:bg-login2 text-white font-bold px-4 py-1 rounded-lg font-jakarta cursor-pointer hover:transition-all">Close</button>
+                    <button onClick={handleCloseModal} className="bg-login1 hover:bg-login2 text-white font-bold px-4 py-1 rounded-lg font-jakarta cursor-pointer hover:transition-all mx-8 mb-2">Close</button>
                     {quotations.length === 0 ? (
                     <p>No quotations available for this prescription.</p>
                     ) : (
