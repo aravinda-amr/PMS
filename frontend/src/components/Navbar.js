@@ -22,6 +22,7 @@ import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import InventoryIcon from '@mui/icons-material/Inventory';
 import HowToRegIcon from '@mui/icons-material/HowToReg';
 import LogoutIcon from '@mui/icons-material/Logout';
+import DashboardIcon from '@mui/icons-material/Dashboard';
 
 const Navbar = () => {
     const { logout } = useLogout();
@@ -62,17 +63,49 @@ const Navbar = () => {
                 </div>
 
                 <div className="text-sm border-t-2 pt-6 border-blue-button">
+
+                {(userRole === 'manager' || userRole === 'admin') && (
+                        <>
+                            <Link to="/dash">
+                                <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
+                                    <DashboardIcon  />
+                                    <h1 className='ps-1 my-auto'>Dashboard</h1>
+                                </div>
+                            </Link>
+                            <Link to="/loyalty">
+                                <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
+                                    <LoyaltyIcon />
+                                    <h1 className='ps-1 my-auto'>Loyalty</h1>
+                                </div>
+                            </Link>
+
+                            <Link to="/staffReward">
+                                <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
+                                    <HandshakeIcon />
+                                    <h1 className='ps-1 my-auto'>Handled order Details</h1>
+                                </div>
+                            </Link>
+
+                            <Link to="/leaderboard">
+                                <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
+                                    <LeaderboardIcon />
+                                    <h1 className='ps-1 my-auto'>Staff Leaderboard</h1>
+                                </div>
+                            </Link>
+
+                            <Link to="/salesreport">
+                                <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
+                                    <SummarizeIcon />
+                                    <h1 className='ps-1 my-auto'>SalesReport</h1>
+                                </div>
+                            </Link>
+                        </>
+                    )}
                     
 
                     {(userRole === 'inventory handler' || userRole === 'admin') && (
                         <>
-                            <Link to="/">
-                                <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
-                                    <HomeIcon />
-                                    <h1 className='ps-1 my-auto'>Home</h1>
-                                </div>
-                            </Link>
-
+                            
                             <Link to="/inventory">
                                 <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
                                     <InventoryIcon />
@@ -117,43 +150,7 @@ const Navbar = () => {
                         </>
                     )}
 
-                    {(userRole === 'manager' || userRole === 'admin') && (
-                        <>
-                            <Link to="/dash">
-                                <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
-                                    <SummarizeIcon />
-                                    <h1 className='ps-1 my-auto'>Dashboard</h1>
-                                </div>
-                            </Link>
-                            <Link to="/loyalty">
-                                <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
-                                    <LoyaltyIcon />
-                                    <h1 className='ps-1 my-auto'>Loyalty</h1>
-                                </div>
-                            </Link>
 
-                            <Link to="/staffReward">
-                                <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
-                                    <HandshakeIcon />
-                                    <h1 className='ps-1 my-auto'>Handled order Details</h1>
-                                </div>
-                            </Link>
-
-                            <Link to="/leaderboard">
-                                <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
-                                    <LeaderboardIcon />
-                                    <h1 className='ps-1 my-auto'>Staff Leaderboard</h1>
-                                </div>
-                            </Link>
-
-                            <Link to="/salesreport">
-                                <div className='flex my-3 hover:bg-blue-button hover:shadow-xl hover:transition-all px-3 py-1 rounded-md'>
-                                    <SummarizeIcon />
-                                    <h1 className='ps-1 my-auto'>SalesReport</h1>
-                                </div>
-                            </Link>
-                        </>
-                    )}
 
                     {userRole === 'admin' && (
                         <>
